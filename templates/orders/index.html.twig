@@ -3,38 +3,92 @@
 {% block title %}Orders index{% endblock %}
 
 {% block body %}
-    <h1>Orders index</h1>
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">Your Orders History</h1>
+                </div>
+                <div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+                </div>
+            </div>
+            <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+                <form id="edd_checkout_cart_form" method="post">
+                    <div id="edd_checkout_cart_wrap">
+                        <table id="edd_checkout_cart" class="ajaxed">
+                            <thead>
+                            <tr class="edd_cart_header_row">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Orderid</th>
-                <th>Dueamount</th>
-                <th>Innonumber</th>
-                <th>Orderdate</th>
-                <th>Status</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for order in orders %}
-            <tr>
-                <td>{{ order.orderid }}</td>
-                <td>{{ order.dueamount }}</td>
-                <td>{{ order.innonumber }}</td>
-                <td>{{ order.orderdate ? order.orderdate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ order.status }}</td>
-                <td>
-                    <a href="{{ path('pending_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                                <th class="edd_cart_Innonumber">
+                                    Innonumber
+                                </th>
+                                <th class="edd_cart_user">
+                                    User
+                                </th>
+                                <th class="edd_cart_orderdate">
+                                    Orderdate
+                                </th>
+                                <th class="edd_cart_status">
+                                    Status
+                                </th>
+                                <th class="edd_cart_dueamount">
+                                    Dueamount
+                                </th>
+                                <th class="edd_cart_actions">
+                                    Actions
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-    <a href="{{ path('orders_new') }}">Create new</a>
+                            {% for order in orders %}
+
+                                <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
+                                    <td class="edd_cart_item_name">
+                                        {{ order.innonumber }}
+                                    </td>
+                                    <td class="edd_cart_item_name">
+                                        <span class="edd_checkout_cart_item_title"> {{ order.iduser.nom }}  {{ order.iduser.prenom }}</span>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ order.orderdate ? order.orderdate|date('Y-m-d H:i:s') : '' }}
+
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ order.status }}
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ order.dueamount }}
+                                    </td>
+
+                                    <td class="edd_cart_actions">
+                                        <a class="edd_cart_remove_item_btn" href="#">
+                                            <a href="{{ path('pending_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a>
+
+
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

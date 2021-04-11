@@ -3,35 +3,105 @@
 {% block title %}PendingOrders index{% endblock %}
 
 {% block body %}
-    <h1>PendingOrders index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdPendingorder</th>
-                <th>Innonumber</th>
-                <th>Quantity</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for pending_order in pending_orders %}
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">Order Details</h1>
+                </div>
+                <div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+                </div>
+            </div>
+            <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+                <form id="edd_checkout_cart_form" method="post">
+                    <div id="edd_checkout_cart_wrap">
+                        <table id="edd_checkout_cart" class="ajaxed">
+                            <thead>
+                            <tr class="edd_cart_header_row">
 
-            <tr>
-                <td>{{ pending_order.idPendingorder }}</td>
-                <td>{{ pending_order.innonumber }}</td>
-                <td>{{ pending_order.quantity }}</td>
-                <td>{{ pending_order.status }}</td>
+                                <th class="edd_cart_Innonumber">
+                                    Innonumber
+                                </th>
+                                <th class="edd_cart_user">
+                                    User
+                                </th>
+                                <th class="edd_cart_user">
+                                    User Email
+                                </th>
+                                <th class="edd_cart_user">
+                                    User Number
+                                </th>
+                                <th class="edd_cart_dueamount">
+                                    artwork
+                                </th>
+                                <th class="edd_cart_dueamount">
+                                    Price
+                                </th>
+                                <th class="edd_cart_orderdate">
+                                    Quantity
+                                </th>
+                                <th class="edd_cart_status">
+                                    Status
+                                </th>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
 
-        </tbody>
-    </table>
+                            {% for pending_order in pending_orders %}
 
-    <a href="{{ path('pending_orders_new') }}">Create new</a>
+
+                                <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
+                                    <td class="edd_cart_item_name">
+                                        {{ pending_order.innonumber }}
+                                    </td>
+                                    <td class="edd_cart_item_name">
+                                        <span class="edd_checkout_cart_item_title"> {{ pending_order.iduser.nom }} {{ pending_order.iduser.prenom }}</span>
+                                    </td>
+                                    <td class="edd_cart_item_name">
+                                        <span class="edd_checkout_cart_item_title"> {{ pending_order.iduser.email }}</span>
+                                    </td>
+                                    <td class="edd_cart_item_name">
+                                        <span class="edd_checkout_cart_item_title"> {{ pending_order.iduser.numero }}</span>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ pending_order.oeuvreid.nomoeuvre}}
+
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ pending_order.oeuvreid.prixoeuvre }}
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ pending_order.quantity }}
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        {{ pending_order.status }}
+                                    </td>
+
+
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        </div>
+    </section>
+
 {% endblock %}
