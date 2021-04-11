@@ -31,6 +31,20 @@ class ExpositionController extends AbstractController
     }
 
     /**
+     * @Route("/back", name="exposition_indexBack", methods={"GET"})
+     */
+    public function indexBack(): Response
+    {
+        $expositions = $this->getDoctrine()
+            ->getRepository(Exposition::class)
+            ->findAll();
+
+        return $this->render('exposition/indexBack.html.twig', [
+            'expositions' => $expositions,
+        ]);
+    }
+
+    /**
      * @Route("/new", name="exposition_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -54,11 +68,45 @@ class ExpositionController extends AbstractController
     }
 
     /**
+     * @Route("/newBack", name="exposition_newBack", methods={"GET","POST"})
+     */
+    public function newBack(Request $request): Response
+    {
+        $exposition = new Exposition();
+        $form = $this->createForm(ExpositionType::class, $exposition);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($exposition);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('exposition_indexBack');
+        }
+
+        return $this->render('exposition/newBack.html.twig', [
+            'exposition' => $exposition,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/{codeExpo}", name="exposition_show", methods={"GET"})
      */
     public function show(Exposition $exposition): Response
     {
         return $this->render('exposition/show.html.twig', [
+            'exposition' => $exposition,
+        ]);
+    }
+
+
+    /**
+     * @Route("/{codeExpo}/back", name="exposition_showBack", methods={"GET"})
+     */
+    public function showBack(Exposition $exposition): Response
+    {
+        return $this->render('exposition/showBack.html.twig', [
             'exposition' => $exposition,
         ]);
     }
@@ -84,7 +132,27 @@ class ExpositionController extends AbstractController
     }
 
     /**
-     * @Route("/{codeExpo}", name="exposition_delete", methods={"POST"})
+     * @Route("/{codeExpo}/editBack", name="exposition_editBack", methods={"GET","POST"})
+     */
+    public function editBack(Request $request, Exposition $exposition): Response
+    {
+        $form = $this->createForm(ExpositionType::class, $exposition);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('exposition_indexBack');
+        }
+
+        return $this->render('exposition/editBack.html.twig', [
+            'exposition' => $exposition,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{codeExpo}/back", name="exposition_deleteBack", methods={"POST"})
      */
     public function delete(Request $request, Exposition $exposition): Response
     {
@@ -94,6 +162,6 @@ class ExpositionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('exposition_index');
+        return $this->redirectToRoute('exposition_indexBack');
     }
 }

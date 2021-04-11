@@ -1,11 +1,11 @@
 {% extends 'baseBack.html.twig' %}
-
-{% block title %}New ReservationExpo{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Nouvelle réservation exposition{% endblock %}
 
 {% block body %}
-    <h1>Create new ReservationExpo</h1>
+    <h1>Créer une nouvelle réservation exposition</h1>
 
     {{ include('reservation_expo/_form.html.twig') }}
 
-    <a href="{{ path('reservation_expo_index') }}">back to list</a>
+    <a href="{{ path('reservation_expo_indexBack') }}">Retourner à la liste des expositions</a>
 {% endblock %}

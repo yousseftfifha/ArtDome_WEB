@@ -65,11 +65,45 @@ class ReservationExpoController extends AbstractController
     }
 
     /**
+     * @Route("/newBack", name="reservation_expo_newBack", methods={"GET","POST"})
+     */
+    public function newBack(Request $request): Response
+    {
+        $reservationExpo = new ReservationExpo();
+        $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($reservationExpo);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('reservation_expo_indexBack');
+        }
+
+        return $this->render('reservation_expo/newBack.html.twig', [
+            'reservation_expo' => $reservationExpo,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
      * @Route("/{codeReservatione}", name="reservation_expo_show", methods={"GET"})
      */
     public function show(ReservationExpo $reservationExpo): Response
     {
         return $this->render('reservation_expo/show.html.twig', [
+            'reservation_expo' => $reservationExpo,
+        ]);
+    }
+
+    /**
+     * @Route("/{codeReservatione}/back", name="reservation_expo_showBack", methods={"GET"})
+     */
+    public function showBack(ReservationExpo $reservationExpo): Response
+    {
+        return $this->render('reservation_expo/showBack.html.twig', [
             'reservation_expo' => $reservationExpo,
         ]);
     }
@@ -95,6 +129,27 @@ class ReservationExpoController extends AbstractController
     }
 
     /**
+     * @Route("/{codeReservatione}/editBack", name="reservation_expo_editBack", methods={"GET","POST"})
+     */
+    public function editBack(Request $request, ReservationExpo $reservationExpo): Response
+    {
+        $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('reservation_expo_indexBack');
+        }
+
+        return $this->render('reservation_expo/editBack.html.twig', [
+            'reservation_expo' => $reservationExpo,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
      * @Route("/{codeReservatione}", name="reservation_expo_delete", methods={"POST"})
      */
     public function delete(Request $request, ReservationExpo $reservationExpo): Response
@@ -106,5 +161,19 @@ class ReservationExpoController extends AbstractController
         }
 
         return $this->redirectToRoute('reservation_expo_index');
+    }
+
+    /**
+     * @Route("/{codeReservatione}/back", name="reservation_expo_deleteBack", methods={"POST"})
+     */
+    public function deleteBack(Request $request, ReservationExpo $reservationExpo): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$reservationExpo->getCodeReservatione(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($reservationExpo);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('reservation_expo_indexBack');
     }
 }

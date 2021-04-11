@@ -1,26 +1,27 @@
 {% extends 'baseBack.html.twig' %}
 
-{% block title %}ReservationExpo{% endblock %}
+
+{% block title %}Réservation Exposition{% endblock %}
 
 {% block body %}
-    <h1>ReservationExpo</h1>
+    <h1>Réservation Exposition</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>CodeReservatione</th>
+                <th>Code Réservation</th>
                 <td>{{ reservation_expo.codeReservatione }}</td>
             </tr>
             <tr>
-                <th>NbPlace</th>
+                <th>Nombre de Place</th>
                 <td>{{ reservation_expo.nbPlace }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('reservation_expo_indexBack') }}">back to list</a>
+    <a href="{{ path('reservation_expo_indexBack') }}">Retourner à la liste des expositions</a>
 
-    <a href="{{ path('reservation_expo_editBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">edit</a>
+    <a href="{{ path('reservation_expo_editBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
 
-    {{ include('reservation_expo/_delete_form.html.twig') }}
+    {{ include('reservation_expo/_delete_formBack.html.twig') }}
 {% endblock %}

@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ReservationExpo index{% endblock %}
+{% block title %} Les réservations Exposition {% endblock %}
 
 {% block body %}
-    <h1>ReservationExpo index</h1>
+    <h1> Les réservations Exposition </h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Code Reservation</th>
+                <th>Code Réservation</th>
                 <th>Nom Client</th>
                 <th>Prenom Client</th>
                 <th>email Client</th>
@@ -29,8 +29,8 @@
                 <td>{{ reservation_expo.codeExpo.nomExpo}}</td>
                 <td>{{ reservation_expo.nbPlace }}</td>
                 <th>
-                    <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">show</a>
-                    <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">edit</a>
+                    <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">Afficher</a>
+                    <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
                 </th>
             </tr>
         {% else %}
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('reservation_expo_new') }}">Create new</a>
+    <a href="{{ path('reservation_expo_new') }}">Ajouter une nouvelle réservation exposition</a>
 {% endblock %}
