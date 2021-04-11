@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Endroit{% endblock %}
+
+{% block body %}
+    <h1>Endroit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdEndroit</th>
+                <td>{{ endroit.idEndroit }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ endroit.type }}</td>
+            </tr>
+            <tr>
+                <th>Taille</th>
+                <td>{{ endroit.taille }}</td>
+            </tr>
+            <tr>
+                <th>PrixJour</th>
+                <td>{{ endroit.prixJour }}</td>
+            </tr>
+            <tr>
+                <th>Nbrch</th>
+                <td>{{ endroit.nbrch }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ endroit.location }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ endroit.disponibilite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('endroit_index') }}">back to list</a>
+
+    <a href="{{ path('endroit_edit', {'idEndroit': endroit.idEndroit}) }}">edit</a>
+
+    {{ include('endroit/_delete_form.html.twig') }}
+{% endblock %}
