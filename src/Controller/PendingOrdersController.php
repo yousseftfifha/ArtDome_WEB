@@ -17,14 +17,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class PendingOrdersController extends AbstractController
 {
     /**
-     * @Route("/", name="pending_orders_index", methods={"GET"})
+     * @Route("/{innonumber}", name="pending_orders_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(int $innonumber): Response
     {
-        $pendingOrders = $this->getDoctrine()
-            ->getRepository(PendingOrders::class)
-            ->findAll();
+//        $pendingOrders = $this->getDoctrine()
+//            ->getRepository(PendingOrders::class)
+//            ->findBy();
+        $entityManager = $this->getDoctrine()->getManager();
 
+        $query = $entityManager->createQuery(
+            'SELECT p
+    FROM App\Entity\PendingOrders p
+    WHERE p.innonumber = :innonumber'
+        )->setParameter('innonumber',$innonumber);
+
+        $pendingOrders = $query->getResult();
         return $this->render('pending_orders/index.html.twig', [
             'pending_orders' => $pendingOrders,
         ]);
@@ -69,7 +77,7 @@ class PendingOrdersController extends AbstractController
     }
 
     /**
-     * @Route("/{idPendingorder}", name="pending_orders_show", methods={"GET"})
+     * @Route("/{innonumber}", name="pending_orders_show", methods={"GET"})
      */
     public function show(PendingOrders $pendingOrder): Response
     {

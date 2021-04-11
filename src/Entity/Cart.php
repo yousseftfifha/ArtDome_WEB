@@ -21,7 +21,10 @@ class Cart
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idcart;
-
+    /**
+     * @var int
+     */
+    private $tot;
     /**
      * @var int
      *
@@ -114,5 +117,20 @@ class Cart
         $this->oeuvreid = $oeuvreid;
     }
 
+    /**
+     * @return int
+     */
+    public function getTot(): ?int
+    {
+        return $this->tot;
+    }
+
+    /**
+     * @param int $tot
+     */
+    public function setTot(int $tot): void
+    {
+        $this->tot = $tot;
+    }
 
 }

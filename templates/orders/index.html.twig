@@ -25,8 +25,7 @@
                 <td>{{ order.orderdate ? order.orderdate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ order.status }}</td>
                 <td>
-                    <a href="{{ path('orders_show', {'orderid': order.orderid}) }}">show</a>
-                    <a href="{{ path('orders_edit', {'orderid': order.orderid}) }}">edit</a>
+                    <a href="{{ path('pending_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a>
                 </td>
             </tr>
         {% else %}

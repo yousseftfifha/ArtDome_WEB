@@ -7,11 +7,14 @@
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="generator" content="">
             <link href="{{ asset('Front/css/bootstrap.min.css') }}" rel="stylesheet">
-            <link href="{{ asset('Front/https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
             <link href="{{ asset('Front/css/style.css') }}" rel="stylesheet">
-            <link href="{{ asset('Front/https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700') }}" rel="stylesheet">
-            <link href="{{ asset('Front/https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700') }}" rel="stylesheet">
+            <link href="{{ asset('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700') }}" rel="stylesheet">
+            <link href="{{ asset('https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700') }}" rel="stylesheet">
         {% endblock %}
 
 
@@ -33,14 +36,16 @@
                     <div id="navbar-collapse-02" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="propClone"><a href="{{ path('home') }}">Home</a></li>
-                            <li class="propClone"><a href="{{ path('cart_index') }}">Checkout</a></li>
                             <li class="propClone"><a href="{{ path('oeuvre_index') }}">Product</a></li>
+                            <li class="propClone"><a href="{{ path('orders_index') }}">Orders</a></li>
                             <li class="propClone"><a href="{{ asset('checkout.html') }}">Shop</a></li>
                             <li class="propClone"><a href="{{ asset('contact.html') }}">Contact</a></li>
-                            <li class="ti-shopping-cart"><a href="{{ path('cart_index') }}"> <i class="ti-shopping-cart"></i><span class="nav-shop__circle"></span>0</a> </li>
+                            <li class="propClone"><a href="{{ path('cart_index') }}"> <i class="fa fa-shopping-cart"></i> </a> </li>
 
                         </ul>
+
                     </div>
+
                 </div>
             </nav>
             <div class="container">
@@ -64,27 +69,9 @@
 
 
         {% endblock %}
-        {% block javascripts %}
-            <!-- SCRIPTS =============================-->
-            <script src="{{ asset('Front/js/jquery-.js') }}"></script>
-            <script src="{{ asset('Front/js/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('Front/js/anim.js') }}"></script>
-            <script>
-                //----HOVER CAPTION---//
-                jQuery(document).ready(function ($) {
-                    $('.fadeshop').hover(
-                        function(){
-                            $(this).find('.captionshop').fadeIn(150);
-                        },
-                        function(){
-                            $(this).find('.captionshop').fadeOut(150);
-                        }
-                    );
-                });
-            </script>
-        {% endblock %}
+
     <!-- CALL TO ACTION =============================-->
-    <section class="content-block" style="background-color:#00bba7;">
+    <section class="content-block" style="background-color:#734b6d;">
         <div class="container text-center">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
@@ -112,11 +99,30 @@
                     <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
                 </ul>
                 <p>
-                    &copy; 2017 Your Website Name<br/>
+                    &copy; 2021 ArtDome<br/>
                     Scorilo - Free template by <a href="https://www.wowthemes.net/">WowThemesNet</a>
                 </p>
             </div>
         </div>
     </div>
+    {% block javascripts %}
+        <!-- SCRIPTS =============================-->
+        <script src="{{ asset('Front/js/jquery-.js') }}"></script>
+        <script src="{{ asset('Front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('Front/js/anim.js') }}"></script>
+        <script>
+            //----HOVER CAPTION---//
+            jQuery(document).ready(function ($) {
+                $('.fadeshop').hover(
+                    function(){
+                        $(this).find('.captionshop').fadeIn(150);
+                    },
+                    function(){
+                        $(this).find('.captionshop').fadeOut(150);
+                    }
+                );
+            });
+        </script>
+    {% endblock %}
     </body>
 </html>

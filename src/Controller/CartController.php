@@ -61,7 +61,7 @@ class CartController extends AbstractController
         $entityManager->merge($cart);
         $entityManager->flush();
 
-        return $this->redirectToRoute('cart_index');
+        return $this->redirectToRoute('oeuvre_index');
     }
 
 
@@ -97,17 +97,29 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="cart_delete", methods={"POST"})
+     * @Route("/delete/{idcart}", name="cart_delete", methods={"GET","POST"})
      */
     public function delete(Request $request, Cart $cart): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cart->getIdcart(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($cart);
             $entityManager->flush();
-        }
+
 
 
         return $this->redirectToRoute('cart_index');
     }
+    /**
+     * @Route("/count/", name="cart_count", methods={"GET","POST"})
+     */
+//    public function countItems() : Response
+//    {
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $query = $entityManager->createQuery('SELECT count(u) FROM App\Entity\Cart u ');
+//        $count = $query->execute(); // array of CmsUser username and name values
+//        $cart=new Cart();
+//        $cart->setTot($count);
+//        return $this->redirectToRoute('oeuvre_index');
+//
+//    }
 }
