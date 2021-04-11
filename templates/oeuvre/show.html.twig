@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oeuvre{% endblock %}
+
+{% block body %}
+    <h1>Oeuvre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdOeuvre</th>
+                <td>{{ oeuvre.idOeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Nomoeuvre</th>
+                <td>{{ oeuvre.nomoeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Prixoeuvre</th>
+                <td>{{ oeuvre.prixoeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Dateoeuvre</th>
+                <td>{{ oeuvre.dateoeuvre ? oeuvre.dateoeuvre|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Imageoeuvre</th>
+                <td>{{ oeuvre.imageoeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Nomcat</th>
+                <td>{{ oeuvre.nomcat }}</td>
+            </tr>
+            <tr>
+                <th>Emailartiste</th>
+                <td>{{ oeuvre.emailartiste }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('oeuvre_index') }}">back to list</a>
+
+    <a href="{{ path('oeuvre_edit', {'idOeuvre': oeuvre.idOeuvre}) }}">edit</a>
+
+    {{ include('oeuvre/_delete_form.html.twig') }}
+{% endblock %}

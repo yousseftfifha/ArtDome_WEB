@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PendingOrders index{% endblock %}
+
+{% block body %}
+    <h1>PendingOrders index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdPendingorder</th>
+                <th>Innonumber</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pending_order in pending_orders %}
+            <tr>
+                <td>{{ pending_order.idPendingorder }}</td>
+                <td>{{ pending_order.innonumber }}</td>
+                <td>{{ pending_order.quantity }}</td>
+                <td>{{ pending_order.status }}</td>
+                <td>
+                    <a href="{{ path('pending_orders_show', {'idPendingorder': pending_order.idPendingorder}) }}">show</a>
+                    <a href="{{ path('pending_orders_edit', {'idPendingorder': pending_order.idPendingorder}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('pending_orders_new') }}">Create new</a>
+{% endblock %}

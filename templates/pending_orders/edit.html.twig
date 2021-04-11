@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit PendingOrders{% endblock %}
+
+{% block body %}
+    <h1>Edit PendingOrders</h1>
+
+    {{ include('pending_orders/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('pending_orders_index') }}">back to list</a>
+
+    {{ include('pending_orders/_delete_form.html.twig') }}
+{% endblock %}
