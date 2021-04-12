@@ -1,0 +1,46 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Reservationevent{% endblock %}
+
+{% block body %}
+    <h1>Reservationevent</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Reservation code</th>
+                <td>{{ reservationevent.codeReservation }}</td>
+            </tr>
+            <tr>
+                <th>Event name</th>
+                <td>{{ reservationevent.codeEvent.nomEvent }}</td>
+            </tr>
+            <tr>
+                <th>Client last name</th>
+                <td>{{ reservationevent.codeClient.nom }}</td>
+            </tr>
+            <tr>
+                <th>Client name</th>
+                <td>{{ reservationevent.codeClient.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Phone number</th>
+                <td>{{ reservationevent.codeClient.numero }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ reservationevent.codeClient.email }}</td>
+            </tr>
+            <tr>
+                <th>Booked places</th>
+                <td>{{ reservationevent.nbPlace }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('reservationevent_indexBack') }}">back to list</a>
+
+   <!-- <a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>-->
+
+    {{ include('reservationevent/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block body %}
+    <h1>Edit Event</h1>
+
+    {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('event_indexBack') }}">back to list</a>
+
+    {{ include('event/_delete_formBack.html.twig') }}
+{% endblock %}

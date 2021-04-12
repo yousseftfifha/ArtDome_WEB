@@ -1,0 +1,51 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+    <h1>Event index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event code</th>
+                <th>Event name</th>
+                <th>Event theme</th>
+                <th>Event state</th>
+                <th>Artiste</th>
+                <th>Event date</th>
+                <th>Contributors</th>
+                <th>Show room</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.codeEvent }}</td>
+                <td>{{ event.nomEvent }}</td>
+                <td>{{ event.themeEvent }}</td>
+                <td>{{ event.etat }}</td>
+                <td>{{ event.codeArtiste.nom }}</td>
+                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                <td>{{ event.nbMaxPart }}</td>
+                <td>{{ event.codeEspace.idEndroit }}</td>
+
+                <td>
+                    <a href="{{ path('event_showBack', {'codeEvent': event.codeEvent}) }}">show</a>
+                    <a href="{{ path('event_editBack', {'codeEvent': event.codeEvent}) }}">edit</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('event_newBack') }}">Create new</a>
+    <a href="{{ path('reservationevent_indexBack') }}">reservation</a>
+{% endblock %}
