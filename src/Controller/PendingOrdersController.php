@@ -119,4 +119,5 @@ class PendingOrdersController extends AbstractController
 
         return $this->redirectToRoute('pending_orders_index');
     }
+
 }

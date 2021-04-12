@@ -120,6 +120,7 @@
         </li>
 
         <!-- Nav Item - Charts -->
+
         <li class="nav-item">
             <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
@@ -128,9 +129,9 @@
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-            <a class="nav-link" href="tables.html">
+            <a class="nav-link" href="{{ path('ordersback_index') }}">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+                <span>orders</span></a>
         </li>
 
         <!-- Divider -->
@@ -359,13 +360,11 @@
                 </ul>
 
             </nav>
-            <!-- End of Topbar -->
 
-        </div>
-    </div>
-</div>
 
-</header>
+    <!-- End of Topbar -->
+
+
 {% block body %}
     <!-- HEADER =============================-->
 
@@ -383,12 +382,6 @@
     </div>
 </footer>
 <!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
@@ -411,6 +404,9 @@
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-primary" href="login.html">Logout</a>
             </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 </div>
