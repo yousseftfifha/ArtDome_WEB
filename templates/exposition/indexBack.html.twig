@@ -14,7 +14,7 @@
                 <th>Date Exposition</th>
                 <th>Nombre max de participants</th>
                 <th>Nom de l'artiste</th>
-                <th>l'identifiant de l'espace</th>
+                <th>le nom de l'espace</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
                 <td>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }}</td>
                 <td>{{ exposition.nbMaxParticipant }}</td>
                 <td>{{ exposition.codeArtiste.nom }}</td>
-                <td>{{ exposition.codeEspace.idEndroit }}</td>
+                <td>{{ exposition.codeEspace.type }}</td>
 
                     <th>
                   <a href="{{ path('exposition_showBack', {'codeExpo': exposition.codeExpo}) }}">Afficher</a>

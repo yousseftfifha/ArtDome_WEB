@@ -28,7 +28,11 @@ class ReservationExpo
      *
      * @ORM\Column(name="nb_place", type="integer", nullable=true)
      * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
-     * @Assert\Positive (message="cette valeur doit être positive")
+     * @Assert\Positive(message="cette valeur doit être positive")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ce champ doit contenir un nombre."
+     * )
      */
     private $nbPlace;
 
@@ -40,7 +44,6 @@ class ReservationExpo
      *   @ORM\JoinColumn(name="code_client", referencedColumnName="ID")
      * })
      * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
-     * @Assert\Positive (message="cette valeur doit être positive")
      */
     private $codeClient;
 
@@ -52,7 +55,6 @@ class ReservationExpo
      *   @ORM\JoinColumn(name="code_expo", referencedColumnName="code_expo")
      * })
      * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
-     * @Assert\Positive (message="cette valeur doit être positive")
      */
     private $codeExpo;
 
