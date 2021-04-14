@@ -136,7 +136,7 @@ class ReservationExpoController extends AbstractController
         $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() ) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('reservation_expo_indexBack');

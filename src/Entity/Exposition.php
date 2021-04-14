@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Null_;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Exposition
@@ -26,6 +27,7 @@ class Exposition
      * @var string
      *
      * @ORM\Column(name="nom_expo", type="string", length=30, nullable=false)
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      */
     private $nomExpo;
 
@@ -33,6 +35,7 @@ class Exposition
      * @var string
      *
      * @ORM\Column(name="theme_expo", type="string", length=30, nullable=false)
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      */
     private $themeExpo;
 
@@ -40,6 +43,7 @@ class Exposition
      * @var \DateTime
      *
      * @ORM\Column(name="date_expo", type="date", nullable=false)
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      */
     private $dateExpo;
 
@@ -47,6 +51,12 @@ class Exposition
      * @var int
      *
      * @ORM\Column(name="nb_max_participant", type="integer", nullable=false)
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Assert\Positive(message="cette valeur doit être positive")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ce champ doit contenir un nombre."
+     * )
      */
     private $nbMaxParticipant;
 
@@ -57,6 +67,7 @@ class Exposition
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="code_artiste", referencedColumnName="ID")
      * })
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      */
     private $codeArtiste;
 
@@ -67,6 +78,7 @@ class Exposition
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="code_espace", referencedColumnName="id_endroit")
      * })
+     * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      */
     private $codeEspace;
 

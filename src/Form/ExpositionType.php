@@ -7,11 +7,12 @@ use App\Entity\Endroit;
 use App\Entity\Exposition;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ExpositionType extends AbstractType
 {
@@ -30,16 +31,16 @@ class ExpositionType extends AbstractType
                     'placeholder'=>'Sélectionner le thème...'
                 ]
             ))
-            ->add('dateExpo', TextType::class,array(
+            ->add('dateExpo', DateType::class,array(
                 'label'=>'Date Exposition',
                 'attr'=>[
                     'placeholder'=>'Entrer la date ...'
                 ]
             ))
-            ->add('nbMaxParticipant', TextType::class,array(
-                'label'=>'Nombre Max de Participants',
+            ->add('nbMaxParticipant',NumberType::class,array(
+                'label'=>'Nombre max de participants ',
                 'attr'=>[
-                    'placeholder'=>'Entrer le Nombre Max...'
+                    'placeholder'=>'Entrer le nombre max...'
                 ]
             ))
             ->add('codeArtiste',EntityType::class,['class'=>User::class,'choice_label'=>'nom'], TextType::class,array(

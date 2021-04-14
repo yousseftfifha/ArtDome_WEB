@@ -53,7 +53,7 @@ class ExpositionController extends AbstractController
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now')) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($exposition);
             $entityManager->flush();
@@ -76,7 +76,7 @@ class ExpositionController extends AbstractController
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now')) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($exposition);
             $entityManager->flush();
@@ -119,7 +119,7 @@ class ExpositionController extends AbstractController
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now')) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('exposition_index');
@@ -139,7 +139,7 @@ class ExpositionController extends AbstractController
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now')) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('exposition_indexBack');
