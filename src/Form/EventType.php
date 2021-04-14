@@ -48,19 +48,22 @@ class EventType extends AbstractType
                     'placeholder'=>'Enter a date...'
                 ]
             ))
-            ->add('nbMaxPart')
-            ->add('image'/*, FileType::class*/,TextType::class,array(
-                'label'=>'Event picture',
+            ->add('nbMaxPart',NumberType::class,array(
+                'label'=>'Event participation limit',
                 'attr'=>[
-                    'placeholder'=>'Enter a picture path (This field will be changed into FileType field)...'
+                    'placeholder'=>'Enter a participation limit...'
                 ]
             ))
-            ->add('video'/*,FileType::class*/,TextType::class,array(
-                'label'=>'Event video',
-                'attr'=>[
-                    'placeholder'=>'Enter a video path (This field will be changed into FileType field)...'
-                ]
-            ))
+            ->add('image',FileType::class, array('label'=>'Picture','data_class' => null,'required' => false))
+            ->add('video',FileType::class, array('data_class' => null,'required' => false))
+
+
+           /* ,TextType::class,array(
+        'label'=>'Event video',
+        'attr'=>[
+            'placeholder'=>'Enter a video path (This field will be changed into FileType field)...'
+        ]
+    )*/
             ->add('codeArtiste', EntityType::class,['class'=>User::class,'choice_label'=>'id'])
             ->add('codeEspace', EntityType::class,['class'=>Endroit::class,'choice_label'=>'idEndroit'])
 

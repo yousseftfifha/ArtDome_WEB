@@ -29,6 +29,10 @@ class Reservationevent
      * @ORM\Column(name="nb_place", type="integer", nullable=false)
      *@Assert\NotBlank(message="You should at least book one place")
      *@Assert\Positive(message="This field value must be positive")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="This field must be of numeric type."
+     * )
      */
     private $nbPlace;
 

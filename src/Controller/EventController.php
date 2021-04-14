@@ -9,7 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @Route("/event")
@@ -53,7 +54,7 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
@@ -76,7 +77,24 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $event->getDate()>new \DateTime('now')) {
+           /* $file = $event->getImage();
+            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move($this->getParameter('uploads_directory'),$filename);
+            $event->setImage($filename);
+            /** @var UploadedFile $uploadedFile
+            $uploadedFile = $form['image']->getData();
+            if ($uploadedFile) {
+                $destination = $this->getParameter('kernel.project_dir').'/public/pi';
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension(); //
+                $uploadedFile->move(
+                    $destination,
+                    $newFilename
+                );
+                $event ->setImage ($newFilename);
+            }*/
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
@@ -118,7 +136,8 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('event_index');
@@ -138,7 +157,11 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
+            /*$file = $event->getImage();
+            $filename = md5(uniqid()).'.'.$file->guessExtension();//
+            $file->move($this->getParameter('uploads_directory'),$filename);
+            $event->setImage($filename);*/
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('event_indexBack');
@@ -177,4 +200,5 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('event_indexBack');
     }
+
 }

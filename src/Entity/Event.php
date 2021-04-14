@@ -59,6 +59,10 @@ class Event
      * @ORM\Column(name="nb_max_part", type="integer", nullable=false)
      *@Assert\NotBlank(message="Event participation range is required")
      * @Assert\Positive(message="This field value must be positive")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="This field must be of numeric type."
+     * )
      */
     private $nbMaxPart;
 
