@@ -3,12 +3,14 @@
 {% block title %}Reservationevent index{% endblock %}
 
 {% block body %}
-    <h1>Reservationevent index</h1>
+<div class="container">
+
+    <h1>Reservations</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Reservation code</th>
+
                 <th>Event name</th>
                 <th>Client last name</th>
                 <th>Client name</th>
@@ -21,7 +23,7 @@
         <tbody>
         {% for reservationevent in reservationevents %}
             <tr>
-                <td>{{ reservationevent.codeReservation }}</td>
+
                 <td>{{ reservationevent.codeEvent.nomEvent }}</td>
                 <td>{{ reservationevent.codeClient.nom }}</td>
                 <td>{{ reservationevent.codeClient.prenom }}</td>
@@ -42,4 +44,5 @@
     </table>
 
     <a href="{{ path('reservationevent_new') }}">Create new</a>
+</div>
 {% endblock %}

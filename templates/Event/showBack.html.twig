@@ -3,18 +3,33 @@
 {% block title %}Event{% endblock %}
 
 {% block body %}
-    <h1>Event</h1>
+    <div class="container">
+    <h1>{{ event.nomEvent }}</h1>
+        <div>
+        <span class="maxproduct">
+        <table class="table">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
 
+       <td> <img height="400" width="400"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+       <td><video width="400" height="320" controls><source src="{{app.request.basepath}}/pi/{{event.video}}" type="video/mp4"></video></td>
+           </tr>
+        </table>
+        </span>
+        </div>
     <table class="table">
         <tbody>
-        <tr>
-            <th>Event code</th>
-            <td>{{ event.codeEvent }}</td>
-        </tr>
-        <tr>
-            <th>Event name</th>
-            <td>{{ event.nomEvent }}</td>
-        </tr>
+
         <tr>
             <th>Event theme</th>
             <td>{{ event.themeEvent }}</td>
@@ -39,15 +54,8 @@
             <th>Show room</th>
             <td>{{ event.codeEspace.idEndroit }}</td>
         </tr>
-        <tr>
-            <th>Picture</th>
-            <td>{{ event.image }}</td>
-        </tr>
-        <tr>
-            <th>Video</th>
-            <td>{{ event.video }}</td>
-        </tr>
         </tbody>
+
     </table>
 
     <a href="{{ path('event_indexBack') }}">back to list</a>
@@ -57,4 +65,5 @@
     <!--<a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>-->
 
     {{ include('event/_delete_formBack.html.twig') }}
+    </div>
 {% endblock %}

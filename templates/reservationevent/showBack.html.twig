@@ -3,7 +3,8 @@
 {% block title %}Reservationevent{% endblock %}
 
 {% block body %}
-    <h1>Reservationevent</h1>
+<div class="container">
+    <h1>Reservations</h1>
 
     <table class="table">
         <tbody>
@@ -43,4 +44,5 @@
    <!-- <a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>-->
 
     {{ include('reservationevent/_delete_formBack.html.twig') }}
+</div>
 {% endblock %}

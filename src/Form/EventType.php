@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\User;
 use App\Entity\Endroit;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,6 +56,7 @@ class EventType extends AbstractType
                 ]
             ))
             ->add('image',FileType::class, array('label'=>'Picture','data_class' => null,'required' => false))
+            //->add('image', HiddenType::class)
             ->add('video',FileType::class, array('data_class' => null,'required' => false))
 
 

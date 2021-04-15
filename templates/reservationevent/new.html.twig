@@ -3,9 +3,11 @@
 {% block title %}New Reservationevent{% endblock %}
 
 {% block body %}
-    <h1>Create new Reservationevent</h1>
+<div class="container">
+    <h1>Create new Reservation</h1>
 
     {{ include('reservationevent/_form.html.twig') }}
 
     <a href="{{ path('reservationevent_index') }}">back to list</a>
+</div>
 {% endblock %}

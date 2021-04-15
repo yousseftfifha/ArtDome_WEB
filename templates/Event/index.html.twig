@@ -3,8 +3,8 @@
 {% block title %}Event index{% endblock %}
 
 {% block body %}
-    <h1>Event index</h1>
 
+{#
     <table class="table">
         <thead>
             <tr>
@@ -47,5 +47,74 @@
     </table>
 
     <a href="{{ path('event_new') }}">Create new</a>
-<a href="{{ path('reservationevent_new' )}}">Make a reservation  </a>
+<a href="{{ path('reservationevent_new' )}}">Make a reservation  </a>#}
+
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">OUR Events</h1>
+                </div>
+                <div class="wow-hr type_short">
+                <span class="wow-hr-h">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                </span>
+                </div>
+            </div>
+            {% for event in events %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="productbox">
+                        <div class="fadeshop">
+                            <div class="captionshop text-center" style="display: none;">
+
+                                <h3>{{ event.nomEvent }}</h3>
+                                <p>
+                                    {{ event.date ? event.date|date('Y-m-d') : '' }}
+                                </p>
+                                <p>
+                                <form id="id" class="edd_form" action="<  {{ path('event_show', {'codeEvent': event.codeEvent}) }}" method="POST">
+
+                                    <input type="hidden" name="edd_action" value={{ event.codeEvent  }}>
+                                    <a href="{{ path('event_show', {'codeEvent': event.codeEvent}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More details</a>
+                                </form>
+
+                                </p>
+                            </div>
+                            <span class="maxproduct"><img height="500" width="500"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></span>
+                        </div>
+                        <div class="product-details">
+                            <a href="#">Artiste
+                                <h1>{{ event.codeArtiste.nom }}</h1>
+                            </a>
+                            <span class="price">
+					    <span class="edd_price">{{ event.etat }} </span>
+
+					    </span>
+                        <div>
+
+                            <a href="{{ path('reservationevent_new' )}}">Make a reservation  </a>
+
+                        </div>
+                            <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">  edit</a>
+                            {{ include('event/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+
+                </div>
+                {% else %}
+                    <tr>
+                        <td colspan="8">no records found</td>
+                    </tr>
+                {% endfor %}
+            </div>
+
+        </div>
+        </div>
+        <a href="{{ path('event_new') }}">Create new</a>
+
+    </section>
 {% endblock %}

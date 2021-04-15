@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 /**
  * @Route("/event")
@@ -55,6 +57,24 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
+            $file =$request->files->get('event')['image'];
+            $uploads_directory=$this->getParameter('uploads_directory');
+            $filename= md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
+            $event->setImage($filename);
+
+            $file1 =$request->files->get('event')['video'];
+            $uploads_directory1=$this->getParameter('uploads_directory');
+            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
+            $file1->move(
+                $uploads_directory1,
+                $filename1
+            );
+            $event->setVideo($filename1);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
@@ -78,22 +98,23 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $event->getDate()>new \DateTime('now')) {
-           /* $file = $event->getImage();
-            $filename = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move($this->getParameter('uploads_directory'),$filename);
+            $file =$request->files->get('event')['image'];
+            $uploads_directory=$this->getParameter('uploads_directory');
+            $filename= md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
             $event->setImage($filename);
-            /** @var UploadedFile $uploadedFile
-            $uploadedFile = $form['image']->getData();
-            if ($uploadedFile) {
-                $destination = $this->getParameter('kernel.project_dir').'/public/pi';
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension(); //
-                $uploadedFile->move(
-                    $destination,
-                    $newFilename
-                );
-                $event ->setImage ($newFilename);
-            }*/
+
+            $file1 =$request->files->get('event')['video'];
+            $uploads_directory1=$this->getParameter('uploads_directory');
+            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
+            $file1->move(
+                $uploads_directory1,
+                $filename1
+            );
+            $event->setVideo($filename1);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
@@ -137,6 +158,23 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
+            $file =$request->files->get('event')['image'];
+            $uploads_directory=$this->getParameter('uploads_directory');
+            $filename= md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
+            $event->setImage($filename);
+
+            $file1 =$request->files->get('event')['video'];
+            $uploads_directory1=$this->getParameter('uploads_directory');
+            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
+            $file1->move(
+                $uploads_directory1,
+                $filename1
+            );
+            $event->setVideo($filename1);
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -156,12 +194,26 @@ class EventController extends AbstractController
     {
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-
+        $event->setImage($event->getImage());
         if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
-            /*$file = $event->getImage();
-            $filename = md5(uniqid()).'.'.$file->guessExtension();//
-            $file->move($this->getParameter('uploads_directory'),$filename);
-            $event->setImage($filename);*/
+            $file =$request->files->get('event')['image'];
+            $uploads_directory=$this->getParameter('uploads_directory');
+            $filename= md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
+            $event->setImage($filename);
+
+            $file1 =$request->files->get('event')['video'];
+            $uploads_directory1=$this->getParameter('uploads_directory');
+            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
+            $file1->move(
+                $uploads_directory1,
+                $filename1
+            );
+            $event->setVideo($filename1);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('event_indexBack');
