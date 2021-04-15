@@ -1389,229 +1389,224 @@ SELECT|mysql.user
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <column id="370" parent="255" name="Status">
-      <Position>6</Position>
-      <DataType>varchar(30)|0s</DataType>
-      <DefaultExpression>&apos;Pending&apos;</DefaultExpression>
-    </column>
-    <index id="371" parent="255" name="fk_us">
+    <index id="370" parent="255" name="fk_us">
       <ColNames>IDUser</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="372" parent="255" name="fk_oeuvres">
+    <index id="371" parent="255" name="fk_oeuvres">
       <ColNames>OeuvreID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="373" parent="255" name="PRIMARY">
+    <key id="372" parent="255" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID_PendingOrder</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="374" parent="255" name="fk_us">
+    <foreign-key id="373" parent="255" name="fk_us">
       <ColNames>IDUser</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="375" parent="255" name="fk_oeuvres">
+    <foreign-key id="374" parent="255" name="fk_oeuvres">
       <ColNames>OeuvreID</ColNames>
       <RefTableName>oeuvre</RefTableName>
       <RefColNames>ID_Oeuvre</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="376" parent="256" name="id_reservation">
+    <column id="375" parent="256" name="id_reservation">
       <Position>1</Position>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="377" parent="256" name="idclient">
+    <column id="376" parent="256" name="idclient">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="378" parent="256" name="matricule">
+    <column id="377" parent="256" name="matricule">
       <Position>3</Position>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="379" parent="256" name="date_debut">
+    <column id="378" parent="256" name="date_debut">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="380" parent="256" name="date_fin">
+    <column id="379" parent="256" name="date_fin">
       <Position>5</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="381" parent="256" name="date_retour">
+    <column id="380" parent="256" name="date_retour">
       <Position>6</Position>
       <DataType>varchar(45)|0s</DataType>
     </column>
-    <column id="382" parent="256" name="Cautionnement">
+    <column id="381" parent="256" name="Cautionnement">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="383" parent="256" name="prix_total">
+    <column id="382" parent="256" name="prix_total">
       <Position>8</Position>
       <DataType>varchar(45)|0s</DataType>
     </column>
-    <index id="384" parent="256" name="_idx">
+    <index id="383" parent="256" name="_idx">
       <ColNames>idclient</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="385" parent="256" name="PRIMARY">
+    <key id="384" parent="256" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id_reservation</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="386" parent="257" name="code_reservationE">
+    <column id="385" parent="257" name="code_reservationE">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="387" parent="257" name="code_expo">
+    <column id="386" parent="257" name="code_expo">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="388" parent="257" name="code_client">
+    <column id="387" parent="257" name="code_client">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <column id="389" parent="257" name="nb_place">
+    <column id="388" parent="257" name="nb_place">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <index id="390" parent="257" name="fk_expo">
+    <index id="389" parent="257" name="fk_expo">
       <ColNames>code_expo</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="391" parent="257" name="fk_clients">
+    <index id="390" parent="257" name="fk_clients">
       <ColNames>code_client</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="392" parent="257" name="PRIMARY">
+    <key id="391" parent="257" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>code_reservationE</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="393" parent="257" name="fk_expo">
+    <foreign-key id="392" parent="257" name="fk_expo">
       <ColNames>code_expo</ColNames>
       <RefTableName>exposition</RefTableName>
       <RefColNames>code_expo</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="394" parent="257" name="fk_clients">
+    <foreign-key id="393" parent="257" name="fk_clients">
       <ColNames>code_client</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="395" parent="258" name="code_reservation">
+    <column id="394" parent="258" name="code_reservation">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="396" parent="258" name="code_client">
+    <column id="395" parent="258" name="code_client">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <column id="397" parent="258" name="nb_place">
+    <column id="396" parent="258" name="nb_place">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="398" parent="258" name="code_event">
+    <column id="397" parent="258" name="code_event">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="399" parent="258" name="fk_client">
+    <index id="398" parent="258" name="fk_client">
       <ColNames>code_client</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="400" parent="258" name="fk_event">
+    <index id="399" parent="258" name="fk_event">
       <ColNames>code_event</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="401" parent="258" name="PRIMARY">
+    <key id="400" parent="258" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>code_reservation</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="402" parent="258" name="fk_client">
+    <foreign-key id="401" parent="258" name="fk_client">
       <ColNames>code_client</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="403" parent="258" name="fk_event">
+    <foreign-key id="402" parent="258" name="fk_event">
       <ColNames>code_event</ColNames>
       <RefTableName>event</RefTableName>
       <RefColNames>code_event</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="404" parent="259" name="ID">
+    <column id="403" parent="259" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="405" parent="259" name="nom">
+    <column id="404" parent="259" name="nom">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="406" parent="259" name="prenom">
+    <column id="405" parent="259" name="prenom">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="407" parent="259" name="datenaissance">
+    <column id="406" parent="259" name="datenaissance">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="408" parent="259" name="ville">
+    <column id="407" parent="259" name="ville">
       <Position>5</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="409" parent="259" name="email">
+    <column id="408" parent="259" name="email">
       <Position>6</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="410" parent="259" name="numero">
+    <column id="409" parent="259" name="numero">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="411" parent="259" name="image">
+    <column id="410" parent="259" name="image">
       <Position>8</Position>
       <DataType>varchar(80)|0s</DataType>
     </column>
-    <column id="412" parent="259" name="role">
+    <column id="411" parent="259" name="role">
       <Position>9</Position>
       <DataType>varchar(30)|0s</DataType>
       <DefaultExpression>&apos;user&apos;</DefaultExpression>
     </column>
-    <column id="413" parent="259" name="mdp">
+    <column id="412" parent="259" name="mdp">
       <Position>10</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <key id="414" parent="259" name="PRIMARY">
+    <key id="413" parent="259" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>

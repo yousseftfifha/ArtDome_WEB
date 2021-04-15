@@ -37,12 +37,6 @@ class PendingOrders
      */
     private $quantity;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Status", type="string", length=30, nullable=true, options={"default"="Pending"})
-     */
-    private $status = 'Pending';
 
     /**
      * @var Oeuvre
@@ -95,17 +89,7 @@ class PendingOrders
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
 
-    public function setStatus(?string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
 
     public function getOeuvreid(): ?Oeuvre
     {

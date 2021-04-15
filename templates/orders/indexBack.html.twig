@@ -28,6 +28,8 @@
                             <th>Status </th>
                             <th>Dueamount</th>
                             <th>Actions</th>
+                            <th>Confirm</th>
+                            <th>Cancel</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -38,6 +40,9 @@
                             <th>Status </th>
                             <th>Dueamount</th>
                             <th>Actions</th>
+                            <th>Confirm</th>
+                            <th>Cancel</th>
+
                         </tr>
                         </tfoot>
                         <tbody>
@@ -50,6 +55,9 @@
                             <td>{{ order.status }}</td>
                             <td>{{ order.dueamount }}</td>
                             <td><a href="{{ path('pendingBack_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a></td>
+                            <td><a href="{{ path('orders_confirm', {'orderid': order.orderid}) }}">Confirm</a></td>
+                            <td><a href="{{ path('orders_cancel', {'orderid': order.orderid}) }}">Cancel</a></td>
+
                         </tr>
                         {% else %}
                                   <tr>

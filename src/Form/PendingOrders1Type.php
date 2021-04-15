@@ -15,7 +15,6 @@ class PendingOrders1Type extends AbstractType
             ->add('orderid')
             ->add('innonumber')
             ->add('quantity')
-            ->add('status')
             ->add('oeuvreid')
             ->add('iduser')
         ;

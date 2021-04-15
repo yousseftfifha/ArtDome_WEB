@@ -21,9 +21,11 @@ class OrdersController extends AbstractController
      */
     public function index(): Response
     {
-        $orders = $this->getDoctrine()
-            ->getRepository(Orders::class)
-            ->findAll();
+        $orders =  $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.orderdate desc')
+            ->getResult();
+
 
         return $this->render('orders/index.html.twig', [
             'orders' => $orders,
@@ -31,9 +33,9 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="orders_new", methods={"GET","POST"})
+     * @Route("/new/{innonumber}", name="orders_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request ,int $innonumber): Response
     {
         $order = new Orders();
 
@@ -41,7 +43,8 @@ class OrdersController extends AbstractController
             $d=new \DateTime("2000-02-24");
             $u=new User(0,"tfifha","youssef",$d,"ezzahra","youssef.tfifha@esprit.tn",20245989,null,"user","ww") ;
             $order->setIduser($u);
-            $query = $entityManager->createQuery('SELECT u FROM App\Entity\PendingOrders u ');
+            $query = $entityManager->createQuery('SELECT u FROM App\Entity\PendingOrders u WHERE u.innonumber = :innonumber'
+            )->setParameter('innonumber',$innonumber);
 
             $y=rand(1000000,9999999);
             $montant=0;
@@ -50,9 +53,9 @@ class OrdersController extends AbstractController
                 $product = $this->getDoctrine()
                     ->getRepository(Oeuvre::class)
                     ->find($p->getOeuvreid());
-            $montant=$p->getQuantity()*$product->getPrixoeuvre();
+            $montant+=$p->getQuantity()*$product->getPrixoeuvre();
 
-                $order->setInnonumber($p->getInnonumber());
+                $order->setInnonumber($innonumber);
             }
             $datetime=new \DateTime('now');
             $order->setOrderdate($datetime);
@@ -76,25 +79,27 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/{orderid}/edit", name="orders_edit", methods={"GET","POST"})
+     * @Route("/{orderid}/Confirm", name="orders_confirm", methods={"GET","POST"})
      */
-    public function edit(Request $request, Orders $order): Response
+    public function Confirm(Request $request, Orders $order): Response
     {
-        $form = $this->createForm(Orders1Type::class, $order);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $order->setStatus("Confirmed");
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('ordersback_index');
 
-            return $this->redirectToRoute('orders_index');
-        }
-
-        return $this->render('orders/edit.html.twig', [
-            'order' => $order,
-            'form' => $form->createView(),
-        ]);
     }
+    /**
+     * @Route("/{orderid}/Cancel", name="orders_cancel", methods={"GET","POST"})
+     */
+    public function Cancel(Request $request, Orders $order): Response
+    {
 
+        $order->setStatus("Cancelled");
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('ordersback_index');
+
+    }
     /**
      * @Route("/{orderid}", name="orders_delete", methods={"POST"})
      */

@@ -64,7 +64,6 @@ class PendingOrdersController extends AbstractController
 
 
             $pendingOrder->setInnonumber($y);
-            $pendingOrder->setStatus("Pending");
             $entityManager->merge($pendingOrder);
             $entityManager->flush();
         }
@@ -72,7 +71,9 @@ class PendingOrdersController extends AbstractController
         $numDeleted = $q->execute();
 
 
-            return $this->redirectToRoute('orders_new');
+            return $this->redirectToRoute('orders_new',array(
+                'innonumber' => $y,
+            ));
 
     }
 
