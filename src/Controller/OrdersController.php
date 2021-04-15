@@ -50,8 +50,8 @@ class OrdersController extends AbstractController
                 $product = $this->getDoctrine()
                     ->getRepository(Oeuvre::class)
                     ->find($p->getOeuvreid());
-                echo $p->getOeuvreid();
-            $montant+=$p->getQuantity()*$product->getPrixoeuvre();
+            $montant=$p->getQuantity()*$product->getPrixoeuvre();
+
                 $order->setInnonumber($p->getInnonumber());
             }
             $datetime=new \DateTime('now');
