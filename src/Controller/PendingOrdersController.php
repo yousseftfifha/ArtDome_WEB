@@ -21,9 +21,7 @@ class PendingOrdersController extends AbstractController
      */
     public function index(int $innonumber): Response
     {
-//        $pendingOrders = $this->getDoctrine()
-//            ->getRepository(PendingOrders::class)
-//            ->findBy();
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $query = $entityManager->createQuery(

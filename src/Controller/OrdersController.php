@@ -6,10 +6,17 @@ use App\Entity\Oeuvre;
 use App\Entity\Orders;
 use App\Entity\User;
 use App\Form\Orders1Type;
+use App\Repository\OrdersRepository;
+use App\Services\Cart\CartService;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/orders")
@@ -113,5 +120,37 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('orders_index');
     }
+    /**
+     * @Route("/orders/pdf", name="pdf", methods={"GET"})
+     */
+    public function pdf(OrdersRepository $OrdersRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('orders/liste.html.twig', [
+            'orders' => $OrdersRepository->findAll(),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => true
+        ]);
+        return $this->redirectToRoute('orders_index');
+
+    }
+
 
 }
