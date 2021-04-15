@@ -77,25 +77,25 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/{idcart}/edit", name="cart_edit", methods={"GET","POST"})
+     * @Route("/{idcart}/plus", name="cart_plus", methods={"GET","POST"})
      */
-    public function edit(Request $request, Cart $cart): Response
+    public function plus(Request $request, Cart $cart): Response
     {
-        $form = $this->createForm(CartType::class, $cart);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+            $cart->setQuantity($cart->getQuantity()+1);
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('cart_index');
-        }
 
-        return $this->render('cart/edit.html.twig', [
-            'cart' => $cart,
-            'form' => $form->createView(),
-        ]);
     }
+    /**
+     * @Route("/{idcart}/moins", name="cart_moins", methods={"GET","POST"})
+     */
+    public function moins(Request $request, Cart $cart): Response
+    {
+        $cart->setQuantity($cart->getQuantity()-1);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('cart_index');
 
+    }
     /**
      * @Route("/delete/{idcart}", name="cart_delete", methods={"GET","POST"})
      */

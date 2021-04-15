@@ -41,6 +41,12 @@
                                 <th class="edd_cart_actions">
                                     Actions
                                 </th>
+                                <th class="edd_cart_actions">
+                                    +
+                                </th>
+                                <th class="edd_cart_actions">
+                                    -
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -57,16 +63,28 @@
                                 </td>
                                 <td class="edd_cart_item_price">
                                     {{ cart.oeuvreid.prixoeuvre }}
-                                    {% set tot = tot+cart.oeuvreid.prixoeuvre %}
+                                    {% set tot = tot+cart.oeuvreid.prixoeuvre*cart.quantity %}
 
                                 </td>
                                 <td class="edd_cart_item_price">
                                     {{ cart.quantity }}
                                 </td>
+
                                 <td class="edd_cart_actions">
                                     <a class="edd_cart_remove_item_btn" href="#">
-                                <a href="{{ path('cart_delete', {'idcart': cart.idcart}) }}">Delete</a>
+                                        <a href="{{ path('cart_delete', {'idcart': cart.idcart}) }}">Delete</a>
 
+                                    </a>
+                                </td>
+                                <td class="edd_cart_actions">
+                                    <a class="edd_cart_remove_item_btn" href="#">
+                                        <a href="{{ path('cart_plus', {'idcart': cart.idcart}) }}">+</a>
+
+                                    </a>
+                                </td>
+                                <td class="edd_cart_actions">
+                                    <a class="edd_cart_remove_item_btn" href="#">
+                                        <a href="{{ path('cart_moins', {'idcart': cart.idcart}) }}">-</a>
 
                                     </a>
                                 </td>

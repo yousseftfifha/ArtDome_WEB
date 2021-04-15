@@ -23,9 +23,10 @@ class BackController extends AbstractController
      */
     public function indexOrders(): Response
     {
-        $orders = $this->getDoctrine()
-            ->getRepository(Orders::class)
-            ->findAll();
+        $orders =  $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.orderdate desc')
+            ->getResult();
 
         return $this->render('orders/indexBack.html.twig', [
             'orders' => $orders,
