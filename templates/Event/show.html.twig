@@ -62,11 +62,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('event_index') }}">back to list</a>
+    <a href="{{ path('event_index') }}">Back to list</a>
 
-    <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">edit</a>
+    <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">Edit</a>
 
-   <!-- <a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>-->
+  {#  <a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>#}
 
     {{ include('event/_delete_form.html.twig') }}
 </div>

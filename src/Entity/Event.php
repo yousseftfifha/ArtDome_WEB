@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * Event
  *
  * @ORM\Table(name="event", indexes={@ORM\Index(name="fk_artiste", columns={"code_artiste"}), @ORM\Index(name="fk_espace", columns={"code_espace"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
+
+
 class Event
 {
     /**
@@ -18,6 +22,7 @@ class Event
      * @ORM\Column(name="code_event", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("events:read")
      */
     private $codeEvent;
 
@@ -26,6 +31,7 @@ class Event
      *
      * @ORM\Column(name="nom_event", type="string", length=30, nullable=false)
      *@Assert\NotBlank(message="Event name is required")
+     *@Groups("events:read")
      */
     private $nomEvent;
 
@@ -34,6 +40,7 @@ class Event
      *
      * @ORM\Column(name="theme_event", type="string", length=30, nullable=false)
      *@Assert\NotBlank(message="Event theme is required")
+     * @Groups("events:read")
      */
     private $themeEvent;
 
@@ -42,6 +49,7 @@ class Event
      *
      * @ORM\Column(name="etat", type="string", length=50, nullable=false)
      *@Assert\NotBlank(message="Event state is required")
+     * @Groups("events:read")
      */
     private $etat;
 
@@ -50,6 +58,7 @@ class Event
      *
      * @ORM\Column(name="date", type="date", nullable=false)
      *@Assert\NotBlank(message="Event date is required")
+     * @Groups("events:read")
      */
     private $date;
 
@@ -63,6 +72,7 @@ class Event
      *     type="integer",
      *     message="This field must be of numeric type."
      * )
+     * @Groups("events:read")
      */
     private $nbMaxPart;
 
@@ -71,6 +81,7 @@ class Event
      *
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      *@Assert\NotBlank(message="Event picture is required")
+     * @Groups("events:read")
      */
     private $image;
 
@@ -79,6 +90,7 @@ class Event
      *
      * @ORM\Column(name="video", type="string", length=255, nullable=true)
      *@Assert\NotBlank(message="Event video is required")
+     * @Groups("events:read")
      */
     private $video;
 
@@ -90,6 +102,7 @@ class Event
      *   @ORM\JoinColumn(name="code_artiste", referencedColumnName="ID")
      * })
      *@Assert\NotBlank(message="Artiste code is required")
+     * @Groups("events:read")
      */
     private $codeArtiste;
 
@@ -101,6 +114,7 @@ class Event
      *   @ORM\JoinColumn(name="code_espace", referencedColumnName="id_endroit")
      * })
      *@Assert\NotBlank(message="Place code is required")
+     * @Groups("events:read")
      */
 
 

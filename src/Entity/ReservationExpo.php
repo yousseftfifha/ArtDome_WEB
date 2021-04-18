@@ -48,5 +48,46 @@ class ReservationExpo
      */
     private $codeExpo;
 
+    public function getCodeReservatione(): ?int
+    {
+        return $this->codeReservatione;
+    }
+
+    public function getNbPlace(): ?int
+    {
+        return $this->nbPlace;
+    }
+
+    public function setNbPlace(?int $nbPlace): self
+    {
+        $this->nbPlace = $nbPlace;
+
+        return $this;
+    }
+
+    public function getCodeClient(): ?User
+    {
+        return $this->codeClient;
+    }
+
+    public function setCodeClient(?User $codeClient): self
+    {
+        $this->codeClient = $codeClient;
+
+        return $this;
+    }
+
+    public function getCodeExpo(): ?Exposition
+    {
+        return $this->codeExpo;
+    }
+
+    public function setCodeExpo(?Exposition $codeExpo): self
+    {
+        $this->codeExpo = $codeExpo;
+
+        return $this;
+    }
+
 
 }

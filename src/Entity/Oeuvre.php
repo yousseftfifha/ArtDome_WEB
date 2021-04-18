@@ -83,5 +83,106 @@ class Oeuvre
      */
     private $idArtiste;
 
+    public function getIdOeuvre(): ?int
+    {
+        return $this->idOeuvre;
+    }
+
+    public function getNomoeuvre(): ?string
+    {
+        return $this->nomoeuvre;
+    }
+
+    public function setNomoeuvre(string $nomoeuvre): self
+    {
+        $this->nomoeuvre = $nomoeuvre;
+
+        return $this;
+    }
+
+    public function getPrixoeuvre(): ?float
+    {
+        return $this->prixoeuvre;
+    }
+
+    public function setPrixoeuvre(float $prixoeuvre): self
+    {
+        $this->prixoeuvre = $prixoeuvre;
+
+        return $this;
+    }
+
+    public function getDateoeuvre(): ?\DateTimeInterface
+    {
+        return $this->dateoeuvre;
+    }
+
+    public function setDateoeuvre(?\DateTimeInterface $dateoeuvre): self
+    {
+        $this->dateoeuvre = $dateoeuvre;
+
+        return $this;
+    }
+
+    public function getImageoeuvre(): ?string
+    {
+        return $this->imageoeuvre;
+    }
+
+    public function setImageoeuvre(string $imageoeuvre): self
+    {
+        $this->imageoeuvre = $imageoeuvre;
+
+        return $this;
+    }
+
+    public function getNomcat(): ?string
+    {
+        return $this->nomcat;
+    }
+
+    public function setNomcat(?string $nomcat): self
+    {
+        $this->nomcat = $nomcat;
+
+        return $this;
+    }
+
+    public function getEmailartiste(): ?string
+    {
+        return $this->emailartiste;
+    }
+
+    public function setEmailartiste(?string $emailartiste): self
+    {
+        $this->emailartiste = $emailartiste;
+
+        return $this;
+    }
+
+    public function getCodeExposition(): ?Exposition
+    {
+        return $this->codeExposition;
+    }
+
+    public function setCodeExposition(?Exposition $codeExposition): self
+    {
+        $this->codeExposition = $codeExposition;
+
+        return $this;
+    }
+
+    public function getIdArtiste(): ?User
+    {
+        return $this->idArtiste;
+    }
+
+    public function setIdArtiste(?User $idArtiste): self
+    {
+        $this->idArtiste = $idArtiste;
+
+        return $this;
+    }
+
 
 }

@@ -66,5 +66,82 @@ class Blog
      */
     private $categorie;
 
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDateofpub(): ?\DateTimeInterface
+    {
+        return $this->dateofpub;
+    }
+
+    public function setDateofpub(\DateTimeInterface $dateofpub): self
+    {
+        $this->dateofpub = $dateofpub;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPublisher(): ?string
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?string $publisher): self
+    {
+        $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    public function getIdblog(): ?int
+    {
+        return $this->idblog;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
 
 }

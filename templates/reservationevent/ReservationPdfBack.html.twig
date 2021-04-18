@@ -1,0 +1,28 @@
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Reservation code</th>
+        <th>Event name</th>
+        <th>Client last name</th>
+        <th>Client name</th>
+        <th>Phone number</th>
+        <th>Email</th>
+        <th>Booked places</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for reservationevent in reservationevents %}
+    <tr>
+        <td>{{ reservationevent.codeReservation }}</td>
+        <td>{{ reservationevent.codeEvent.nomEvent }}</td>
+        <td>{{ reservationevent.codeClient.nom }}</td>
+        <td>{{ reservationevent.codeClient.prenom }}</td>
+        <td>{{ reservationevent.codeClient.numero }}</td>
+        <td>{{ reservationevent.codeClient.email }}</td>
+        <td>{{ reservationevent.nbPlace }}</td>
+
+    </tr>
+    </tbody>
+</table>

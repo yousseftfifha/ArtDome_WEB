@@ -10,8 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Reservationevent
  *
  * @ORM\Table(name="reservationevent", indexes={@ORM\Index(name="fk_client", columns={"code_client"}), @ORM\Index(name="fk_event", columns={"code_event"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ReservationeventRepository")
  */
+
 class Reservationevent
 {
     /**

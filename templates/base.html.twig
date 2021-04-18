@@ -11,6 +11,7 @@
         <link href="{{ asset('Front/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('Front/https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700') }}" rel="stylesheet">
         <link href="{{ asset('Front/https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
     {% endblock %}
 
 
@@ -57,7 +58,7 @@
 {% block body %}
     <!-- HEADER =============================-->
 
-
+    {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
 {% endblock %}
 {% block javascripts %}
     <!-- SCRIPTS =============================-->
@@ -77,6 +78,8 @@
             );
         });
     </script>
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
 {% endblock %}
 <!-- FOOTER =============================-->
 <div class="footer text-center">

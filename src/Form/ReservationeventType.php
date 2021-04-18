@@ -23,7 +23,7 @@ class ReservationeventType extends AbstractType
                 ]
             ))
             ->add('codeClient', EntityType::class,['class'=>User::class,'choice_label'=>'id'])
-            ->add('codeEvent', EntityType::class,['class'=>Event::class,'choice_label'=>'nom_event'])
+          //  ->add('codeEvent', EntityType::class,['class'=>Event::class,'choice_label'=>'nom_event'])
         ;
     }
 

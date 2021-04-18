@@ -12,6 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+//use App\Repository\EventRepository;
+
 
 
 /**
@@ -154,6 +158,7 @@ class EventController extends AbstractController
      */
     public function edit(Request $request, Event $event): Response
     {
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -194,7 +199,7 @@ class EventController extends AbstractController
     {
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-        $event->setImage($event->getImage());
+       
         if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
             $file =$request->files->get('event')['image'];
             $uploads_directory=$this->getParameter('uploads_directory');
@@ -252,5 +257,23 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('event_indexBack');
     }
+
+    /**
+     * @Route("/searchEvent ", name="searchEventx")
+     */
+    public function searchEventx(Request $request,NormalizerInterface $Normalizer)
+    {
+
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $requestString=$request->get('searchValue');
+        $events = $repository->findEventByName($requestString);
+        $jsonContent = $Normalizer->normalize($events, 'json',['groups'=>'events:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
+    }
+
+
+
 
 }

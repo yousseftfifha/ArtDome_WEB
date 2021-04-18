@@ -69,5 +69,82 @@ class Exposition
      */
     private $codeEspace;
 
+    public function getCodeExpo(): ?int
+    {
+        return $this->codeExpo;
+    }
+
+    public function getNomExpo(): ?string
+    {
+        return $this->nomExpo;
+    }
+
+    public function setNomExpo(string $nomExpo): self
+    {
+        $this->nomExpo = $nomExpo;
+
+        return $this;
+    }
+
+    public function getThemeExpo(): ?string
+    {
+        return $this->themeExpo;
+    }
+
+    public function setThemeExpo(string $themeExpo): self
+    {
+        $this->themeExpo = $themeExpo;
+
+        return $this;
+    }
+
+    public function getDateExpo(): ?\DateTimeInterface
+    {
+        return $this->dateExpo;
+    }
+
+    public function setDateExpo(\DateTimeInterface $dateExpo): self
+    {
+        $this->dateExpo = $dateExpo;
+
+        return $this;
+    }
+
+    public function getNbMaxParticipant(): ?int
+    {
+        return $this->nbMaxParticipant;
+    }
+
+    public function setNbMaxParticipant(int $nbMaxParticipant): self
+    {
+        $this->nbMaxParticipant = $nbMaxParticipant;
+
+        return $this;
+    }
+
+    public function getCodeArtiste(): ?User
+    {
+        return $this->codeArtiste;
+    }
+
+    public function setCodeArtiste(?User $codeArtiste): self
+    {
+        $this->codeArtiste = $codeArtiste;
+
+        return $this;
+    }
+
+    public function getCodeEspace(): ?Endroit
+    {
+        return $this->codeEspace;
+    }
+
+    public function setCodeEspace(?Endroit $codeEspace): self
+    {
+        $this->codeEspace = $codeEspace;
+
+        return $this;
+    }
+
 
 }

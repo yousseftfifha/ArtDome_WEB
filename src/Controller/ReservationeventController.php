@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Reservationevent;
 use App\Form\ReservationeventType;
+use App\Repository\ReservationeventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 
 /**
  * @Route("/reservationevent")
@@ -43,18 +48,37 @@ class ReservationeventController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="reservationevent_new", methods={"GET","POST"})
+     * @Route("/new/{codeEvent}", name="reservationevent_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Event $Event, \Swift_Mailer $mailer, FlashyNotifier $flashy): Response
     {
         $reservationevent = new Reservationevent();
         $form = $this->createForm(ReservationeventType::class, $reservationevent);
+        $reservationevent->setCodeEvent($Event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        /*$entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT count(e)*e.nb_place FROM App\Entity\Reservationevent e WHERE e.code_event='+$Event->getCodeEvent()+' ');
+        $count = $query->execute();
+        && $reservationevent->getNbPlace()<$count*/
+
+        if ($form->isSubmitted() && $form->isValid() ) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservationevent);
             $entityManager->flush();
+
+            $message = (new \Swift_Message('Reservation confirmed'))
+                ->setFrom('artdomeproject@gmail.com')
+                ->setTo($reservationevent->getCodeClient()->getEmail())
+                ->setBody("Good Day Mr/Mrs,
+                
+                                Your reservation has been confirmed.
+                                
+                                Thank you for choosing ArtDome.
+                "
+                );
+            $flashy->success('Reservation created!', 'http://your-awesome-link.com');
+            $mailer->send($message);
 
             return $this->redirectToRoute('reservationevent_index');
         }
@@ -176,4 +200,75 @@ class ReservationeventController extends AbstractController
 
         return $this->redirectToRoute('reservationevent_indexBack');
     }
+
+    /**
+     * @Route("/{codeReservation}/pdf", name="pdfR", methods={"GET"})
+     */
+
+    public function pdf(Reservationevent $reservationevent)
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservationevent/ReservationPdf.html.twig', [
+
+                'reservationevent' => $reservationevent, 'title' => "Event reservation"
+            ]);
+
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        $dompdf->stream("Reservation.pdf", [
+            "Attachment" => false
+        ]);
+    }
+/*
+    /**
+     * @Route("/pdfBack", name="pdfRB", methods={"GET"})
+     */
+
+/*
+    public function pdfBack(Reservationevent $reservationevents)
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $reservationevents = $this->getDoctrine();
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservationevent/ReservationPdfBack.html.twig', [
+
+            'reservationevents' => $reservationevents->findAll(),
+            'reservationevents' => $reservationevents
+            ,'title' => "Events reservations"
+        ]);
+
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        $dompdf->stream("ReservationBack.pdf", [
+            "Attachment" => false
+        ]);
+    }*/
 }

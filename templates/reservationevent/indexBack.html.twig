@@ -16,7 +16,7 @@
                 <th>Phone number</th>
                 <th>Email</th>
                 <th>Booked places</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +30,11 @@
                 <td>{{ reservationevent.codeClient.email }}</td>
                 <td>{{ reservationevent.nbPlace }}</td>
                 <td>
-                    <a href="{{ path('reservationevent_showBack', {'codeReservation': reservationevent.codeReservation}) }}">show</a>
-                    <!--<a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>-->
+                    <div>
+                    <a href="{{ path('reservationevent_showBack', {'codeReservation': reservationevent.codeReservation}) }}">Show</a>
+                    {{ include('reservationevent/_delete_formBack.html.twig') }}
+                    </div>
+                        {#  <a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>#}
                 </td>
             </tr>
         {% else %}
@@ -42,6 +45,7 @@
         </tbody>
     </table>
 
-   <!-- <a href="{{ path('reservationevent_new') }}">Create new</a>-->
+
+   {#  <a href="{{ path('pdfRB') }}">PDF</a>#}
 </div>
 {% endblock %}

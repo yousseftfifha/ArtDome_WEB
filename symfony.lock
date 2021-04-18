@@ -82,11 +82,20 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "dompdf/dompdf": {
+        "version": "v1.0.2"
+    },
     "egulias/email-validator": {
         "version": "2.1.25"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
+    },
+    "illuminate/contracts": {
+        "version": "v7.30.4"
+    },
+    "illuminate/support": {
+        "version": "v7.10.3"
     },
     "laminas/laminas-code": {
         "version": "3.4.1"
@@ -97,11 +106,26 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "mercuryseries/flashy": {
+        "version": "1.0.4"
+    },
+    "mercuryseries/flashy-bundle": {
+        "version": "v3.0.2"
+    },
     "monolog/monolog": {
         "version": "1.26.0"
     },
+    "nesbot/carbon": {
+        "version": "2.46.0"
+    },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "phenx/php-font-lib": {
+        "version": "0.5.2"
+    },
+    "phenx/php-svg-lib": {
+        "version": "v0.3.3"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
@@ -124,6 +148,12 @@
     "psr/log": {
         "version": "1.1.3"
     },
+    "psr/simple-cache": {
+        "version": "1.0.1"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.3.1"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -135,6 +165,9 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.2.7"
     },
     "symfony/asset": {
         "version": "v4.4.20"
@@ -421,6 +454,20 @@
     "symfony/stopwatch": {
         "version": "v4.4.20"
     },
+    "symfony/swiftmailer-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
+        },
+        "files": [
+            "./config/packages/dev/swiftmailer.yaml",
+            "./config/packages/swiftmailer.yaml",
+            "./config/packages/test/swiftmailer.yaml"
+        ]
+    },
     "symfony/test-pack": {
         "version": "v1.0.7"
     },
@@ -513,6 +560,9 @@
     },
     "twig/twig": {
         "version": "v2.13.1"
+    },
+    "voku/portable-ascii": {
+        "version": "1.5.6"
     },
     "webmozart/assert": {
         "version": "1.9.1"
