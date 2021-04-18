@@ -24,9 +24,17 @@ class ReservationeventController extends AbstractController
      */
     public function index(): Response
     {
-        $reservationevents = $this->getDoctrine()
-            ->getRepository(Reservationevent::class)
-            ->findAll();
+        //$reservationevents = $this->getDoctrine()
+            /*->getRepository(Reservationevent::class)
+            ->findAll();//
+            ->getManager()
+            ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
+            ->getResult();*/
+
+        $reservationeventsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Reservationevent::class);
+        $reservationevents = $reservationeventsRepository->SortReservation();
 
         return $this->render('reservationevent/index.html.twig', [
             'reservationevents' => $reservationevents,
@@ -38,9 +46,17 @@ class ReservationeventController extends AbstractController
      */
     public function indexBack(): Response
     {
-        $reservationevents = $this->getDoctrine()
-            ->getRepository(Reservationevent::class)
-            ->findAll();
+        //$reservationevents = $this->getDoctrine()
+            /*->getRepository(Reservationevent::class)
+            ->findAll();//
+            ->getManager()
+            ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
+            ->getResult();*/
+
+        $reservationeventsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Reservationevent::class);
+        $reservationevents = $reservationeventsRepository->SortReservation();
 
         return $this->render('reservationevent/indexBack.html.twig', [
             'reservationevents' => $reservationevents,

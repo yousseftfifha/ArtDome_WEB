@@ -47,4 +47,13 @@ class ReservationeventRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function SortReservation()
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.codeReservation', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 //use App\Repository\EventRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -28,9 +29,17 @@ class EventController extends AbstractController
      */
     public function index(): Response
     {
-        $events = $this->getDoctrine()
-            ->getRepository(Event::class)
-            ->findAll();
+        //$events = $this->getDoctrine()
+            /*->getRepository(Event::class)
+            ->findAll();//
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Event e order by  e.date desc')
+            ->getResult();*/
+
+        $eventsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Event::class);
+        $events = $eventsRepository->SortEvent();
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
@@ -42,9 +51,17 @@ class EventController extends AbstractController
      */
     public function indexBack(): Response
     {
-        $events = $this->getDoctrine()
-            ->getRepository(Event::class)
-            ->findAll();
+       /* $events = $this->getDoctrine()
+            /*->getRepository(Event::class)
+            ->findAll();//
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Event e order by  e.date desc')
+            ->getResult();*/
+
+        $eventsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Event::class);
+        $events = $eventsRepository->SortEvent();
 
         return $this->render('event/indexBack.html.twig', [
             'events' => $events,
