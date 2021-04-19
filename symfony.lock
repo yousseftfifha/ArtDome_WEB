@@ -97,6 +97,12 @@
     "illuminate/support": {
         "version": "v7.10.3"
     },
+    "knplabs/knp-components": {
+        "version": "v3.0.2"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.4.2"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -560,6 +566,9 @@
     },
     "twig/twig": {
         "version": "v2.13.1"
+    },
+    "twilio/sdk": {
+        "version": "6.21.0"
     },
     "voku/portable-ascii": {
         "version": "1.5.6"

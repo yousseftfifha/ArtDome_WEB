@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 //use App\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 
@@ -27,7 +28,7 @@ class EventController extends AbstractController
     /**
      * @Route("/", name="event_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
         //$events = $this->getDoctrine()
             /*->getRepository(Event::class)
@@ -39,12 +40,23 @@ class EventController extends AbstractController
         $eventsRepository = $this->getDoctrine()
             ->getManager()
             ->getRepository(Event::class);
-        $events = $eventsRepository->SortEvent();
+        $events = $paginator->paginate(
+            $eventsRepository->findAll(),
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            3/*nbre d'éléments par page*/
+
+        );
+        //$events =$eventsRepository->SortEvent();
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
         ]);
     }
+
+
+
+
+
 
     /**
      * @Route("/back", name="event_indexBack", methods={"GET"})
@@ -276,7 +288,7 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/searchEvent ", name="searchEventx")
+     * @Route("//searchEvent ", name="event_searchEventx")
      */
     public function searchEventx(Request $request,NormalizerInterface $Normalizer)
     {
@@ -289,6 +301,22 @@ class EventController extends AbstractController
         return new Response($retour);
 
     }
+
+    /**
+     * @Route("/back/searchEvent ", name="event_searchEventxB")
+     */
+    public function searchEventxB(Request $request,NormalizerInterface $Normalizer)
+    {
+
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $requestString=$request->get('searchValue');
+        $events = $repository->findEventByName($requestString);
+        $jsonContent = $Normalizer->normalize($events, 'json',['groups'=>'events:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
+    }
+
 
 
 

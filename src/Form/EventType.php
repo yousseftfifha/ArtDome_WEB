@@ -43,11 +43,9 @@ class EventType extends AbstractType
                     'Physique' => 'Physique',
                     'Digital' => 'Digital',
                 ],])
-            ->add('date',DateType::class,array(
-                'label'=>'Event date',
-                'attr'=>[
-                    'placeholder'=>'Enter a date...'
-                ]
+            ->add('date',DateType::class, array(
+                'widget'=>'single_text',
+                'format'=>'yyyy-MM-dd'
             ))
             ->add('nbMaxPart',NumberType::class,array(
                 'label'=>'Event participation limit',

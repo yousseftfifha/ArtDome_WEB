@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @Route("/reservationevent")
@@ -95,7 +97,7 @@ class ReservationeventController extends AbstractController
                 );
             $flashy->success('Reservation created!', 'http://your-awesome-link.com');
             $mailer->send($message);
-
+            //$this->sendSms($reservationevent->getCodeEvent()->getDate(),$reservationevent->getCodeClient()->getPrenom(),$reservationevent->getCodeEvent()->getNomEvent());
             return $this->redirectToRoute('reservationevent_index');
         }
 
@@ -250,13 +252,13 @@ class ReservationeventController extends AbstractController
             "Attachment" => false
         ]);
     }
-/*
+
     /**
-     * @Route("/pdfBack", name="pdfRB", methods={"GET"})
+     * @Route("/back/pdfBack", name="event_pdfRB", methods={"GET"})
      */
 
-/*
-    public function pdfBack(Reservationevent $reservationevents)
+
+    public function pdfBack(ReservationeventRepository $reservationevents)
     {
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
@@ -264,13 +266,13 @@ class ReservationeventController extends AbstractController
 
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-        $reservationevents = $this->getDoctrine();
+        //$reservationevents = $this->getDoctrine();
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('reservationevent/ReservationPdfBack.html.twig', [
 
             'reservationevents' => $reservationevents->findAll(),
-            'reservationevents' => $reservationevents
-            ,'title' => "Events reservations"
+
+            'title' => "Events reservations"
         ]);
 
 
@@ -286,5 +288,47 @@ class ReservationeventController extends AbstractController
         $dompdf->stream("ReservationBack.pdf", [
             "Attachment" => false
         ]);
+    }
+
+  /*  public function sendSms($date,$client,$event) {
+
+        $twilio = $this->get("twilio.client");
+        $text = "Good day ".$client." your reservation for  ".$event." on  ".$date."has been confirmed, thank you for choosing ArtDome." ;
+
+        $twilio->messages->create("+21623850921", [
+                'from'=>'+15128655014', // From a Twilio number in your account
+                'body'=>$text]
+
+        );
     }*/
+
+    /**
+     * @Route("//searchReservation ", name="reservationevent_searchReservationx")
+     */
+    public function searchReservationx(Request $request,NormalizerInterface $Normalizer)
+    {
+
+        $repository = $this->getDoctrine()->getRepository(Reservationevent::class);
+        $requestString=$request->get('searchValue');
+        $reservationevents = $repository->findReservationEventByName($requestString);
+        $jsonContent = $Normalizer->normalize($reservationevents, 'json',['groups'=>'reservationevents:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
+    }
+
+    /**
+     * @Route("/back/searchReservation ", name="reservationevent_searchReservationxB")
+     */
+    public function searchReservationxB(Request $request,NormalizerInterface $Normalizer)
+    {
+
+        $repository = $this->getDoctrine()->getRepository(Reservationevent::class);
+        $requestString=$request->get('searchValue');
+        $reservationevents = $repository->findReservationEventByName($requestString);
+        $jsonContent = $Normalizer->normalize($reservationevents, 'json',['groups'=>'reservationevents:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
+    }
 }

@@ -48,6 +48,15 @@ class ReservationeventRepository extends ServiceEntityRepository
     }
     */
 
+    public function findReservationEventByName($codeReservation)
+    {
+        return $this->createQueryBuilder('reservationevent')
+            ->where('reservationevent.codeReservation LIKE :codeReservation')
+            ->setParameter('codeReservation', '%'.$codeReservation.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function SortReservation()
     {
         return $this->createQueryBuilder('r')
