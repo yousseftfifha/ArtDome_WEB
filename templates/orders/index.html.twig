@@ -20,7 +20,13 @@
                 </div>
             </div>
             <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <i class="fa fa-check-circle-o mr-2" aria-hidden="true"></i>{{ message }}
+                    </div>
+                {% endfor %}
                 <form id="edd_checkout_cart_form" method="post">
+                    <input type="text" id="search" class="form-control" placeholder="Search">
                     <div id="edd_checkout_cart_wrap">
                         <table id="edd_checkout_cart" class="ajaxed">
                             <thead>
@@ -46,7 +52,7 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="all">
 
                             {% for order in orders %}
 
@@ -72,7 +78,6 @@
                                         <a class="edd_cart_remove_item_btn" href="#">
                                             <a href="{{ path('pending_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a>
 
-
                                         </a>
                                     </td>
                                 </tr>
@@ -84,9 +89,23 @@
                             {% endfor %}
                             </tbody>
 
-                            </tfoot>
+                            <tbody id="search">
+                            </tbody>
+
                         </table>
+                        <div>
+                            {{ knp_pagination_render(orders) }}
+                        </div>
+                        <div>
+                            Orders counted: {{ orders.getTotalItemCount }}
+                        </div>
+
                         <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
+                        <a class="btn btn-warning" href="{{ path('orderbyDueAmount') }}">Order By price</a>
+                        <a class="btn btn-danger" href="{{ path('orderbyStatusPending') }}">Order By Pending</a>
+                        <a class="btn btn-danger" href="{{ path('orderbyStatusCancelled') }}">Order By Cancelled </a>
+                        <a class="btn btn-danger" href="{{ path('orderbyStatusConfirmed') }}">Order By Confirmed</a>
+                        <a class="btn btn-dark" href="{{ path('statusStats') }}">stats</a>
 
                     </div>
                 </form>
@@ -94,5 +113,45 @@
             </div>
         </div>
     </section>
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js') }}">
+    </script>
+
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('searchOrderx') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#edd_checkout_cart tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#edd_checkout_cart tbody#all').hide();
+                                $('#edd_checkout_cart tbody#search').append('<tr><td> '+obj.innonumber+'  </td> <td> '+obj.iduser.nom+obj.iduser.prenom+'  </td><td> '+obj.orderdate+'  </td><td> '+obj.status+'  </td><td> '+obj.dueamount+'  </td> <td><a href="pending_orders_index/'+obj.innonumber+'">Show Details</a></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#edd_checkout_cart tbody#all').show();
+                            $('#edd_checkout_cart tbody#search').empty();
+                            $('#edd_checkout_cart tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+
 
 {% endblock %}

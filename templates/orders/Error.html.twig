@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    {% for message in app.flashes('warning') %}
+      <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <i class="fa fa-check-circle-o mr-2" aria-hidden="true"></i>{{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+

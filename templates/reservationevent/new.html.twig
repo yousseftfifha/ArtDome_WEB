@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reservationevent{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Create new Reservation</h1>
+
+    {{ include('reservationevent/_form.html.twig') }}
+
+    <a href="{{ path('reservationevent_index') }}">Back to list</a>
+</div>
+{% endblock %}
