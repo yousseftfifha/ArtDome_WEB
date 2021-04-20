@@ -56,6 +56,7 @@
 
     <a href="{{ path('event_newBack') }}">Create new</a>
     <a href="{{ path('reservationevent_indexBack') }}">View reservations</a>
+    <a href="{{ path('event_stats') }}">View Charts</a>
 </div>
 {% endblock %}
 {% block javascripts %}
@@ -82,7 +83,7 @@
                                 $('#t tbody#search').empty();
                                 $.each(JSON.parse(retour), function(i, obj) {
                                     $('#t tbody#all').hide();
-                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.etat+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.nbMax+' </td><td>'+obj.date+' </td><td>'+obj.codeEspace.idEndroit+' </td><td><a href="showBack/'+obj.codeEvent+'">show</a></td><td><a href="editBack/'+obj.codeEvent+'">edit</a></td> ');
+                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.etat+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td>'+obj.nbMaxPart+' </td><td>'+obj.codeEspace.idEndroit+' </td><td><a href="showBack/'+obj.codeEvent+'">show</a></td><td><a href="editBack/'+obj.codeEvent+'">edit</a></td> ');
                                 });
                             }
                             else

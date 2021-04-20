@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Repository\EventRepository;
+use App\Repository\ReservationeventRepository;
 use App\User;
 use App\Form\EventType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //use App\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 
 
 
@@ -318,7 +321,44 @@ class EventController extends AbstractController
     }
 
 
+    /**
+     * @Route("/back/stats", name="event_stats")
+     */
+    public function StateStats()
+    {
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $ListEvents = $repository->findAll();
+        $em = $this->getDoctrine()->getManager();
+
+        $Physique = 0;
+        $Digital = 0;
 
 
+        foreach ($ListEvents as $Events) {
+            if ($Events->getEtat() == "Physique")
 
+                $Physique += 1;
+            else
+                $Digital += 1;
+        }
+
+
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['State', 'nombres'],
+                ['Physique', $Physique],
+                ['Digital', $Digital]
+            ]
+        );
+        //$pieChart->getOptions()->setTitle('Events Statistic');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#009900');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $this->render('event/chart.html.twig', array('piechart' => $pieChart));
+    }
 }

@@ -65,4 +65,16 @@ class ReservationeventRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function countByNbPlace(){
+        // $query = $this->createQueryBuilder('a')
+        //     ->select('SUBSTRING(a.created_at, 1, 10) as dateAnnonces, COUNT(a) as count')
+        //     ->groupBy('dateAnnonces')
+        // ;
+        // return $query->getQuery()->getResult();
+        $query = $this->getEntityManager()->createQuery("
+            SELECT codeEvent as code, COUNT(a) as count FROM App\Entity\Reservationevent a GROUP BY code
+        ");
+        return $query->getResult();
+    }
 }

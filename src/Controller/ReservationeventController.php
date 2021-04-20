@@ -76,11 +76,14 @@ class ReservationeventController extends AbstractController
         $form->handleRequest($request);
 
         /*$entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT count(e)*e.nb_place FROM App\Entity\Reservationevent e WHERE e.code_event='+$Event->getCodeEvent()+' ');
+        $query = $entityManager->createQuery('SELECT count(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent=:'+$code+' ');
+        $code=$Event->getCodeEvent();
         $count = $query->execute();
-        && $reservationevent->getNbPlace()<$count*/
+        && $reservationevent->getNbPlace()<$count// fel if
+        */
 
-        if ($form->isSubmitted() && $form->isValid() ) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservationevent);
             $entityManager->flush();
