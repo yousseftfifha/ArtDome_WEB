@@ -52,5 +52,58 @@ class Cart
      */
     private $idUser;
 
+    public function getOeuvreid(): ?int
+    {
+        return $this->oeuvreid;
+    }
+
+    public function setOeuvreid(int $oeuvreid): self
+    {
+        $this->oeuvreid = $oeuvreid;
+
+        return $this;
+    }
+
+    public function getNomoeuvre(): ?string
+    {
+        return $this->nomoeuvre;
+    }
+
+    public function setNomoeuvre(?string $nomoeuvre): self
+    {
+        $this->nomoeuvre = $nomoeuvre;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getIdcart(): ?int
+    {
+        return $this->idcart;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
 
 }

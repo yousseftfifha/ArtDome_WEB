@@ -70,5 +70,94 @@ class Reservation
      */
     private $prixTotal;
 
+    public function getIdReservation(): ?int
+    {
+        return $this->idReservation;
+    }
+
+    public function getIdclient(): ?int
+    {
+        return $this->idclient;
+    }
+
+    public function setIdclient(int $idclient): self
+    {
+        $this->idclient = $idclient;
+
+        return $this;
+    }
+
+    public function getMatricule(): ?int
+    {
+        return $this->matricule;
+    }
+
+    public function setMatricule(int $matricule): self
+    {
+        $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getDateRetour(): ?string
+    {
+        return $this->dateRetour;
+    }
+
+    public function setDateRetour(?string $dateRetour): self
+    {
+        $this->dateRetour = $dateRetour;
+
+        return $this;
+    }
+
+    public function getCautionnement(): ?int
+    {
+        return $this->cautionnement;
+    }
+
+    public function setCautionnement(int $cautionnement): self
+    {
+        $this->cautionnement = $cautionnement;
+
+        return $this;
+    }
+
+    public function getPrixTotal(): ?string
+    {
+        return $this->prixTotal;
+    }
+
+    public function setPrixTotal(?string $prixTotal): self
+    {
+        $this->prixTotal = $prixTotal;
+
+        return $this;
+    }
+
 
 }

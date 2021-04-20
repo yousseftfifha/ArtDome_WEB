@@ -4,13 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
 
 
 /**
  * ReservationExpo
  *
  * @ORM\Table(name="reservation_expo", indexes={@ORM\Index(name="fk_clients", columns={"code_client"}), @ORM\Index(name="fk_expo", columns={"code_expo"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ReservationExpoRepository")
  */
 class ReservationExpo
 {
@@ -20,6 +25,7 @@ class ReservationExpo
      * @ORM\Column(name="code_reservationE", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("reservations:read")
      */
     private $codeReservatione;
 
@@ -33,6 +39,7 @@ class ReservationExpo
      *     type="integer",
      *     message="Ce champ doit contenir un nombre."
      * )
+     * @Groups("reservations:read")
      */
     private $nbPlace;
 
@@ -44,6 +51,7 @@ class ReservationExpo
      *   @ORM\JoinColumn(name="code_client", referencedColumnName="ID")
      * })
      * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("reservations:read")
      */
     private $codeClient;
 
@@ -55,6 +63,7 @@ class ReservationExpo
      *   @ORM\JoinColumn(name="code_expo", referencedColumnName="code_expo")
      * })
      * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("reservations:read")
      */
     private $codeExpo;
 

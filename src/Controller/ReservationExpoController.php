@@ -2,12 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\Exposition;
 use App\Entity\ReservationExpo;
 use App\Form\ReservationExpoType;
+use App\Repository\ReservationExpoRepository;
+use Doctrine\Persistence\Mapping\Driver\PHPDriver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+
+
 
 /**
  * @Route("/reservation/expo")
@@ -20,8 +33,9 @@ class ReservationExpoController extends AbstractController
     public function index(): Response
     {
         $reservationExpos = $this->getDoctrine()
-            ->getRepository(ReservationExpo::class)
-            ->findAll();
+            ->getManager()
+            ->createQuery('SELECT r FROM App\Entity\ReservationExpo r order by  r.nbPlace desc')
+            ->getResult();
 
         return $this->render('reservation_expo/index.html.twig', [
             'reservation_expos' => $reservationExpos,
@@ -44,7 +58,7 @@ class ReservationExpoController extends AbstractController
     /**
      * @Route("/new", name="reservation_expo_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, \Swift_Mailer $mailer, FlashyNotifier $flashy): Response
     {
         $reservationExpo = new ReservationExpo();
         $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
@@ -54,6 +68,21 @@ class ReservationExpoController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservationExpo);
             $entityManager->flush();
+
+
+            $message = (new \Swift_Message('You Got Mail!'))
+                               ->setFrom('artdomeproject@gmail.com')
+                           ->setTo($reservationExpo->getCodeClient()->getEmail())
+                ->setBody("Good Day Mr/Mrs,
+                
+                                Your reservation has been confirmed.
+                                
+                                Thank you for choosing ArtDome."
+
+                );
+
+            $flashy->success('Reservation created!', 'http://your-awesome-link.com');
+           $mailer->send($message);
 
             return $this->redirectToRoute('reservation_expo_index');
         }
@@ -176,4 +205,56 @@ class ReservationExpoController extends AbstractController
 
         return $this->redirectToRoute('reservation_expo_indexBack');
     }
+
+
+
+    /**
+     * @Route("/reservation/pdf", name="pdf", methods={"GET"})
+     */
+    public function pdf(ReservationExpoRepository $ReservationExpoRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservation_expo/liste.html.twig', [
+            'reservation_expos' => $ReservationExpoRepository->findAll(),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => true
+        ]);
+        return $this->redirectToRoute('reservation_expo_index');
+
+    }
+    /**
+     * @Route("//search", name="reservation_expo_searchReservation")
+     */
+    public function searchReservation(Request $request, NormalizerInterface $Normalizer)
+    {
+        $repository = $this->getDoctrine()->getRepository(ReservationExpo::class);
+        $requestString= $request->get('searchValue');
+        $reservations = $repository->findreservationByCode($requestString);
+        $jsonContent = $Normalizer->normalize($reservations, 'json',['groups'=>'reservations:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
+
+
+
+    }
+
+
 }

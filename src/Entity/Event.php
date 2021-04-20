@@ -90,5 +90,118 @@ class Event
      */
     private $codeEspace;
 
+    public function getCodeEvent(): ?int
+    {
+        return $this->codeEvent;
+    }
+
+    public function getNomEvent(): ?string
+    {
+        return $this->nomEvent;
+    }
+
+    public function setNomEvent(string $nomEvent): self
+    {
+        $this->nomEvent = $nomEvent;
+
+        return $this;
+    }
+
+    public function getThemeEvent(): ?string
+    {
+        return $this->themeEvent;
+    }
+
+    public function setThemeEvent(string $themeEvent): self
+    {
+        $this->themeEvent = $themeEvent;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getNbMaxPart(): ?int
+    {
+        return $this->nbMaxPart;
+    }
+
+    public function setNbMaxPart(int $nbMaxPart): self
+    {
+        $this->nbMaxPart = $nbMaxPart;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    public function getCodeArtiste(): ?User
+    {
+        return $this->codeArtiste;
+    }
+
+    public function setCodeArtiste(?User $codeArtiste): self
+    {
+        $this->codeArtiste = $codeArtiste;
+
+        return $this;
+    }
+
+    public function getCodeEspace(): ?Endroit
+    {
+        return $this->codeEspace;
+    }
+
+    public function setCodeEspace(?Endroit $codeEspace): self
+    {
+        $this->codeEspace = $codeEspace;
+
+        return $this;
+    }
+
 
 }

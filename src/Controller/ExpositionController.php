@@ -22,8 +22,9 @@ class ExpositionController extends AbstractController
     public function index(): Response
     {
         $expositions = $this->getDoctrine()
-            ->getRepository(Exposition::class)
-            ->findAll();
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Exposition e order by  e.dateExpo desc')
+            ->getResult();
 
         return $this->render('exposition/index.html.twig', [
             'expositions' => $expositions,
@@ -139,7 +140,7 @@ class ExpositionController extends AbstractController
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now')) {
+        if ($form->isSubmitted() && $form->isValid() && $exposition->getDateExpo()>new \DateTime('now') ) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('exposition_indexBack');
@@ -152,9 +153,23 @@ class ExpositionController extends AbstractController
     }
 
     /**
-     * @Route("/{codeExpo}/back", name="exposition_deleteBack", methods={"POST"})
+     * @Route("/{codeExpo}", name="exposition_delete", methods={"POST"})
      */
     public function delete(Request $request, Exposition $exposition): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$exposition->getCodeExpo(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($exposition);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('exposition_index');
+    }
+
+    /**
+     * @Route("/{codeExpo}/back", name="exposition_deleteBack", methods={"POST"})
+     */
+    public function deleteBack(Request $request, Exposition $exposition): Response
     {
         if ($this->isCsrfTokenValid('delete'.$exposition->getCodeExpo(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

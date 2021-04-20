@@ -48,5 +48,46 @@ class Reservationevent
      */
     private $codeEvent;
 
+    public function getCodeReservation(): ?int
+    {
+        return $this->codeReservation;
+    }
+
+    public function getNbPlace(): ?int
+    {
+        return $this->nbPlace;
+    }
+
+    public function setNbPlace(int $nbPlace): self
+    {
+        $this->nbPlace = $nbPlace;
+
+        return $this;
+    }
+
+    public function getCodeClient(): ?User
+    {
+        return $this->codeClient;
+    }
+
+    public function setCodeClient(?User $codeClient): self
+    {
+        $this->codeClient = $codeClient;
+
+        return $this;
+    }
+
+    public function getCodeEvent(): ?Event
+    {
+        return $this->codeEvent;
+    }
+
+    public function setCodeEvent(?Event $codeEvent): self
+    {
+        $this->codeEvent = $codeEvent;
+
+        return $this;
+    }
+
 
 }

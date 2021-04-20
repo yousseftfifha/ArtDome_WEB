@@ -56,5 +56,70 @@ class Categorie
      */
     private $nbreoeuvre = '0';
 
+    public function getIdCat(): ?int
+    {
+        return $this->idCat;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getNomcat(): ?string
+    {
+        return $this->nomcat;
+    }
+
+    public function setNomcat(string $nomcat): self
+    {
+        $this->nomcat = $nomcat;
+
+        return $this;
+    }
+
+    public function getDatecat(): ?\DateTimeInterface
+    {
+        return $this->datecat;
+    }
+
+    public function setDatecat(?\DateTimeInterface $datecat): self
+    {
+        $this->datecat = $datecat;
+
+        return $this;
+    }
+
+    public function getNbreoeuvre(): ?int
+    {
+        return $this->nbreoeuvre;
+    }
+
+    public function setNbreoeuvre(?int $nbreoeuvre): self
+    {
+        $this->nbreoeuvre = $nbreoeuvre;
+
+        return $this;
+    }
+
 
 }

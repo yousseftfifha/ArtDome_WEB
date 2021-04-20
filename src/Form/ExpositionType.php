@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ExpositionType extends AbstractType
 {
@@ -25,7 +26,15 @@ class ExpositionType extends AbstractType
                     'placeholder'=>'Entrer le nom...'
                 ]
             ))
-            ->add('themeExpo', TextType::class,array(
+            ->add('themeExpo', ChoiceType::class, [
+                'choices' => [
+                    'céramiques' => 'céramiques',
+                    'peintures et céramiques' => 'peintures et céramiques',
+                    'peintures et tableaux' => 'peintures et tableaux',
+                    'photos' => 'photos',
+                    'tableaux' => 'tableaux',
+                    'scultures' => 'scultures',
+                ],], TextType::class,array(
                 'label'=>'Thème Exposition',
                 'attr'=>[
                     'placeholder'=>'Sélectionner le thème...'
