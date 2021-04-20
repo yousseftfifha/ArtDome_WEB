@@ -5,12 +5,17 @@ namespace App\Controller;
 use App\Entity\Cart;
 use App\Entity\Exposition;
 use App\Entity\Oeuvre;
+use App\Entity\Orders;
 use App\Entity\User;
 use App\Form\CartType;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/cart")
@@ -60,7 +65,7 @@ class CartController extends AbstractController
         $cart->setOeuvreid($product);
         $entityManager->merge($cart);
         $entityManager->flush();
-
+        $this->addFlash('success', 'An Artwork has been added!');
         return $this->redirectToRoute('oeuvre_index');
     }
 
@@ -81,7 +86,9 @@ class CartController extends AbstractController
      */
     public function plus(Request $request, Cart $cart): Response
     {
-            $cart->setQuantity($cart->getQuantity()+1);
+        $this->addFlash('notice', 'an element has been updated!');
+
+        $cart->setQuantity($cart->getQuantity()+1);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('cart_index');
 
@@ -91,6 +98,8 @@ class CartController extends AbstractController
      */
     public function moins(Request $request, Cart $cart): Response
     {
+        $this->addFlash('notice', 'an element has been updated!');
+
         $cart->setQuantity($cart->getQuantity()-1);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirectToRoute('cart_index');
@@ -109,17 +118,68 @@ class CartController extends AbstractController
 
         return $this->redirectToRoute('cart_index');
     }
+
     /**
-     * @Route("/count/", name="cart_count", methods={"GET","POST"})
+     * @Route("/cart/succes", name="succes", methods={"GET"})
      */
-//    public function countItems() : Response
-//    {
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $query = $entityManager->createQuery('SELECT count(u) FROM App\Entity\Cart u ');
-//        $count = $query->execute(); // array of CmsUser username and name values
-//        $cart=new Cart();
-//        $cart->setTot($count);
-//        return $this->redirectToRoute('oeuvre_index');
-//
-//    }
+    public function success()
+    {
+        return $this->render('orders/Success.html.twig', [
+        ]);
+    }
+
+
+    /**
+     * @Route("/cart/error", name="error", methods={"GET"})
+     */
+    public function error()
+    {
+        $this->addFlash('warning', 'Your payment failed!');
+        return $this->render('orders/Error.html.twig', [
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/create-checkout-session", name="checkout")
+     */
+    public function checkout( )
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT u FROM App\Entity\Cart u ');
+        $PANIER = $query->getResult(); // array of CmsUser username and name values
+        $montant = 0;
+
+        foreach ($PANIER as $p){
+            $product = $this->getDoctrine()
+                ->getRepository(Oeuvre::class)
+                ->find($p->getOeuvreid());
+            $montant += $p->getQuantity() * $product->getPrixoeuvre();
+        }
+        \Stripe\Stripe::setApiKey('sk_test_51ISlU2GPzOJm2oIXjJlV3dETv60FnrMNqOqFrK3ESUdhjnRuOxB4nY6hFQ2OENvJylnEyxxvlOlyZzsOo13oY9vp00Xp03ebq0');
+
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => 'Total Commande',
+                    ],
+                    'unit_amount' => $montant*100,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('succes', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('error', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+        $this->addFlash('success', 'Your payment is succefull!');
+        return new JsonResponse([ 'id' => $session->id ]);
+
+
+    }
+
+
 }

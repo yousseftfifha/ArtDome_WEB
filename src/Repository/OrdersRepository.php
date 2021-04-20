@@ -18,6 +18,13 @@ class OrdersRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Orders::class);
     }
+    public function findOrderByInno($inno){
+        return $this->createQueryBuilder('order')
+            ->where('order.innonumber LIKE :inno')
+            ->setParameter('inno', '%'.$inno.'%')
+            ->getQuery()
+            ->getResult();
+    }
 
     // /**
     //  * @return Orders[] Returns an array of Orders objects

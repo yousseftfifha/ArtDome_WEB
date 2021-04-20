@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <i class="fa fa-check-circle-o mr-2" aria-hidden="true"></i>{{ message }}
+      </div>
+    {% endfor %}
+  <form id="edd_purchase_form" class="edd_form" action="{{ path('pending_orders_new') }}" method="POST">
+    <fieldset id="edd_purchase_submit">
+
+      <input type="hidden" name="edd_action" value="purchase">
+      <input type="hidden" name="edd-gateway" value="manual">
+
+      <input type="submit" class="edd-submit button" id="edd-purchase-button" name="edd-purchase"   value="Confirm">
+
+    </fieldset>
+  </form>
+  </div>
+{% endblock %}
+
+
