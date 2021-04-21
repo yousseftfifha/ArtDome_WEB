@@ -15,6 +15,7 @@ use Dompdf\Options;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use function MongoDB\BSON\toJSON;
 
 /**
  * @Route("/reservationevent")
@@ -75,15 +76,17 @@ class ReservationeventController extends AbstractController
         $reservationevent->setCodeEvent($Event);
         $form->handleRequest($request);
 
-        /*$entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT count(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent=:'+$code+' ');
         $code=$Event->getCodeEvent();
-        $count = $query->execute();
-        && $reservationevent->getNbPlace()<$count// fel if
-        */
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
+        $sum = $query->execute();
+        $s=json_encode($sum);
+        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
+        $count1=$count-intval($s);//
+        var_dump($s);
 
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $reservationevent->getNbPlace()<$count1 ) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservationevent);
             $entityManager->flush();
