@@ -39,11 +39,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('reservationevent_index') }}">Back to list</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">Back to list</a>
 
-    <a href="{{ path('reservationevent_edit', {'codeReservation': reservationevent.codeReservation}) }}">Edit</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_edit', {'codeReservation': reservationevent.codeReservation}) }}">Edit</a>
 
-    <a href="{{ path('pdfR', {'codeReservation': reservationevent.codeReservation}) }}">PDF</a>
+    <a class="btn btn-dark" href="{{ path('pdfR', {'codeReservation': reservationevent.codeReservation}) }}">PDF</a>
 
     {{ include('reservationevent/_delete_form.html.twig') }}
 </div>

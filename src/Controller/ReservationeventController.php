@@ -83,7 +83,7 @@ class ReservationeventController extends AbstractController
         $s=json_encode($sum);
         $count =$reservationevent->getCodeEvent()->getNbMaxPart();
         $count1=$count-intval($s);//
-        var_dump($s);
+
 
 
         if ($form->isSubmitted() && $form->isValid() ) {

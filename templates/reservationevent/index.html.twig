@@ -36,8 +36,8 @@
                 <td>{{ reservationevent.nbPlace }}</td>
                 <td>
                     <div>
-                    <a href="{{ path('reservationevent_show', {'codeReservation': reservationevent.codeReservation}) }}">Show</a>
-                    <a href="{{ path('reservationevent_edit', {'codeReservation': reservationevent.codeReservation}) }}">Edit</a>
+                    <a class="btn btn-dark" href="{{ path('reservationevent_show', {'codeReservation': reservationevent.codeReservation}) }}">Show</a>
+                    <a class="btn btn-dark" href="{{ path('reservationevent_edit', {'codeReservation': reservationevent.codeReservation}) }}">Edit</a>
                     {{ include('reservationevent/_delete_form.html.twig') }}
                     </div>
                 </td>
@@ -81,7 +81,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeReservation+'  </td><td>    '+obj.codeEvent.nomEvent+'  </td><td>'+obj.codeClient.nom+' </td><td>'+obj.codeClient.prenom+' </td><td>'+obj.codeClient.numero+' </td><td>'+obj.codeClient.email+' </td><td>'+obj.nbPlace+' </td><td><a href="reservationevent_show/'+obj.codeReservation+'">Show</a> </br><a href="reservationevent_edit/'+obj.codeReservation+'">Edit</a></td></tr>');
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservation+'  </td><td>    '+obj.codeEvent.nomEvent+'  </td><td>'+obj.codeClient.nom+' </td><td>'+obj.codeClient.prenom+' </td><td>'+obj.codeClient.numero+' </td><td>'+obj.codeClient.email+' </td><td>'+obj.nbPlace+' </td><td><a class="btn btn-dark" href="reservationevent_show/'+obj.codeReservation+'">Show</a> </br><a class="btn btn-dark" href="reservationevent_edit/'+obj.codeReservation+'">Edit</a></td></tr>');
                             });
                         }
                         else

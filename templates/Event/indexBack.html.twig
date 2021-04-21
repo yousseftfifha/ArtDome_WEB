@@ -37,8 +37,8 @@
                 <td>{{ event.codeEspace.idEndroit }}</td>
 
                 <td>
-                    <a href="{{ path('event_showBack', {'codeEvent': event.codeEvent}) }}">Show</a>
-                    <a href="{{ path('event_editBack', {'codeEvent': event.codeEvent}) }}">Edit</a>
+                    <a class="btn btn-dark" href="{{ path('event_showBack', {'codeEvent': event.codeEvent}) }}">Show</a>
+                    <a class="btn btn-dark" href="{{ path('event_editBack', {'codeEvent': event.codeEvent}) }}">Edit</a>
                     {{ include('event/_delete_formBack.html.twig') }}
 
                 </td>
@@ -54,9 +54,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('event_newBack') }}">Create new</a>
-    <a href="{{ path('reservationevent_indexBack') }}">View reservations</a>
-    <a href="{{ path('event_stats') }}">View Charts</a>
+    <a class="btn btn-dark" href="{{ path('event_newBack') }}">Create new</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_indexBack') }}">View reservations</a>
+    <a class="btn btn-dark" href="{{ path('event_stats') }}">View Charts</a>
 </div>
 {% endblock %}
 {% block javascripts %}
@@ -83,7 +83,7 @@
                                 $('#t tbody#search').empty();
                                 $.each(JSON.parse(retour), function(i, obj) {
                                     $('#t tbody#all').hide();
-                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.etat+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td>'+obj.nbMaxPart+' </td><td>'+obj.codeEspace.idEndroit+' </td><td><a href="showBack/'+obj.codeEvent+'">show</a></td><td><a href="editBack/'+obj.codeEvent+'">edit</a></td> ');
+                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.etat+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td>'+obj.nbMaxPart+' </td><td>'+obj.codeEspace.idEndroit+' </td><td><a class="btn btn-dark" class="btn btn-dark" href="showBack/'+obj.codeEvent+'">show</a></td><td><a class="btn btn-dark" class="btn btn-dark" href="editBack/'+obj.codeEvent+'">edit</a></td> ');
                                 });
                             }
                             else

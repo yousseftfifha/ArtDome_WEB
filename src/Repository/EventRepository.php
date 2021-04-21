@@ -60,7 +60,7 @@ class EventRepository extends ServiceEntityRepository
     public function SortEvent()
     {
         return $this->createQueryBuilder('e')
-            ->orderBy('e.date', 'DESC')
+            ->orderBy('e.date', 'ASC')
             ->getQuery()
             ->getResult()
             ;

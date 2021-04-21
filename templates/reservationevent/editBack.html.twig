@@ -7,7 +7,7 @@
 
     {{ include('reservationevent/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('reservationevent_indexBack') }}">Back to list</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_indexBack') }}">Back to list</a>
 
     {{ include('reservationevent/_delete_formBack.html.twig') }}
 {% endblock %}
