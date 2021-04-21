@@ -5,7 +5,11 @@
 {% block body %}
 <div class="container">
     <h1 align="center">Create new Reservation</h1>
-
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
     {{ include('reservationevent/_form.html.twig') }}
 
     <a href="{{ path('reservationevent_index') }}">Back to list</a>

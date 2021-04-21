@@ -86,25 +86,30 @@ class ReservationeventController extends AbstractController
         var_dump($s);
 
 
-        if ($form->isSubmitted() && $form->isValid() && $reservationevent->getNbPlace()<$count1 ) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($reservationevent);
-            $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid() ) {
+            if ($reservationevent->getNbPlace() < $count1) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($reservationevent);
+                $entityManager->flush();
 
-            $message = (new \Swift_Message('Reservation confirmed'))
-                ->setFrom('artdomeproject@gmail.com')
-                ->setTo($reservationevent->getCodeClient()->getEmail())
-                ->setBody("Good Day Mr/Mrs,
+                $message = (new \Swift_Message('Reservation confirmed'))
+                    ->setFrom('artdomeproject@gmail.com')
+                    ->setTo($reservationevent->getCodeClient()->getEmail())
+                    ->setBody("Good Day Mr/Mrs,
                 
                                 Your reservation has been confirmed.
                                 
                                 Thank you for choosing ArtDome.
                 "
-                );
-            $flashy->success('Reservation created!', 'http://your-awesome-link.com');
-            $mailer->send($message);
-            //$this->sendSms($reservationevent->getCodeEvent()->getDate(),$reservationevent->getCodeClient()->getPrenom(),$reservationevent->getCodeEvent()->getNomEvent());
-            return $this->redirectToRoute('reservationevent_index');
+                    );
+                $flashy->success('Reservation created!', 'http://your-awesome-link.com');
+                $mailer->send($message);
+                //$this->sendSms($reservationevent->getCodeEvent()->getDate(),$reservationevent->getCodeClient()->getPrenom(),$reservationevent->getCodeEvent()->getNomEvent());
+                return $this->redirectToRoute('reservationevent_index');
+            }
+        else
+
+            $this->addFlash('success', 'We are sorry this event is fully booked');
         }
 
         return $this->render('reservationevent/new.html.twig', [

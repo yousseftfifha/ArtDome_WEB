@@ -92,30 +92,35 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()&& $event->getDate()>new \DateTime('now')) {
-            $file =$request->files->get('event')['image'];
-            $uploads_directory=$this->getParameter('uploads_directory');
-            $filename= md5(uniqid()) . '.' . $file->guessExtension();
-            $file->move(
-                $uploads_directory,
-                $filename
-            );
-            $event->setImage($filename);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($event->getDate()>new \DateTime('now')) {
+                $file = $request->files->get('event')['image'];
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+                $event->setImage($filename);
 
-            $file1 =$request->files->get('event')['video'];
-            $uploads_directory1=$this->getParameter('uploads_directory');
-            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
-            $file1->move(
-                $uploads_directory1,
-                $filename1
-            );
-            $event->setVideo($filename1);
+                $file1 = $request->files->get('event')['video'];
+                $uploads_directory1 = $this->getParameter('uploads_directory');
+                $filename1 = md5(uniqid()) . '.' . $file1->guessExtension();
+                $file1->move(
+                    $uploads_directory1,
+                    $filename1
+                );
+                $event->setVideo($filename1);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($event);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('event_index');
+                return $this->redirectToRoute('event_index');
+            }
+        else
+
+            $this->addFlash('success', 'Ooops it seems like you wrote a previous date');
         }
 
         return $this->render('event/new.html.twig', [
@@ -133,31 +138,36 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $event->getDate()>new \DateTime('now')) {
-            $file =$request->files->get('event')['image'];
-            $uploads_directory=$this->getParameter('uploads_directory');
-            $filename= md5(uniqid()) . '.' . $file->guessExtension();
-            $file->move(
-                $uploads_directory,
-                $filename
-            );
-            $event->setImage($filename);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($event->getDate()>new \DateTime('now')) {
+                $file = $request->files->get('event')['image'];
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+                $event->setImage($filename);
 
-            $file1 =$request->files->get('event')['video'];
-            $uploads_directory1=$this->getParameter('uploads_directory');
-            $filename1= md5(uniqid()) . '.' . $file1->guessExtension();
-            $file1->move(
-                $uploads_directory1,
-                $filename1
-            );
-            $event->setVideo($filename1);
+                $file1 = $request->files->get('event')['video'];
+                $uploads_directory1 = $this->getParameter('uploads_directory');
+                $filename1 = md5(uniqid()) . '.' . $file1->guessExtension();
+                $file1->move(
+                    $uploads_directory1,
+                    $filename1
+                );
+                $event->setVideo($filename1);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($event);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('event_indexBack');
+                return $this->redirectToRoute('event_indexBack');
+            } else
+
+            $this->addFlash('success', 'Ooops it seems like you wrote a previous date');
         }
+
 
         return $this->render('event/newBack.html.twig', [
             'event' => $event,
