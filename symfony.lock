@@ -94,6 +94,15 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.5"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.8.1"
+    },
     "illuminate/contracts": {
         "version": "v5.8.36"
     },
@@ -148,6 +157,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
@@ -156,6 +168,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sabberworm/php-css-parser": {
         "version": "8.3.1"
@@ -572,5 +587,17 @@
     },
     "webmozart/assert": {
         "version": "1.9.1"
+    },
+    "yamilovs/sms-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "f9ed790206295ea7da3f2d28f68fd0500509b813"
+        },
+        "files": [
+            "./config/packages/yamilovs_sms.yaml"
+        ]
     }
 }
