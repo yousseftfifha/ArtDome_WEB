@@ -1,168 +1,60 @@
 <?php
 
+// src/Entity/User.php
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User
+class User implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(name="ID", type="integer", nullable=false)     */
     private $id;
 
+    public function __toString() {
+        return $this->id.' ';
+    }
+
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="nom", type="string", length=30, nullable=false)
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
      */
     private $nom;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
-     */
-    private $prenom;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datenaissance", type="date", nullable=false)
-     */
-    private $datenaissance;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ville", type="string", length=30, nullable=false)
-     */
-    private $ville;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=30, nullable=false)
-     */
-    private $email;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero", type="integer", nullable=false)
-     */
-    private $numero;
-
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=80, nullable=true)
+     * @ORM\Column(name="sexe", type="string", length=255, nullable=true)
      */
-    private $image;
+    private $sexe;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="role", type="string", length=30, nullable=true, options={"default"="user"})
+     * @return string|null
      */
-    private $role = 'user';
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="mdp", type="string", length=50, nullable=true)
-     */
-    private $mdp;
-
-    /**
-     * User constructor.
-     * @param int $id
-     * @param string $nom
-     * @param string $prenom
-     * @param \DateTime $datenaissance
-     * @param string $ville
-     * @param string $email
-     * @param int $numero
-     * @param string|null $image
-     * @param string|null $role
-     * @param string|null $mdp
-     */
-    public function __construct(int $id, string $nom, string $prenom, \DateTime $datenaissance, string $ville, string $email, int $numero, ?string $image, ?string $role, ?string $mdp)
+    public function getSexe(): ?string
     {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->datenaissance = $datenaissance;
-        $this->ville = $ville;
-        $this->email = $email;
-        $this->numero = $numero;
-        $this->image = $image;
-        $this->role = $role;
-        $this->mdp = $mdp;
+        return $this->sexe;
     }
 
     /**
-     * @return int
+     * @param string|null $sexe
      */
-    public function getId(): int
+    public function setSexe(?string $sexe): void
     {
-        return $this->id;
+        $this->sexe = $sexe;
     }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNom(): string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrenom(): string
-    {
-        return $this->prenom;
-    }
-
-    /**
-     * @param string $prenom
-     */
-    public function setPrenom(string $prenom): void
-    {
-        $this->prenom = $prenom;
-    }
-
     /**
      * @return \DateTime
      */
-    public function getDatenaissance(): \DateTime
+    public function getDatenaissance(): ?\DateTime
     {
         return $this->datenaissance;
     }
@@ -178,7 +70,7 @@ class User
     /**
      * @return string
      */
-    public function getVille(): string
+    public function getVille(): ?string
     {
         return $this->ville;
     }
@@ -192,25 +84,9 @@ class User
     }
 
     /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
      * @return int
      */
-    public function getNumero(): int
+    public function getNumero(): ?int
     {
         return $this->numero;
     }
@@ -240,38 +116,182 @@ class User
     }
 
     /**
-     * @return string|null
+     * @var string|null
+     *
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
      */
-    public function getRole(): ?string
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datenaissance", type="date", nullable=false)
+     */
+    private $datenaissance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=30, nullable=false)
+     */
+    private $ville;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=30, nullable=false)
+     */
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="numero", type="integer", nullable=false)
+     */
+    private $numero;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="image", type="string", length=80, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+
+
+
+    public function getId(): ?int
     {
-        return $this->role;
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $name): self
+    {
+        $this->nom = $name;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $name): self
+    {
+        $this->prenom = $name;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
     /**
-     * @param string|null $role
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function setRole(?string $role): void
+    public function getUsername(): string
     {
-        $this->role = $role;
+        return (string) $this->email;
     }
 
     /**
-     * @return string|null
+     * @see UserInterface
      */
-    public function getMdp(): ?string
+    public function getRoles(): array
     {
-        return $this->mdp;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**
-     * @param string|null $mdp
+     * @see UserInterface
      */
-    public function setMdp(?string $mdp): void
+    public function getPassword(): string
     {
-        $this->mdp = $mdp;
+        return (string) $this->password;
     }
-    public function __toString() {
-        return $this->id.' ';
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "auto" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
 
 }
