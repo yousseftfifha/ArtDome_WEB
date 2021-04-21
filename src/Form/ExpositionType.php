@@ -34,17 +34,13 @@ class ExpositionType extends AbstractType
                     'photos' => 'photos',
                     'tableaux' => 'tableaux',
                     'scultures' => 'scultures',
-                ],], TextType::class,array(
-                'label'=>'Thème Exposition',
+                ],'label'=>'Thème Exposition',
                 'attr'=>[
-                    'placeholder'=>'Sélectionner le thème...'
-                ]
-            ))
-            ->add('dateExpo', DateType::class,array(
-                'label'=>'Date Exposition',
-                'attr'=>[
-                    'placeholder'=>'Entrer la date ...'
-                ]
+                    'placeholder'=>'Sélectionner le thème...']]
+            )
+            ->add('dateExpo',DateType::class, array(
+                'widget'=>'single_text',
+                'format'=>'yyyy-MM-dd'
             ))
             ->add('nbMaxParticipant',NumberType::class,array(
                 'label'=>'Nombre max de participants ',
@@ -52,12 +48,9 @@ class ExpositionType extends AbstractType
                     'placeholder'=>'Entrer le nombre max...'
                 ]
             ))
-            ->add('codeArtiste',EntityType::class,['class'=>User::class,'choice_label'=>'nom'], TextType::class,array(
-                'label'=>'Nom Artiste'
-            ))
-            ->add('codeEspace', EntityType::class,['class'=>Endroit::class,'choice_label'=>'type'], TextType::class,array(
-                'label'=>'Nom Espace'
-            ))
+            ->add('codeArtiste',EntityType::class,['class'=>User::class,'choice_label'=>'nom', 'label'=>'Nom artiste']
+            )
+            ->add('codeEspace', EntityType::class,['class'=>Endroit::class,'choice_label'=>'type', 'label'=>'Nom espace'])
         ;
     }
 

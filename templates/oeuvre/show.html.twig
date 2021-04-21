@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oeuvre{% endblock %}
+
+{% block body %}
+
+
+
+    <h1>L'exposition</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>IdExpo</th>
+            <td>{{ oeuvre.codeExposition.codeExpo }}</td>
+        </tr>
+        <tr>
+            <th>NomExpo</th>
+            <td>{{ oeuvre.codeExposition.nomExpo }}</td>
+        </tr>
+        <tr>
+            <th>themeExpo</th>
+            <td>{{ oeuvre.codeExposition.themeExpo }}</td>
+        </tr>
+
+
+
+
+        </tbody>
+    </table>
+    <h1>ses oeuvres</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdOeuvre</th>
+                <td>{{ oeuvre.idOeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Nomoeuvre</th>
+                <td>{{ oeuvre.nomoeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Prixoeuvre</th>
+                <td>{{ oeuvre.prixoeuvre }}</td>
+            </tr>
+
+            <tr>
+                <th>Nomcat</th>
+                <td>{{ oeuvre.nomcat }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+{% endblock %}

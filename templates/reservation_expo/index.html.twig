@@ -3,6 +3,7 @@
 {% block title %} Les réservations Exposition {% endblock %}
 
 {% block body %}
+<div class="container">
     <h1> Les réservations Exposition </h1>
 
     <table class="table" id="t">
@@ -49,12 +50,12 @@
     </table>
 
     <a class="btn btn-info" href="{{ path('reservation_expo_new') }}">Ajouter une nouvelle réservation exposition</a>
-    <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf
+<a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
 
 
 
 
-
+</div>
 {% endblock %}
 {% block javascripts %}
 
@@ -81,7 +82,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>    '+obj.codeClient.nom+'  </td></tr>');
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>    '+obj.codeClient.nom+'  </td></tr>'+obj.codeClient.prenom+'  </td></tr>'+obj.codeClient.email+'  </td></tr>'+obj.codeClient.numero+'  </td></tr>'+obj.codeClient.nomExpo+'  </td></tr>'+obj.nbPlace+'  </td></tr>');
                             });
                         }
                         else
@@ -96,6 +97,5 @@
             });
         });
     </script>
-
 
 {% endblock %}

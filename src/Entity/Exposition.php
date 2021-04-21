@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Exposition
@@ -20,6 +21,7 @@ class Exposition
      * @ORM\Column(name="code_expo", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("expositions:read")
      */
     private $codeExpo;
 
@@ -28,6 +30,7 @@ class Exposition
      *
      * @ORM\Column(name="nom_expo", type="string", length=30, nullable=false)
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("expositions:read")
      */
     private $nomExpo;
 
@@ -36,6 +39,7 @@ class Exposition
      *
      * @ORM\Column(name="theme_expo", type="string", length=30, nullable=false)
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("expositions:read")
      */
     private $themeExpo;
 
@@ -44,6 +48,7 @@ class Exposition
      *
      * @ORM\Column(name="date_expo", type="date", nullable=false)
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("expositions:read")
      */
     private $dateExpo;
 
@@ -53,6 +58,7 @@ class Exposition
      * @ORM\Column(name="nb_max_participant", type="integer", nullable=false)
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
      * @Assert\Positive(message="cette valeur doit être positive")
+     * @Groups("expositions:read")
      * @Assert\Type(
      *     type="integer",
      *     message="Ce champ doit contenir un nombre."
@@ -68,6 +74,7 @@ class Exposition
      *   @ORM\JoinColumn(name="code_artiste", referencedColumnName="ID")
      * })
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("expositions:read")
      */
     private $codeArtiste;
 
@@ -79,8 +86,20 @@ class Exposition
      *   @ORM\JoinColumn(name="code_espace", referencedColumnName="id_endroit")
      * })
      * @Assert\NotBlank(message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("expositions:read")
      */
     private $codeEspace;
+
+    /**
+     * @var Oeuvre
+     *
+     * @ORM\ManyToOne(targetEntity="Oeuvre")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="code_oeuvre", referencedColumnName="ID_Oeuvre")
+     * })
+     * @Groups("expositions:read")
+     */
+    private $codeOeuvre;
 
     /**
      * @return int
@@ -89,6 +108,7 @@ class Exposition
     {
         return $this->codeExpo;
     }
+
 
     /**
      * @param int $codeExpo
@@ -192,6 +212,22 @@ class Exposition
     public function setCodeEspace(Endroit $codeEspace): void
     {
         $this->codeEspace = $codeEspace;
+    }
+
+    /**
+     * @return Oeuvre
+     */
+    public function getCodeOeuvre(): ?Oeuvre
+    {
+        return $this->codeOeuvre;
+    }
+
+    /**
+     * @param Oeuvre $codeOeuvre
+     */
+    public function setCodeOeuvre(Oeuvre $codeOeuvre): void
+    {
+        $this->codeOeuvre = $codeOeuvre;
     }
 
     public function __toString() {

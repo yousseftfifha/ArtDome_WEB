@@ -19,6 +19,26 @@ class ExpositionRepository extends ServiceEntityRepository
         parent::__construct($registry, Exposition::class);
     }
 
+    public function SortExpo()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.dateExpo', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getavecOeuvres($code)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb ->join('a.codeExposition', 'c')
+            ->addSelect('c')
+            ->where('c.codeExpo = :code')
+            ->setParameter('code',$code);
+
+        return $qb->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Exposition[] Returns an array of Exposition objects
     //  */
@@ -47,4 +67,12 @@ class ExpositionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findexpoByCode($codeExpo){
+        return $this->createQueryBuilder('r')
+            ->where('r.codeExpo  LIKE :codeExpo')
+            ->setParameter('codeExpo', '%'.$codeExpo.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

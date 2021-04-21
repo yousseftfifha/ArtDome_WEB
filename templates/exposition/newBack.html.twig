@@ -7,6 +7,12 @@
 {% block body %}
     <h1>Créer une nouvelle exposition</h1>
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     {{ include('exposition/_form.html.twig') }}
 
     <a href="{{ path('exposition_indexBack') }}">retourner à la liste des expositions</a>

@@ -3,6 +3,7 @@
 {% block title %}Les réservations Exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Les réservations Exposition</h1>
 
     <table class="table">
@@ -31,6 +32,7 @@
                 <th>
                     <a href="{{ path('reservation_expo_showBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Afficher</a>
                     <a href="{{ path('reservation_expo_editBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
+                    {{ include('reservation_expo/_delete_formBack.html.twig') }}
                 </th>
             </tr>
         {% else %}
@@ -41,5 +43,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('reservation_expo_newBack') }}">Ajouter une nouvelle réservation exposition</a>
+
+    <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
+</div>
 {% endblock %}

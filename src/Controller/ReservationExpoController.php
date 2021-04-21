@@ -56,35 +56,48 @@ class ReservationExpoController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="reservation_expo_new", methods={"GET","POST"})
+     * @Route("/new/{codeExpo}", name="reservation_expo_new", methods={"GET","POST"})
      */
-    public function new(Request $request, \Swift_Mailer $mailer, FlashyNotifier $flashy): Response
+    public function new(Request $request, \Swift_Mailer $mailer, Exposition $exposition, FlashyNotifier $flashy): Response
     {
         $reservationExpo = new ReservationExpo();
         $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
+        $reservationExpo->setCodeExpo($exposition);
         $form->handleRequest($request);
 
+        $code=$exposition->getCodeExpo();
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\ReservationExpo e WHERE e.codeExpo='.$code.' ');
+        $sum = $query->execute();
+        $s=json_encode($sum);
+        $count =$reservationExpo->getCodeExpo()->getNbMaxParticipant();
+        $count1=$count-intval($s);//
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($reservationExpo);
-            $entityManager->flush();
+            if ($reservationExpo->getNbPlace() < $count1) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($reservationExpo);
+                $entityManager->flush();
 
 
-            $message = (new \Swift_Message('You Got Mail!'))
-                               ->setFrom('artdomeproject@gmail.com')
-                           ->setTo($reservationExpo->getCodeClient()->getEmail())
-                ->setBody("Good Day Mr/Mrs,
+                $message = (new \Swift_Message('You Got Mail!'))
+                    ->setFrom('artdomeproject@gmail.com')
+                    ->setTo($reservationExpo->getCodeClient()->getEmail())
+                    ->setBody("Good Day Mr/Mrs,
                 
                                 Your reservation has been confirmed.
                                 
                                 Thank you for choosing ArtDome."
 
-                );
+                    );
 
-            $flashy->success('Reservation created!', 'http://your-awesome-link.com');
-           $mailer->send($message);
+                $flashy->success('Reservation created!', 'http://your-awesome-link.com');
+                $mailer->send($message);
 
-            return $this->redirectToRoute('reservation_expo_index');
+                return $this->redirectToRoute('reservation_expo_index');
+            } else
+
+                $this->addFlash('success', 'We are sorry this exposition is fully booked');
         }
 
         return $this->render('reservation_expo/new.html.twig', [
@@ -233,10 +246,42 @@ class ReservationExpoController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("mypdf.pdf", [
+        $dompdf->stream("pdfreservation.pdf", [
             "Attachment" => true
         ]);
         return $this->redirectToRoute('reservation_expo_index');
+
+    }
+
+    /**
+     * @Route("/reservation/pdf/back", name="pdf", methods={"GET"})
+     */
+    public function pdfBack(ReservationExpoRepository $ReservationExpoRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservation_expo/liste.html.twig', [
+            'reservation_expos' => $ReservationExpoRepository->findAll(),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("pdfreservationBack.pdf", [
+            "Attachment" => true
+        ]);
+        return $this->redirectToRoute('reservation_expo_indexBack');
 
     }
     /**

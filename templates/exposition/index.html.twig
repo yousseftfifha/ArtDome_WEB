@@ -3,7 +3,7 @@
 {% block title %}Les expositions{% endblock %}
 
 {% block body %}
-    <h1>Les expositions</h1>
+  {#  <h1>Les expositions</h1>
 
     <table class="table">
         <thead>
@@ -44,4 +44,87 @@
     </table>
 
     <a  href="{{ path('exposition_new') }}">Créer une nouvelle exposition</a>
+    <div class="pagination">
+        {{ knp_pagination_render(expositions) }}
+    </div>
+{% endblock %}
+#}
+<section class="item content" >
+    <div class="container toparea" >
+        <div class="underlined-title">
+            <div class="editContent">
+                <h1 class="text-center latestitems">Expositions</h1>
+            </div>
+            <div class="wow-hr type_short">
+                <span class="wow-hr-h">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                </span>
+            </div>
+        </div>
+        <div>
+            <input type="text" id="search" class="form-control" placeholder="Search">
+        </div>
+        <br>
+        {% for exposition in expositions %}
+
+        <div class="row" >
+            <div class="col-md-4">
+                <div class="productbox">
+                    <div class="fadeshop">
+                        <div class="captionshop text-center" style="display: none;">
+
+                            <h3>{{ exposition.nomExpo }}</h3>
+                            <p>
+                                {{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }}
+                            </p>
+                            <p>
+                            <form id="id" class="edd_form" action="<  {{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" method="POST">
+
+                                <input type="hidden" name="edd_action" value={{ exposition.codeExpo  }}>
+                                <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More Details</a>
+                            </form>
+
+                            </p>
+                        </div>
+                        <span class="maxproduct"><img height="500" width="500"  src="{{ asset('Front/images/Art.jpg') }}" alt=""></span>
+                    </div>
+                    <div class="product-details">
+                        <br>
+                        <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}">{{ exposition.nomExpo }}
+
+                            <h1>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }} <br> </h1>
+
+                        </a>
+                        <span class="price">
+					    <span class="edd_price">{{ exposition.themeExpo }} </span>
+
+					    </span>
+
+                        <div>
+
+                            <a href="{{ path('reservation_expo_new' , {'codeExpo': exposition.codeExpo})}}">Make a reservation  </a>
+
+                        </div>
+                        <a href="{{ path('exposition_edit', {'codeExpo': exposition.codeExpo}) }}">  Edit</a>
+                        {{ include('exposition/_delete_form.html.twig') }}
+                    </div>
+                </div>
+
+            </div>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+        </div>
+
+    </div>
+    </div>
+    <a href="{{ path('exposition_new') }}">Create new</a>
+    <div class="pagination">
+        {{ knp_pagination_render(expositions) }}
+    </div>
+</section>
 {% endblock %}

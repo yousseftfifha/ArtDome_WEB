@@ -4,6 +4,11 @@
 
 {% block body %}
     <h1>créer une nouvelle réservation exposition</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {{ include('reservation_expo/_form.html.twig') }}
 

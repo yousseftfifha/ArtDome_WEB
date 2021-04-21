@@ -3,10 +3,12 @@
 {% block title %}Les expositions{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Les expositions</h1>
 
-    <table class="table">
+    <table class="table" id="t">
         <thead>
+        <input type="text" id="search" class="form-control" placeholder="Search">
             <tr>
                 <th>Code Exposition</th>
                 <th>Nom Exposition</th>
@@ -18,7 +20,7 @@
                 <th>actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="all">
         {% for exposition in expositions %}
             <tr>
                 <td>{{ exposition.codeExpo }}</td>
@@ -32,6 +34,7 @@
                     <th>
                   <a href="{{ path('exposition_showBack', {'codeExpo': exposition.codeExpo}) }}">Afficher</a>
                   <a href="{{ path('exposition_editBack', {'codeExpo': exposition.codeExpo}) }}">Modifier</a>
+                        {{ include('exposition/_delete_formBack.html.twig') }}
                    </th>
 
             </tr>
@@ -40,8 +43,58 @@
                 <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
+        <tbody id="search">
+
+        </tbody>
         </tbody>
     </table>
 
     <a  href="{{ path('exposition_newBack') }}">Créer une nouvelle exposition</a>
+    <a href="{{ path('exposition_stats') }}">View Charts</a>
+
+</div>
 {% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('exposition_searchExposition') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><td> '+obj.codeExpo+'  </td><td>   '+obj.nomExpo+'  </td><td>'+obj.themeExpo+'  </td><td>'+obj.dateExpo+'  </td><td>'+obj.nbMaxParticipant+'  </td><td>'+obj.codeArtiste.nom+'  </td><td>'+obj.codeEspace.type+'  </td><td><a href="exposition_showBack/'+obj.codeExpo+'">show</a></td><td><a href="exposition_editBack/'+obj.codeExpo+'">edit</a></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+
+{% endblock %}
+
