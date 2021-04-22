@@ -1,0 +1,48 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Notification index{% endblock %}
+
+{% block body %}
+    <h1>Notification index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notification in notifications %}
+            <tr>
+                <td>{{ notification.id }}</td>
+                <td>{{ notification.type }}</td>
+                <td>{{ notification.getIdUser.getNom() }}</td>
+                <td>{{ notification.getIdUser.getprenom() }}</td>
+
+                <td>
+
+                    <form method="post" action="{{ path('notification_delete_2', {'id': notification.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
+                        <button class="btn">Confirm</button>
+                    </form>
+                    <form method="post" action="{{ path('notification_delete', {'id': notification.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
+                        <button class="btn">Delete</button>
+                    </form>
+
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
