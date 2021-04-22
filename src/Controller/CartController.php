@@ -106,7 +106,7 @@ class CartController extends AbstractController
 
     }
     /**
-     * @Route("/cart/delete/{idcart}", name="cart_delete", methods={"GET","POST"})
+     * @Route("/delete/{idcart}", name="cart_delete", methods={"GET","POST"})
      */
     public function delete(Request $request, Cart $cart): Response
     {

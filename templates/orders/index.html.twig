@@ -60,6 +60,9 @@
                                     <td class="edd_cart_item_name">
                                         {{ order.innonumber }}
                                     </td>
+                                    <td class="hidden">
+                                        <span class="edd_checkout_cart_item_title"> {{ order.iduser }} </span>
+                                    </td>
                                     <td class="edd_cart_item_name">
                                         <span class="edd_checkout_cart_item_title"> {{ order.iduser.nom }}  {{ order.iduser.prenom }}</span>
                                     </td>
@@ -79,6 +82,7 @@
                                             <a href="{{ path('pending_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a>
 
                                         </a>
+
                                     </td>
                                 </tr>
 
@@ -137,7 +141,7 @@
                             $('#edd_checkout_cart tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#edd_checkout_cart tbody#all').hide();
-                                $('#edd_checkout_cart tbody#search').append('<tr><td> '+obj.innonumber+'  </td> <td> '+obj.iduser.nom+obj.iduser.prenom+'  </td><td> '+obj.orderdate+'  </td><td> '+obj.status+'  </td><td> '+obj.dueamount+'  </td> <td><a href="pending_orders_index/'+obj.innonumber+'">Show Details</a></td></tr>');
+                                $('#edd_checkout_cart tbody#search').append('<tr><td> '+obj.innonumber+'  </td><td class="hidden"> '+obj.iduser+'  </td> <td> '+obj.iduser.nom+obj.iduser.prenom+'  </td><td> '+obj.orderdate+'  </td><td> '+obj.status+'  </td><td> '+obj.dueamount+'  </td> <td><a href="pending_orders_index/'+obj.innonumber+'">Show Details</a></td></tr>');
                             });
                         }
                         else
