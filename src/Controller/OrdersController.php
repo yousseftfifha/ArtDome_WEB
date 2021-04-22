@@ -22,6 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Yamilovs\Bundle\SmsBundle\Service\ProviderManager;
+
 
 /**
  * @Route("/orders")
@@ -35,7 +37,8 @@ class OrdersController extends AbstractController
     {
         $orders = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.orderdate desc')
+            ->createQuery('SELECT e FROM App\Entity\Orders e  WHERE e.iduser = :iduser order by  e.orderdate desc')
+            ->setParameter('iduser',$this->getUser())
             ->getResult();
 
         $show = $paginator->paginate(
@@ -52,14 +55,14 @@ class OrdersController extends AbstractController
     /**
      * @Route("/new/{innonumber}", name="orders_new", methods={"GET","POST"})
      */
-    public function new(Request $request, int $innonumber, \Swift_Mailer $mailer): Response
+    public function new(Request $request, int $innonumber, \Swift_Mailer $mailer,ProviderManager $providerManager): Response
     {
 
         $order = new Orders();
 
         $entityManager = $this->getDoctrine()->getManager();
         $d = new \DateTime("2000-02-24");
-        $u = new User(0, "tfifha", "youssef", $d, "ezzahra", "youssef.tfifha@esprit.tn", 20245989, null, "user", "ww");
+        $u=$this->getUser();
         $order->setIduser($u);
         $query = $entityManager->createQuery('SELECT u FROM App\Entity\PendingOrders u WHERE u.innonumber = :innonumber'
         )->setParameter('innonumber', $innonumber);
@@ -75,6 +78,7 @@ class OrdersController extends AbstractController
 
             $order->setInnonumber($innonumber);
         }
+
         $datetime = new \DateTime('now');
         $order->setOrderdate($datetime);
         $order->setStatus("Pending");
@@ -147,7 +151,7 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("order/pdf", name="pdff", methods={"GET"})
+     * @Route("/orders/pdf", name="pdf", methods={"GET"})
      */
     public function pdf(OrdersRepository $OrdersRepository): Response
     {
@@ -172,7 +176,7 @@ class OrdersController extends AbstractController
 
         // Output the generated PDF to Browser (inline view)
         $dompdf->stream("Commande.pdf", [
-            "Attachment" => false
+            "Attachment" => true
         ]);
         return $this->redirectToRoute('orders_index');
 
@@ -370,6 +374,146 @@ class OrdersController extends AbstractController
         return new Response($retour);
 
 
+    }
+    /**
+     * @Route("/orders/orderbyDueAmountback", name="orderbyDueAmountback")
+     */
+
+    public function orderbyDueAmountback(PaginatorInterface $paginator,Request $request)
+    {
+        $orders = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.dueamount desc')
+            ->getResult();
+
+        $show = $paginator->paginate(
+            $orders,
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            6/*nbre d'éléments par page*/
+
+        );
+        return $this->render('orders/indexBack.html.twig', [
+            'orders' => $show,
+        ]);
+
+    }
+
+    /**
+     * @Route("/orders/orderbyStatusPendingback", name="orderbyStatusPendingback")
+     */
+
+    public function orderbyStatusPendingback(PaginatorInterface $paginator,Request $request)
+    {
+        $orders = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            )->setParameter('status', "Pending")
+            ->getResult();
+
+        $show = $paginator->paginate(
+            $orders,
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            6/*nbre d'éléments par page*/
+
+        );
+        return $this->render('orders/indexBack.html.twig', [
+            'orders' => $show,
+        ]);
+
+    }
+
+    /**
+     * @Route("/orders/orderbyStatusConfirmedback", name="orderbyStatusConfirmedback")
+     */
+
+    public function orderbyStatusConfirmedback(PaginatorInterface $paginator,Request $request)
+    {
+        $orders = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            )->setParameter('status', "Confirmed")
+            ->getResult();
+
+        $show = $paginator->paginate(
+            $orders,
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            6/*nbre d'éléments par page*/
+
+        );
+        return $this->render('orders/indexBack.html.twig', [
+            'orders' => $show,
+        ]);
+
+    }
+
+    /**
+     * @Route("/orders/orderbyStatusCancelledback", name="orderbyStatusCancelledback")
+     */
+
+    public function orderbyStatusCancelledback(PaginatorInterface $paginator,Request $request)
+    {
+        $orders = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            )->setParameter('status', "Cancelled")
+            ->getResult();
+
+
+        $show = $paginator->paginate(
+            $orders,
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            6/*nbre d'éléments par page*/
+
+        );
+        return $this->render('orders/indexBack.html.twig', [
+            'orders' => $show,
+        ]);
+
+    }
+
+    /**
+     * @Route("/orders/statusStatsback", name="statusStatsback")
+     */
+    public function statusStatsback()
+    {
+        $repository = $this->getDoctrine()->getRepository(Orders::class);
+        $ListOrders = $repository->findAll();
+        $em = $this->getDoctrine()->getManager();
+
+        $pending = 0;
+        $confirmed = 0;
+        $cancelled = 0;
+
+
+        foreach ($ListOrders as $Orders) {
+            if ($Orders->getStatus() == "Pending")
+
+                $pending += 1;
+            else if ($Orders->getStatus() == "Confirmed")
+                $confirmed += 1;
+            else
+                $cancelled += 1;
+        }
+
+
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['status', 'nombres'],
+                ['Pending', $pending],
+                ['Confirmed', $confirmed],
+                ['Cancelled', $cancelled]
+            ]
+        );
+        $pieChart->getOptions()->setTitle('status Statistique');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#009900');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
     }
 
 }

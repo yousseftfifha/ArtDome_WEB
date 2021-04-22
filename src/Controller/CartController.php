@@ -45,7 +45,8 @@ class CartController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $d=new \DateTime("2000-02-24");
-        $u=new User(0,"tfifha","youssef",$d,"ezzahra","youssef.tfifha@esprit.tn",20245989,null,"user","ww") ;
+      //  $u=new User(0,"tfifha","youssef",$d,"ezzahra","youssef.tfifha@esprit.tn",20245989,null,"user","ww") ;
+        $u=$this->getUser();
         $cart->setIdUser($u);
         $cart->setQuantity(1);
 
