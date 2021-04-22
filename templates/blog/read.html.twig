@@ -1,0 +1,18 @@
+{% extends '../base.html.twig' %}
+
+{% block body %}
+    <h1>{{blog.Title}}</h1>
+    <small>{{ blog.DateOfPub|date("d/m/Y") }}</small>
+    <img src="{{ asset(blog.image) }}" alt="{{ blog.Title }}">
+    <p>{{ blog.text }}</p>
+    {{ form_start(form) }}
+        {{ form_row(form.idUser) }}
+        {{ form_row(form.text) }}
+        <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+    <ul>
+        {% for commentaire in blog.commentaires %}
+            <li>{{ commentaire.idUser }} : {{ commentaire.text }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
