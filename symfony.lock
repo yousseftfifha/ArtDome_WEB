@@ -1,7 +1,4 @@
 {
-    "cmen/google-charts-bundle": {
-        "version": "4.0.0"
-    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -94,38 +91,26 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
-    "illuminate/contracts": {
-        "version": "v5.8.36"
-    },
-    "illuminate/support": {
-        "version": "v5.8.36"
-    },
-    "knplabs/knp-components": {
-        "version": "v1.3.10"
-    },
-    "knplabs/knp-paginator-bundle": {
-        "version": "v4.1.1"
-    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
     "laminas/laminas-eventmanager": {
         "version": "3.2.1"
     },
+    "laminas/laminas-json": {
+        "version": "3.2.0"
+    },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
-    },
-    "mercuryseries/flashy": {
-        "version": "1.0.4"
     },
     "monolog/monolog": {
         "version": "1.26.0"
     },
-    "nesbot/carbon": {
-        "version": "2.46.0"
-    },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "ob/highcharts-bundle": {
+        "version": "1.7"
     },
     "phenx/php-font-lib": {
         "version": "0.5.2"
@@ -154,9 +139,6 @@
     "psr/log": {
         "version": "1.1.3"
     },
-    "psr/simple-cache": {
-        "version": "1.0.1"
-    },
     "sabberworm/php-css-parser": {
         "version": "8.3.1"
     },
@@ -171,9 +153,6 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
-    },
-    "stripe/stripe-php": {
-        "version": "v7.77.0"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.7"
@@ -515,6 +494,9 @@
     },
     "symfony/twig-pack": {
         "version": "v1.0.1"
+    },
+    "symfony/ux-chartjs": {
+        "version": "v1.2.0"
     },
     "symfony/validator": {
         "version": "4.3",

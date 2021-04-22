@@ -2,29 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\PendingOrders;
+use App\Entity\Reservation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PendingOrders1Type extends AbstractType
+class ReservationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderid')
-            ->add('innonumber')
-            ->add('quantity')
-            ->add('status')
-            ->add('oeuvreid')
-            ->add('iduser')
+            ->add('idclient')
+            ->add('matricule')
+            ->add('dateDebut')
+            ->add('dateFin')
+
+            ->add('cautionnement')
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PendingOrders::class,
+            'data_class' => Reservation::class,
         ]);
     }
 }

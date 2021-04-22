@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="endroit")
  * @ORM\Entity
  */
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\EndroitRepository")
+ */
+
 class Endroit
 {
     /**
@@ -61,7 +65,7 @@ class Endroit
      *
      * @ORM\Column(name="disponibilite", type="string", length=30, nullable=true)
      */
-    private $disponibilite;
+    private $disponibilite='disponible';
 
     public function getIdEndroit(): ?int
     {

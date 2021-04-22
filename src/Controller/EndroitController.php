@@ -4,14 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Endroit;
 use App\Form\EndroitType;
+use App\Repository\EndroitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Ob\HighchartsBundle\Highcharts\Highchart;
+
 
 /**
  * @Route("/endroit")
  */
+
 class EndroitController extends AbstractController
 {
     /**
@@ -71,7 +75,6 @@ class EndroitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('endroit_index');
         }
 
@@ -94,4 +97,41 @@ class EndroitController extends AbstractController
 
         return $this->redirectToRoute('endroit_index');
     }
+
+    /**
+     * @Route("/Endroit/statistique", name="endroit_stat")
+     */
+    public function chartAction()
+    {
+        $repository = $this->getDoctrine()->getRepository(Endroit::class);
+        $ListEndroit = $repository->findAll();
+        $doc = $this->getDoctrine()->getManager();
+        $manoir = 0;
+        $salle = 0;
+        foreach ($ListEndroit as $endroit) {
+            if ($endroit->getType() == "Manoir")
+
+                $manoir += 1;
+
+            else
+                $salle += 1;
+        }
+        $data = [
+            ['Manoir', ($manoir/($manoir+$salle)*100)],
+            ['Salle expo', ($salle/($manoir+$salle)*100)],
+
+        ];
+
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('container');
+        $ob->chart->type('pie');
+        $ob->title->text('My Pie Chart');
+        $ob->series(array(array("data"=>$data)));
+
+        return $this->render('endroit/stat.html.twig', [
+            'mypiechart' => $ob
+        ]);
+    }
+
 }

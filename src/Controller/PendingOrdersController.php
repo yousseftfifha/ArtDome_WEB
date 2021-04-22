@@ -21,7 +21,9 @@ class PendingOrdersController extends AbstractController
      */
     public function index(int $innonumber): Response
     {
-
+//        $pendingOrders = $this->getDoctrine()
+//            ->getRepository(PendingOrders::class)
+//            ->findBy();
         $entityManager = $this->getDoctrine()->getManager();
 
         $query = $entityManager->createQuery(
@@ -62,6 +64,7 @@ class PendingOrdersController extends AbstractController
 
 
             $pendingOrder->setInnonumber($y);
+            $pendingOrder->setStatus("Pending");
             $entityManager->merge($pendingOrder);
             $entityManager->flush();
         }
@@ -69,9 +72,7 @@ class PendingOrdersController extends AbstractController
         $numDeleted = $q->execute();
 
 
-            return $this->redirectToRoute('orders_new',array(
-                'innonumber' => $y,
-            ));
+            return $this->redirectToRoute('orders_new');
 
     }
 

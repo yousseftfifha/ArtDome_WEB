@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Reservation
  *
  * @ORM\Table(name="reservation", indexes={@ORM\Index(name="_idx", columns={"idclient"})})
  * @ORM\Entity
+ */
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  */
 class Reservation
 {
@@ -18,6 +22,7 @@ class Reservation
      * @ORM\Column(name="id_reservation", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("reservations:read")
      */
     private $idReservation;
 
@@ -25,6 +30,7 @@ class Reservation
      * @var int
      *
      * @ORM\Column(name="idclient", type="integer", nullable=false)
+     * @Groups("reservations:read")
      */
     private $idclient;
 
@@ -32,6 +38,7 @@ class Reservation
      * @var int
      *
      * @ORM\Column(name="matricule", type="integer", nullable=false)
+     * @Groups("reservations:read")
      */
     private $matricule;
 
@@ -39,6 +46,7 @@ class Reservation
      * @var \DateTime
      *
      * @ORM\Column(name="date_debut", type="date", nullable=false)
+     * @Groups("reservations:read")
      */
     private $dateDebut;
 
@@ -46,13 +54,16 @@ class Reservation
      * @var \DateTime
      *
      * @ORM\Column(name="date_fin", type="date", nullable=false)
+     * @Groups("reservations:read")
      */
     private $dateFin;
+
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="date_retour", type="string", length=45, nullable=true)
+     * @Groups("reservations:read")
      */
     private $dateRetour;
 
@@ -60,6 +71,7 @@ class Reservation
      * @var int
      *
      * @ORM\Column(name="Cautionnement", type="integer", nullable=false)
+     * @Groups("reservations:read")
      */
     private $cautionnement;
 
@@ -67,8 +79,13 @@ class Reservation
      * @var string|null
      *
      * @ORM\Column(name="prix_total", type="string", length=45, nullable=true)
+     * @Groups("reservations:read")
      */
+
     private $prixTotal;
+
+    //public $days=round(($dateFin-$dateDebut )/ (60 * 60 * 24));
+   // echo round($days);
 
     public function getIdReservation(): ?int
     {
