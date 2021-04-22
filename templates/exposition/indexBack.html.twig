@@ -4,8 +4,13 @@
 
 {% block body %}
 <div class="container">
-    <h1>Les expositions</h1>
 
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Expositions</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
     <table class="table" id="t">
         <thead>
         <input type="text" id="search" class="form-control" placeholder="Search">
@@ -49,9 +54,12 @@
         </tbody>
     </table>
 
-    <a  href="{{ path('exposition_newBack') }}">Créer une nouvelle exposition</a>
-    <a href="{{ path('exposition_stats') }}">View Charts</a>
+    <a class="btn btn-outline-info" href="{{ path('exposition_newBack') }}">Créer une nouvelle exposition</a>
+    <a class="btn btn-facebook" href="{{ path('exposition_stats') }}">View Charts</a>
 
+</div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

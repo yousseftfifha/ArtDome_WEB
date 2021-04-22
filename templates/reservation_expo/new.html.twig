@@ -3,6 +3,7 @@
 {% block title %}Nouvelle réservation exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>créer une nouvelle réservation exposition</h1>
     {% for message in app.flashes('success') %}
         <div class="alert alert-danger">
@@ -12,5 +13,6 @@
 
     {{ include('reservation_expo/_form.html.twig') }}
 
-    <a href="{{ path('reservation_expo_index') }}">Retourner à la liste des expositions</a>
+    <a href="{{ path('exposition_index') }}">Retourner à la liste des expositions</a>
+</div>
 {% endblock %}

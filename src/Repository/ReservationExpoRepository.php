@@ -21,6 +21,15 @@ class ReservationExpoRepository extends ServiceEntityRepository
 
 
 
+    public function SortReservation()
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.codeReservatione', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return ReservationExpo[] Returns an array of ReservationExpo objects
     //  */
@@ -51,6 +60,14 @@ class ReservationExpoRepository extends ServiceEntityRepository
     */
 
     public function findreservationByCode($codeReservatione){
+        return $this->createQueryBuilder('r')
+            ->where('r.codeReservatione  LIKE :codeReservatione')
+            ->setParameter('codeReservatione', '%'.$codeReservatione.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findreservationByNom($codeReservatione){
         return $this->createQueryBuilder('r')
             ->where('r.codeReservatione  LIKE :codeReservatione')
             ->setParameter('codeReservatione', '%'.$codeReservatione.'%')

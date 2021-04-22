@@ -3,9 +3,11 @@
 {% block title %}Nouvelle réservation exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Créer une nouvelle réservation exposition</h1>
 
     {{ include('reservation_expo/_form.html.twig') }}
 
     <a href="{{ path('reservation_expo_indexBack') }}">Retourner à la liste des expositions</a>
+</div>
 {% endblock %}

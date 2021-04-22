@@ -5,6 +5,7 @@
 {% block title %}Exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Exposition</h1>
 
     <table class="table">
@@ -37,4 +38,5 @@
     <a href="{{ path('exposition_editBack', {'codeExpo': exposition.codeExpo}) }}">Modifier</a>
 
     {{ include('exposition/_delete_formBack.html.twig') }}
+</div>
 {% endblock %}

@@ -34,7 +34,7 @@ class ReservationExpoController extends AbstractController
     {
         $reservationExpos = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT r FROM App\Entity\ReservationExpo r order by  r.nbPlace desc')
+            ->createQuery('SELECT r FROM App\Entity\ReservationExpo r order by  r.nbPlace asc')
             ->getResult();
 
         return $this->render('reservation_expo/index.html.twig', [
@@ -46,9 +46,15 @@ class ReservationExpoController extends AbstractController
      */
     public function indexBack(): Response
     {
-        $reservationExpos = $this->getDoctrine()
+       /* $reservationExpos = $this->getDoctrine()
             ->getRepository(ReservationExpo::class)
-            ->findAll();
+            ->findAll();*/
+
+        $ReservationExpoRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(ReservationExpo::class);
+        $reservationExpos = $ReservationExpoRepository->SortReservation();
+
 
         return $this->render('reservation_expo/indexBack.html.twig', [
             'reservation_expos' => $reservationExpos,
@@ -296,8 +302,19 @@ class ReservationExpoController extends AbstractController
         $retour=json_encode($jsonContent);
         return new Response($retour);
 
+    }
 
-
+    /**
+     * @Route("//searchBack", name="reservation_expo_searchReservationBack")
+     */
+    public function searchReservationBack(Request $request, NormalizerInterface $Normalizer)
+    {
+        $repository = $this->getDoctrine()->getRepository(ReservationExpo::class);
+        $requestString= $request->get('searchValue');
+        $reservations = $repository->findreservationByCode($requestString);
+        $jsonContent = $Normalizer->normalize($reservations, 'json',['groups'=>'reservations:read']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
 
     }
 

@@ -22,13 +22,8 @@ class ReservationExpoType extends AbstractType
                     'placeholder'=>'Entrer le nombre de place que vous souhaitez réserver...'
                 ]
             ))
-            ->add('codeClient', EntityType::class,['class'=>User::class,'choice_label'=>'nom'], TextType::class,array(
-                'label'=>'Code du client '
-
-            ))
-            ->add('codeExpo', EntityType::class,['class'=>Exposition::class,'choice_label'=>'nomExpo'], TextType::class,array(
-                'label'=>'Code Exposition'
-            ))
+            ->add('codeClient', EntityType::class,['class'=>User::class,'choice_label'=>'nom','label'=>'nom du client '])
+            ->add('codeExpo', EntityType::class,['class'=>Exposition::class,'choice_label'=>'nomExpo','label'=>'nom de lExposition'])
 
 
         ;

@@ -4,24 +4,48 @@
 {% block title %}Réservation Exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Réservation Exposition</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Code Réservation</th>
-                <td>{{ reservation_expo.codeReservatione }}</td>
-            </tr>
-            <tr>
-                <th>Nombre de Place</th>
-                <td>{{ reservation_expo.nbPlace }}</td>
-            </tr>
+        <tr>
+            <th>Code Réservation</th>
+            <td>{{ reservation_expo.codeReservatione }}</td>
+        </tr>
+        <tr>
+            <th>Nom du client</th>
+            <td>{{ reservation_expo.codeClient.nom }}</td>
+        </tr>
+        <tr>
+            <th>Prenom du client</th>
+            <td>{{ reservation_expo.codeClient.prenom }}</td>
+        </tr>
+
+        <tr>
+            <th>Email du client</th>
+            <td>{{ reservation_expo.codeClient.email }}</td>
+        </tr>
+        <tr>
+            <th>Numero du client</th>
+            <td>{{ reservation_expo.codeClient.numero }}</td>
+        </tr>
+        <tr>
+        <tr>
+            <th>nom de l'exposition</th>
+            <td>{{ reservation_expo.codeExpo.nomExpo }}</td>
+        </tr>
+        <tr>
+            <th>Nombre de Place</th>
+            <td>{{ reservation_expo.nbPlace }}</td>
+        </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('reservation_expo_indexBack') }}">Retourner à la liste des expositions</a>
+    <a href="{{ path('reservation_expo_indexBack') }}">Retourner à la liste des réservations expositions</a>
 
     <a href="{{ path('reservation_expo_editBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
 
     {{ include('reservation_expo/_delete_formBack.html.twig') }}
+</div>
 {% endblock %}

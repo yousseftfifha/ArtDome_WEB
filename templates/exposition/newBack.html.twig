@@ -5,6 +5,7 @@
 {% block title %}Nouvelle exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Créer une nouvelle exposition</h1>
 
     {% for message in app.flashes('success') %}
@@ -15,5 +16,6 @@
 
     {{ include('exposition/_form.html.twig') }}
 
-    <a href="{{ path('exposition_indexBack') }}">retourner à la liste des expositions</a>
+    <a class="btn btn-outline-info" href="{{ path('exposition_indexBack') }}">retourner à la liste des expositions</a>
+</div>
 {% endblock %}

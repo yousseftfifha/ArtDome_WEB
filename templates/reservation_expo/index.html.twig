@@ -4,7 +4,25 @@
 
 {% block body %}
 <div class="container">
-    <h1> Les réservations Exposition </h1>
+
+
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">Les réservations Exposition</h1>
+                </div>
+                <div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+                </div>
+            </div>
+    <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+        <form id="edd_checkout_cart_form" method="post">
+            <div id="edd_checkout_cart_wrap">
 
     <table class="table" id="t">
 
@@ -35,7 +53,7 @@
                 <th>
                     <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">Afficher</a>
                     <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
-
+                    {{ include('reservation_expo/_delete_form.html.twig') }}
                 </th>
             </tr>
         {% else %}
@@ -49,13 +67,20 @@
         </tbody>
     </table>
 
-    <a class="btn btn-info" href="{{ path('reservation_expo_new') }}">Ajouter une nouvelle réservation exposition</a>
+    <a class="btn btn-circle" href="{{ path('exposition_index') }}">Retour vers la liste des expositions</a>
 <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
 
 
+            </div>
+        </form>
 
+    </div>
+        </div>
+
+    </section>
 
 </div>
+
 {% endblock %}
 {% block javascripts %}
 
@@ -82,7 +107,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>    '+obj.codeClient.nom+'  </td></tr>'+obj.codeClient.prenom+'  </td></tr>'+obj.codeClient.email+'  </td></tr>'+obj.codeClient.numero+'  </td></tr>'+obj.codeClient.nomExpo+'  </td></tr>'+obj.nbPlace+'  </td></tr>');
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>   '+obj.codeClient.nom+'  </td><td>'+obj.codeClient.prenom+'  </td><td>'+obj.codeClient.email+'  </td><td>'+obj.codeClient.numero+'  </td><td>'+obj.codeExpo.nomExpo+'  </td><td>'+obj.nbPlace+'  </td><td><a href="reservation_expo_show/'+obj.codeReservatione+'">show</a></td><td><a href="reservation_expo_edit/'+obj.codeReservatione+'">edit</a></td></tr>');
                             });
                         }
                         else
