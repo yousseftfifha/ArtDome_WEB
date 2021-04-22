@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Commentaire
  *
  * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="fk_idblog", columns={"id_blog"}), @ORM\Index(name="fk_iduser", columns={"Id_User"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CommentaireRepository")
  */
 class Commentaire
 {
@@ -18,6 +20,8 @@ class Commentaire
      * @ORM\Column(name="id_comment", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Assert\NotBlank
+     * @Assert\Length(min=2)
      */
     private $idComment;
 
@@ -25,27 +29,29 @@ class Commentaire
      * @var string
      *
      * @ORM\Column(name="text", type="text", length=65535, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Length(min=5)
      */
     private $text;
 
     /**
-     * @var \DateTime
+     * @var DateTimeImmutable
      *
-     * @ORM\Column(name="CreatedAt", type="date", nullable=false)
+     * @ORM\Column(name="CreatedAt", type="datetime_immutable", nullable=false)
      */
-    private $createdat;
+    private  $createdat;
 
     /**
-     * @var \DateTime
+     * @var DateTimeImmutable
      *
-     * @ORM\Column(name="UpdatedAt", type="date", nullable=false)
+     * @ORM\Column(name="UpdatedAt", type="datetime_immutable", nullable=false)
      */
     private $updatedat;
 
     /**
      * @var \Blog
      *
-     * @ORM\ManyToOne(targetEntity="Blog")
+     * @ORM\ManyToOne(targetEntity="Blog", inversedBy="commentaire")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_blog", referencedColumnName="idBlog")
      * })
@@ -79,24 +85,24 @@ class Commentaire
         return $this;
     }
 
-    public function getCreatedat(): ?\DateTimeInterface
+    public function getCreatedat(): ?\DateTimeImmutable
     {
         return $this->createdat;
     }
 
-    public function setCreatedat(\DateTimeInterface $createdat): self
+    public function setCreatedat(\DateTimeImmutable $createdat): self
     {
         $this->createdat = $createdat;
 
         return $this;
     }
 
-    public function getUpdatedat(): ?\DateTimeInterface
+    public function getUpdatedat(): ?\DateTimeImmutable
     {
         return $this->updatedat;
     }
 
-    public function setUpdatedat(\DateTimeInterface $updatedat): self
+    public function setUpdatedat(\DateTimeImmutable $updatedat): self
     {
         $this->updatedat = $updatedat;
 
