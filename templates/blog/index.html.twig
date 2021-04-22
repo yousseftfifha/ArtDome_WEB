@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #f5f5f5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>
+        Blog ! <a href="{{ path("blog_create") }}">Publier un nouvel article</a>
+    </h1>
+    {% for blog in blogs %}
+        <h2>{{ blog.Title }}</h2>
+        <small>{{ blog.DateOfPub|date("d/m/Y") }}</small>
+        <img src="{{ asset(blog.image) }}" alt="{{ blog.Title }}">
+        <small>{{ blog.comments|length }} commentaire(s)</small>
+        <a href="{{ path("blog_read", { id: blog.id }) }}">Lire la suite</a> | <a href="{{ path("blog_update", { id: blog.id }) }}">Modifier</a>
+    {% endfor %}
+
+    This friendly message is coming from:
+    <ul>{% if page > 1 %}
+            <li>
+                <a href="{{ path("index", { page: 1 }) }}">Première page</a>
+            </li>
+        {% endif %}
+        {% if page > 1 %}
+            <li>
+                <a href="{{ path("index", { page: page - 1 }) }}">Précédent</a>
+            </li>
+        {% endif %}
+        {% for p in range %}
+            <li>
+                <a href="{{ path("index", { page: p }) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+        {% if page < pages %}
+            <li>
+                <a href="{{ path("index", { page: page + 1 }) }}">Suivant</a>
+            </li>
+        {% endif %}
+        {% if page < pages %}
+            <li>
+                <a href="{{ path("index", { page: pages }) }}">Dernière page</a>
+            </li>
+        {% endif %}
+
+        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/ArtDome/src/Controller/BlogController.php'|file_link(0) }}">src/Controller/BlogController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/ArtDome/templates/blog/index.html.twig'|file_link(0) }}">templates/blog/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %}
