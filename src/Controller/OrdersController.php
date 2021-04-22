@@ -147,7 +147,7 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/orders/pdf", name="pdf", methods={"GET"})
+     * @Route("order/pdf", name="pdff", methods={"GET"})
      */
     public function pdf(OrdersRepository $OrdersRepository): Response
     {
@@ -172,12 +172,47 @@ class OrdersController extends AbstractController
 
         // Output the generated PDF to Browser (inline view)
         $dompdf->stream("Commande.pdf", [
+            "Attachment" => false
+        ]);
+        return $this->redirectToRoute('orders_index');
+
+    }
+    /**
+     * @Route("/orders/{orderid}/pdfS", name="pdfS", methods={"GET"})
+     */
+    public function pdfS(OrdersRepository $OrdersRepository,Orders $orders): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT u FROM App\Entity\Orders u WHERE u.orderid = :orderid'
+        )->setParameter('orderid', $orders->getOrderid());
+        $o = $query->getResult(); // array of CmsUser username and name values
+
+        $html = $this->renderView('orders/liste.html.twig', [
+            'orders' => $o,
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("Commande.pdf", [
             "Attachment" => true
         ]);
         return $this->redirectToRoute('orders_index');
 
     }
-
     /**
      * @Route("/orders/orderbyDueAmount", name="orderbyDueAmount")
      */

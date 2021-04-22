@@ -94,8 +94,26 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+<<<<<<< Updated upstream
+=======
+    "guzzlehttp/guzzle": {
+        "version": "6.5.5"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.8.1"
+    },
+    "illuminate/collections": {
+        "version": "v8.38.0"
+    },
+>>>>>>> Stashed changes
     "illuminate/contracts": {
         "version": "v5.8.36"
+    },
+    "illuminate/macroable": {
+        "version": "v8.38.0"
     },
     "illuminate/support": {
         "version": "v5.8.36"
@@ -569,6 +587,9 @@
     },
     "twig/twig": {
         "version": "v2.13.1"
+    },
+    "voku/portable-ascii": {
+        "version": "1.5.6"
     },
     "webmozart/assert": {
         "version": "1.9.1"
