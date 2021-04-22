@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Controller;
-use App\Controller\NotificationController;
+
 use App\Entity\User;
-use App\Form\NotificationType;
-use App\Form\User1Type;
-use App\Repository\UserRepository;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +17,14 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
         ]);
     }
 
@@ -32,7 +34,7 @@ class UserController extends AbstractController
     public function new(Request $request): Response
     {
         $user = new User();
-        $form = $this->createForm(User1Type::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -64,7 +66,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(User1Type::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,21 +81,6 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/User/{id}/edit_type", name="user_edit_type", methods={"GET","POST"})
-     */
-    public function editType(Request $request, User $user): Response
-    {
-       $user->setRoles((array)"ROLE_ARTISTE");
-
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_index');
-
-
-
-    }
     /**
      * @Route("/{id}", name="user_delete", methods={"POST"})
      */
