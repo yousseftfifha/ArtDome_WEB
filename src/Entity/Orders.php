@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Orders
  *
  * @ORM\Table(name="orders", indexes={@ORM\Index(name="fk_u", columns={"IDUser"})})
  * @ORM\Entity(repositoryClass="App\Repository\OrdersRepository")
-
  */
 class Orders
 {
@@ -19,6 +19,7 @@ class Orders
      * @ORM\Column(name="OrderID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("orders:read")
      */
     private $orderid;
 
@@ -26,6 +27,7 @@ class Orders
      * @var float
      *
      * @ORM\Column(name="DueAmount", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("orders:read")
      */
     private $dueamount;
 
@@ -33,6 +35,7 @@ class Orders
      * @var int
      *
      * @ORM\Column(name="InnoNumber", type="integer", nullable=false)
+     * @Groups("orders:read")
      */
     private $innonumber;
 
@@ -42,6 +45,7 @@ class Orders
      * @var \DateTime
      *
      * @ORM\Column(name="OrderDate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     * @Groups("orders:read")
      */
     private $orderdate = 'CURRENT_TIMESTAMP';
 
@@ -49,6 +53,7 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="Status", type="string", length=30, nullable=false)
+     * @Groups("orders:read")
      */
     private $status;
 
@@ -59,6 +64,7 @@ class Orders
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="IDUser", referencedColumnName="ID")
      * })
+     * @Groups("orders:read")
      */
     private $iduser;
 

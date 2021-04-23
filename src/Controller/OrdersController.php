@@ -10,9 +10,10 @@ use App\Repository\OrdersRepository;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Yamilovs\Bundle\SmsBundle\Service\ProviderManager;
-
+use Knp\Snappy\Pdf as Snappy;
 
 /**
  * @Route("/orders")
@@ -151,72 +152,36 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/orders/pdf", name="pdf", methods={"GET"})
+     * @Route("/orders/generate_pdf", name="generate_pdf")
      */
-    public function pdf(OrdersRepository $OrdersRepository): Response
-    {
-        // Configure Dompdf according to your needs
-        $pdfOptions = new Options();
+    public function generate_pdf(){
 
-        // Instantiate Dompdf with our options
-        $dompdf = new Dompdf($pdfOptions);
-        // Retrieve the HTML generated in our twig file
+        $options = new Options();
+        $options->set('defaultFont', 'Roboto');
+
+
+        $dompdf = new Dompdf($options);
+        $orders = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e  WHERE e.iduser = :iduser order by  e.orderdate desc')
+            ->setParameter('iduser',$this->getUser())
+            ->getResult();
+
         $html = $this->renderView('orders/liste.html.twig', [
-            'orders' => $OrdersRepository->findAll(),
+            'orders' => $orders
         ]);
 
-        // Load HTML to Dompdf
+
         $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
         $dompdf->render();
-
-        // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("Commande.pdf", [
-            "Attachment" => true
+        $dompdf->stream("testpdf.pdf", [
+            "Attachment" => false
         ]);
         return $this->redirectToRoute('orders_index');
 
     }
-    /**
-     * @Route("/orders/{orderid}/pdfS", name="pdfS", methods={"GET"})
-     */
-    public function pdfS(OrdersRepository $OrdersRepository,Orders $orders): Response
-    {
-        // Configure Dompdf according to your needs
-        $pdfOptions = new Options();
 
-        // Instantiate Dompdf with our options
-        $dompdf = new Dompdf($pdfOptions);
-        // Retrieve the HTML generated in our twig file
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT u FROM App\Entity\Orders u WHERE u.orderid = :orderid'
-        )->setParameter('orderid', $orders->getOrderid());
-        $o = $query->getResult(); // array of CmsUser username and name values
-
-        $html = $this->renderView('orders/liste.html.twig', [
-            'orders' => $o,
-        ]);
-
-        // Load HTML to Dompdf
-        $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("Commande.pdf", [
-            "Attachment" => true
-        ]);
-        return $this->redirectToRoute('orders_index');
-
-    }
     /**
      * @Route("/orders/orderbyDueAmount", name="orderbyDueAmount")
      */

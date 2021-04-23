@@ -6,6 +6,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -25,7 +26,7 @@ class User implements UserInterface
 
     /**
      * @var string|null
-     *
+     * @Groups("orders:read")
      * @ORM\Column(name="nom", type="string", length=255, nullable=true)
      */
     private $nom;
@@ -119,6 +120,7 @@ class User implements UserInterface
      * @var string|null
      *
      * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
+     * @Groups("orders:read")
      */
     private $prenom;
 
