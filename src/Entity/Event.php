@@ -32,6 +32,7 @@ class Event
      * @ORM\Column(name="nom_event", type="string", length=30, nullable=false)
      *@Assert\NotBlank(message="Event name is required")
      *@Groups("events:read")
+     * @Groups("reservationevents:read")
      */
     private $nomEvent;
 
@@ -82,6 +83,7 @@ class Event
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      *@Assert\NotBlank(message="Event picture is required")
      * @Groups("events:read")
+     * @Groups("reservationevents:read")
      */
     private $image;
 

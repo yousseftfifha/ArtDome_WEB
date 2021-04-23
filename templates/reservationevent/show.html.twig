@@ -5,7 +5,24 @@
 {% block body %}
 <div class="container">
     <h1 align="center">Reservation</h1>
+    <table class="table" >
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
 
+
+            <td> <img height="300" width="300"  src="{{app.request.basepath}}/pi/{{reservationevent.codeEvent.image}}" alt="" ></td>
+            <td> <img height="300" width="300"  src="{{app.request.basepath}}/qr-code/{{reservationevent.codeReservation}}.png" alt="" ></td>
+           </tr>
+    </table>
+    </span>
+
+    <br>
     <table class="table">
         <tbody>
         <tr>

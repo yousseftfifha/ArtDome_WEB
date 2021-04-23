@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\Reservationevent;
 use App\Form\ReservationeventType;
 use App\Repository\ReservationeventRepository;
+use mysql_xdevapi\RowResult;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,8 @@ use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use function MongoDB\BSON\toJSON;
+use App\Services\QrcodeService;
+
 
 /**
  * @Route("/reservationevent")
@@ -69,8 +72,9 @@ class ReservationeventController extends AbstractController
     /**
      * @Route("/new/{codeEvent}", name="reservationevent_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Event $Event, \Swift_Mailer $mailer, FlashyNotifier $flashy): Response
+    public function new(Request $request, Event $Event, \Swift_Mailer $mailer, FlashyNotifier $flashy,QrcodeService $qrcodeService): Response
     {
+        $qrCode = null;
         $reservationevent = new Reservationevent();
         $form = $this->createForm(ReservationeventType::class, $reservationevent);
         $reservationevent->setCodeEvent($Event);
@@ -84,37 +88,36 @@ class ReservationeventController extends AbstractController
         $count =$reservationevent->getCodeEvent()->getNbMaxPart();
         $count1=$count-intval($s);//
 
-
+        $this->addFlash('success', 'Only '.$count1.' place(s) left !!');
 
         if ($form->isSubmitted() && $form->isValid() ) {
-            if ($reservationevent->getNbPlace() < $count1) {
+             if ($reservationevent->getNbPlace() < $count1) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($reservationevent);
                 $entityManager->flush();
-
+                $m="Good Day Mr/Mrs ".$reservationevent->getCodeClient()->getNom().",
+                 Your reservation of ".$reservationevent->getNbPlace()." place(s) for ".$reservationevent->getCodeEvent()->getNomEvent()." has been confirmed.
+                 Thank you for choosing ArtDome.
+                 ";
                 $message = (new \Swift_Message('Reservation confirmed'))
                     ->setFrom('artdomeproject@gmail.com')
                     ->setTo($reservationevent->getCodeClient()->getEmail())
-                    ->setBody("Good Day Mr/Mrs,
-                
-                                Your reservation has been confirmed.
-                                
-                                Thank you for choosing ArtDome.
-                "
-                    );
+                    ->setBody($m);
                 $flashy->success('Reservation created!', 'http://your-awesome-link.com');
                 $mailer->send($message);
+                $qrCode = $qrcodeService->qrcode($m,$reservationevent->getCodeReservation());
                 //$this->sendSms($reservationevent->getCodeEvent()->getDate(),$reservationevent->getCodeClient()->getPrenom(),$reservationevent->getCodeEvent()->getNomEvent());
                 return $this->redirectToRoute('reservationevent_index');
             }
         else
 
-            $this->addFlash('success', 'We are sorry this event is fully booked');
+            $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
         }
 
         return $this->render('reservationevent/new.html.twig', [
             'reservationevent' => $reservationevent,
             'form' => $form->createView(),
+            'qrCode' => $qrCode
         ]);
     }
 
@@ -132,7 +135,6 @@ class ReservationeventController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservationevent);
             $entityManager->flush();
-
             return $this->redirectToRoute('reservationevent_indexBack');
         }
 
@@ -165,15 +167,40 @@ class ReservationeventController extends AbstractController
     /**
      * @Route("/{codeReservation}/edit", name="reservationevent_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Reservationevent $reservationevent): Response
+    public function edit(Request $request, Reservationevent $reservationevent,QrcodeService $qrcodeService): Response
     {
+        $qrCode = null;
         $form = $this->createForm(ReservationeventType::class, $reservationevent);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+       // $reservationevent->setNbPlace(0);
+        //$this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('reservationevent_index');
+        $code=$reservationevent->getCodeEvent()->getCodeEvent();
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
+        $sum = $query->execute();
+        $s=json_encode($sum);
+        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
+        $count1=$count-intval($s);
+
+        $this->addFlash('success', 'Only '.$count1.' place(s) left !!');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+             if ($reservationevent->getNbPlace() < $count1) {
+                $this->getDoctrine()->getManager()->flush();
+                 $m="Good Day Mr/Mrs ".$reservationevent->getCodeClient()->getNom().",
+                 Your reservation of ".$reservationevent->getNbPlace()." place(s) for ".$reservationevent->getCodeEvent()->getNomEvent()." has been confirmed.
+                 Thank you for choosing ArtDome.
+                 ";
+                 $qrCode = $qrcodeService->qrcode($m,$reservationevent->getCodeReservation());
+                return $this->redirectToRoute('reservationevent_index');
+            }
+            else
+
+                $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
+
+
         }
 
         return $this->render('reservationevent/edit.html.twig', [

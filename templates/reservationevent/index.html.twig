@@ -7,6 +7,7 @@
 
     <h1 align="center">RESERVATIONS</h1>
     <br>
+
     <div>
         <input type="text" id="search" class="form-control" placeholder="Search">
     </div>
@@ -15,11 +16,10 @@
         <thead>
             <tr>
                 <th>Reservation code</th>
+                <th>Event picture</th>
                 <th>Event name</th>
                 <th>Client last name</th>
                 <th>Client name</th>
-                <th>Phone number</th>
-                <th>Email</th>
                 <th>Booked places</th>
                 <th>Actions</th>
             </tr>
@@ -28,11 +28,10 @@
         {% for reservationevent in reservationevents %}
             <tr>
                 <td>{{ reservationevent.codeReservation }}</td>
+                <td><img height="100" width="100"  src="{{app.request.basepath}}/pi/{{reservationevent.codeEvent.image}}" alt=""></td>
                 <td>{{ reservationevent.codeEvent.nomEvent }}</td>
                 <td>{{ reservationevent.codeClient.nom }}</td>
                 <td>{{ reservationevent.codeClient.prenom }}</td>
-                <td>{{ reservationevent.codeClient.numero }}</td>
-                <td>{{ reservationevent.codeClient.email }}</td>
                 <td>{{ reservationevent.nbPlace }}</td>
                 <td>
                     <div>
@@ -81,7 +80,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeReservation+'  </td><td>    '+obj.codeEvent.nomEvent+'  </td><td>'+obj.codeClient.nom+' </td><td>'+obj.codeClient.prenom+' </td><td>'+obj.codeClient.numero+' </td><td>'+obj.codeClient.email+' </td><td>'+obj.nbPlace+' </td><td><a class="btn btn-dark" href="reservationevent_show/'+obj.codeReservation+'">Show</a> </br><a class="btn btn-dark" href="reservationevent_edit/'+obj.codeReservation+'">Edit</a></td></tr>');
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservation+'  </td><td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/'+obj.codeEvent.image+'" alt=""> </td><td>    '+obj.codeEvent.nomEvent+'  </td><td>'+obj.codeClient.nom+' </td><td>'+obj.codeClient.prenom+' </td><td>'+obj.nbPlace+' </td><td><a class="btn btn-dark" href="reservationevent_show/'+obj.codeReservation+'">Show</a> </br><a class="btn btn-dark" href="reservationevent_edit/'+obj.codeReservation+'">Edit</a></td></tr>');
                             });
                         }
                         else

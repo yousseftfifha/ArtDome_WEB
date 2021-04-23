@@ -4,6 +4,11 @@
 
 {% block body %}
     <h1 align="center">Edit Reservation</h1>
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endfor %}
 
     {{ include('reservationevent/_form.html.twig', {'button_label': 'Update'}) }}
 

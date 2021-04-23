@@ -13,13 +13,13 @@
         <thead>
             <tr>
                 <th>Event code</th>
+                <th>Event picture</th>
                 <th>Event name</th>
                 <th>Event theme</th>
-                <th>Event state</th>
+
                 <th>Artiste</th>
                 <th>Event date</th>
-                <th>Contributors</th>
-                <th>Show room</th>
+
 
                 <th>actions</th>
             </tr>
@@ -28,13 +28,13 @@
         {% for event in events %}
             <tr>
                 <td>{{ event.codeEvent }}</td>
+                <td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></td>
                 <td>{{ event.nomEvent }}</td>
                 <td>{{ event.themeEvent }}</td>
-                <td>{{ event.etat }}</td>
+
                 <td>{{ event.codeArtiste.nom }}</td>
                 <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
-                <td>{{ event.nbMaxPart }}</td>
-                <td>{{ event.codeEspace.idEndroit }}</td>
+
 
                 <td>
                     <a class="btn btn-dark" href="{{ path('event_showBack', {'codeEvent': event.codeEvent}) }}">Show</a>
@@ -83,7 +83,7 @@
                                 $('#t tbody#search').empty();
                                 $.each(JSON.parse(retour), function(i, obj) {
                                     $('#t tbody#all').hide();
-                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.etat+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td>'+obj.nbMaxPart+' </td><td>'+obj.codeEspace.idEndroit+' </td><td><a class="btn btn-dark" class="btn btn-dark" href="showBack/'+obj.codeEvent+'">show</a></td><td><a class="btn btn-dark" class="btn btn-dark" href="editBack/'+obj.codeEvent+'">edit</a></td> ');
+                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/'+obj.image+'" alt=""> </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td><a class="btn btn-dark" class="btn btn-dark" href="showBack/'+obj.codeEvent+'">show</a></td><td><a class="btn btn-dark" class="btn btn-dark" href="editBack/'+obj.codeEvent+'">edit</a></td> ');
                                 });
                             }
                             else

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * User
@@ -18,6 +19,8 @@ class User
      * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("events:read")
+     * @Groups("reservationevents:read")
      */
     private $id;
 
@@ -25,6 +28,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=30, nullable=false)
+     * @Groups("events:read")
+     * @Groups("reservationevents:read")
      */
     private $nom;
 
@@ -32,6 +37,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
+     * @Groups("events:read")
+     * @Groups("reservationevents:read")
      */
     private $prenom;
 
@@ -53,6 +60,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=30, nullable=false)
+     * @Groups("reservationevents:read")
      */
     private $email;
 
@@ -60,6 +68,7 @@ class User
      * @var int
      *
      * @ORM\Column(name="numero", type="integer", nullable=false)
+     * @Groups("reservationevents:read")
      */
     private $numero;
 
