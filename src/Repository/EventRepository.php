@@ -66,4 +66,14 @@ class EventRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByArtiste($codeArtiste)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.codeArtiste = :codeArtiste')
+            ->setParameter('codeArtiste', $codeArtiste)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

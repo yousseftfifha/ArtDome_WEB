@@ -87,4 +87,14 @@ class ReservationeventRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }*/
+
+    public function findByClient($codeClient)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.codeClient = :codeClient')
+            ->setParameter('codeClient', $codeClient)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
