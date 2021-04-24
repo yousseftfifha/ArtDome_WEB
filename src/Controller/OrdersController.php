@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Oeuvre;
 use App\Entity\Orders;
+use App\Entity\PendingOrders;
 use App\Entity\User;
 use App\Form\Orders1Type;
 use App\Repository\OrdersRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -163,6 +165,35 @@ class OrdersController extends AbstractController
         $dompdf = new Dompdf($options);
         $orders = $this->getDoctrine()
             ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e   order by  e.orderdate desc')
+            ->getResult();
+
+        $html = $this->renderView('orders/liste.html.twig', [
+            'orders' => $orders
+        ]);
+
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("ASllOrders.pdf", [
+            "Attachment" => false
+        ]);
+        return $this->redirectToRoute('orders_index');
+
+    }
+    /**
+     * @Route("/orders/generate_pdfUser", name="generate_pdfUser")
+     */
+    public function generate_pdfUser(){
+
+        $options = new Options();
+        $options->set('defaultFont', 'Roboto');
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $orders = $this->getDoctrine()
+            ->getManager()
             ->createQuery('SELECT e FROM App\Entity\Orders e  WHERE e.iduser = :iduser order by  e.orderdate desc')
             ->setParameter('iduser',$this->getUser())
             ->getResult();
@@ -175,8 +206,8 @@ class OrdersController extends AbstractController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream("testpdf.pdf", [
-            "Attachment" => false
+        $dompdf->stream("orders.pdf", [
+            "Attachment" => true
         ]);
         return $this->redirectToRoute('orders_index');
 
@@ -477,6 +508,52 @@ class OrdersController extends AbstractController
         $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
         $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
         $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
+    }
+    /**
+     * @Route("/orders/statusStatsback", name="statusStatsback")
+     */
+    public function ArtworkStats()
+    {
+        $repositoryPending = $this->getDoctrine()->getRepository(PendingOrders::class);
+        $repositoryArtwork = $this->getDoctrine()->getRepository(Oeuvre::class);
+        $ListPending = $repositoryPending->findAll();
+        $ListArtwork = $repositoryArtwork->findAll();
+        $em = $this->getDoctrine()->getManager();
+
+        $pending = 0;
+        $confirmed = 0;
+        $cancelled = 0;
+
+
+        foreach ($ListPending as $pending) {
+            foreach ($ListArtwork as $art) {
+
+                if ($pending->getOeuvreid()->getNomoeuvre()==$art->getNomoeuvre())
+                    $bar = new BarChart();
+                $bar->getData()->setArrayToDataTable([
+                    ['Artwork', 'Popularity']
+                    ['']
+                ]);
+
+            }
+        }
+        $bar = new BarChart();
+        $bar->getData()->setArrayToDataTable([
+            ['City', '2010 Population', '2000 Population'],
+            ['New York City, NY', 8175000, 8008000],
+            ['Los Angeles, CA', 3792000, 3694000],
+            ['Chicago, IL', 2695000, 2896000],
+            ['Houston, TX', 2099000, 1953000],
+            ['Philadelphia, PA', 1526000, 1517000]
+        ]);
+        $bar->getOptions()->setTitle('Population of Largest U.S. Cities');
+        $bar->getOptions()->getHAxis()->setTitle('Population of Largest U.S. Cities');
+        $bar->getOptions()->getHAxis()->setMinValue(0);
+        $bar->getOptions()->getVAxis()->setTitle('City');
+        $bar->getOptions()->setWidth(900);
+        $bar->getOptions()->setHeight(500);
 
         return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
     }

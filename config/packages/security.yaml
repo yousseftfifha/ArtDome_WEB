@@ -52,6 +52,10 @@ security:
          - { path: ^/user, roles: ROLE_ADMIN }
          - { path: ^/notification, roles: ROLE_USER }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/orders, roles: ROLE_USER }
+         - { path: ^/cart, roles: ROLE_USER }
+
+
          -
     role_hierarchy:
         ROLE_ARTISTE: ROLE_USER
