@@ -19,6 +19,7 @@
         "knplabs/knp-snappy-bundle": "^1.8",
         "mercuryseries/flashy": "^1.0",
         "phpdocumentor/reflection-docblock": "^4.3",
+        "phpoffice/phpspreadsheet": "^1.17",
         "sensio/framework-extra-bundle": "^5.1",
         "stripe/stripe-php": "^7.77",
         "symfony/apache-pack": "^1.0",

@@ -8,12 +8,16 @@ use App\Entity\PendingOrders;
 use App\Entity\User;
 use App\Form\Orders1Type;
 use App\Repository\OrdersRepository;
+use App\Services\QrcodeService;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -59,7 +63,7 @@ class OrdersController extends AbstractController
     /**
      * @Route("/new/{innonumber}", name="orders_new", methods={"GET","POST"})
      */
-    public function new(Request $request, int $innonumber, \Swift_Mailer $mailer,ProviderManager $providerManager): Response
+    public function new(Request $request, int $innonumber, \Swift_Mailer $mailer,ProviderManager $providerManager,QrcodeService $qrcodeService): Response
     {
 
         $order = new Orders();
@@ -99,6 +103,9 @@ class OrdersController extends AbstractController
             );
 
         $mailer->send($message);
+        $m= "Bonjour Mr/Mme " . $u->getNom() . $u->getPrenom() . " votre commande N°" . $order->getInnonumber() . "ayant comme montant "
+            . $order->getDueamount() . "est confirmé";
+        $qrCode = $qrcodeService->qrcode($m,$order->getInnonumber());
 
         $this->addFlash('success', 'Your order is added!');
 
@@ -578,6 +585,48 @@ class OrdersController extends AbstractController
         $col->getOptions()->setHeight(500);
 
         return $this->render('orders/statsback.html.twig', array('barchart' => $col));
+    }
+    /**
+     * @Route("/orders/excel", name="excel")
+     */
+    public function excel(){
+        $spreadsheet = new Spreadsheet();
+
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet(0);
+        $sheet->setCellValue('A1', 'Hello World !');
+        $sheet->setTitle("My First Worksheet");
+        // Create your Office 2007 Excel (XLSX Format)
+        $writer = new Xlsx($spreadsheet);
+
+        $sheet->setCellValue('A1', 'Innonumber');
+        $sheet->setCellValue('B1', 'DueAmount');
+        $sheet->setCellValue('C1', 'Order Date ');
+        $sheet->setCellValue('D1', 'User');
+        $sheet->setCellValue('E1', 'Status');
+        $orders =  $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.orderdate desc')
+            ->getResult();
+
+        $i=0;
+        foreach ($orders as $o) {
+            $sheet->setCellValue('A' . $i, $o->getInnonumber());
+            $sheet->setCellValue('B' . $i, $o->getDueamount());
+            $sheet->setCellValue('C' . $i, $o->getOrderdate());
+            $sheet->setCellValue('D' . $i, $o->getIduser());
+            $sheet->setCellValue('E' . $i, $o->getStatus());
+            $i++;
+        }
+        // Create a Temporary file in the system
+        $fileName = 'Orders.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        // Create the excel file in the tmp directory of the system
+        $writer->save($temp_file);
+
+        // Return the excel file as an attachment
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 
 }
