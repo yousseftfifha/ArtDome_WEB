@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\Orders1Type;
 use App\Repository\OrdersRepository;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -516,8 +517,67 @@ class OrdersController extends AbstractController
         $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
         $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
 
-        return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
+        return $this->render('orders/statusstats.html.twig', array('piechart' => $pieChart));
     }
+    /**
+     * @Route("/orders/barchart", name="barchart")
+     */
+    public function barchart()
+    {
+        $repository = $this->getDoctrine()->getRepository(PendingOrders::class);
+        $ListOrders = $repository->findAll();
+        $em = $this->getDoctrine()->getManager();
 
+        $Statue_of_zelph = 0;
+        $excalibur = 0;
+        $despare = 0;
+        $Jocande=0;
+        $the_thinking_one=0;
+        $adam_and_eve=0;
+        $autre=0;
+        foreach ($ListOrders as $Orders) {
+            if ($Orders->getOeuvreid()->getNomoeuvre() == "Statue of zelph")
+                $Statue_of_zelph += 1;
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "excalibur of zelph")
+                $excalibur += 1;
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "despare")
+                $despare += 1;
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "la Jocande")
+                $Jocande += 1;
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "the thinking one")
+                $the_thinking_one += 1;
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "adam and eve")
+                $adam_and_eve += 1;
+            else
+                $autre += 1;
+
+        }
+
+
+        $col = new ColumnChart();
+        $col->getData()->setArrayToDataTable([
+            ['Artwork', 'Sales'],
+            ['Statue of zelph', $Statue_of_zelph],
+            ['excalibur', $excalibur],
+            ['despare', $despare],
+            ['la Jocande', $Jocande],
+            ['the thinking one', $the_thinking_one],
+            ['adam and eve', $adam_and_eve],
+            ['autre', $autre]
+
+
+        ]);
+        $col->getOptions()->setTitle('Most bought artworks');
+        $col->getOptions()->getAnnotations()->setAlwaysOutside(true);
+        $col->getOptions()->getAnnotations()->getTextStyle()->setFontSize(14);
+        $col->getOptions()->getAnnotations()->getTextStyle()->setColor('#000');
+        $col->getOptions()->getAnnotations()->getTextStyle()->setAuraColor('none');
+        $col->getOptions()->getHAxis()->setTitle('Artworks');
+        $col->getOptions()->getVAxis()->setTitle('Sales');
+        $col->getOptions()->setWidth(900);
+        $col->getOptions()->setHeight(500);
+
+        return $this->render('orders/statsback.html.twig', array('barchart' => $col));
+    }
 
 }

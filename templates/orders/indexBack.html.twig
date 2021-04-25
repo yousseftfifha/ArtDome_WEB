@@ -55,8 +55,19 @@
                             <td>{{ order.status }}</td>
                             <td>{{ order.dueamount }}</td>
                             <td><a href="{{ path('pendingBack_orders_index', {'innonumber': order.innonumber}) }}">Show Details</a></td>
+                            {% if order.status!="Confirmed" %}
                             <td><a href="{{ path('orders_confirm', {'orderid': order.orderid}) }}">Confirm</a></td>
+                                {% else %}
+                                    <td class="disabled">Confirm</td>
+
+                            {% endif %}
+                            {% if order.status!="Cancelled" %}
                             <td><a href="{{ path('orders_cancel', {'orderid': order.orderid}) }}">Cancel</a></td>
+                                {% else %}
+                                    <td class="disabled">Cancel</td>
+
+                            {% endif %}
+
 
                         </tr>
                         {% else %}
@@ -70,7 +81,9 @@
                         <a class="btn btn-danger" href="{{ path('orderbyStatusPendingback') }}">Order By Pending</a>
                         <a class="btn btn-danger" href="{{ path('orderbyStatusCancelledback') }}">Order By Cancelled </a>
                         <a class="btn btn-danger" href="{{ path('orderbyStatusConfirmedback') }}">Order By Confirmed</a>
-                        <a class="btn btn-dark" href="{{ path('statusStatsback') }}">stats</a>
+                        <a class="btn btn-dark" href="{{ path('statusStatsback') }}">status of orders</a>
+                        <a class="btn btn-info" href="{{ path('barchart') }}">Most bought artworks</a>
+
                     </table>
                 </div>
             </div>
