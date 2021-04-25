@@ -221,7 +221,8 @@ class OrdersController extends AbstractController
     {
         $orders = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM App\Entity\Orders e order by  e.dueamount desc')
+            ->createQuery('SELECT e FROM App\Entity\Orders e where e.iduser = :iduser order by  e.dueamount desc ')
+            ->setParameter('iduser',$this->getUser())
             ->getResult();
 
         $show = $paginator->paginate(
@@ -244,8 +245,10 @@ class OrdersController extends AbstractController
     {
         $orders = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status and  e.iduser = :iduser'
             )->setParameter('status', "Pending")
+            ->setParameter('iduser',$this->getUser())
+
             ->getResult();
 
         $show = $paginator->paginate(
@@ -268,8 +271,10 @@ class OrdersController extends AbstractController
     {
         $orders = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status and  e.iduser = :iduser'
             )->setParameter('status', "Confirmed")
+            ->setParameter('iduser',$this->getUser())
+
             ->getResult();
 
         $show = $paginator->paginate(
@@ -292,8 +297,10 @@ class OrdersController extends AbstractController
     {
         $orders = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status'
+            ->createQuery('SELECT e FROM App\Entity\Orders e WHERE e.status = :status  and  e.iduser = :iduser'
             )->setParameter('status', "Cancelled")
+            ->setParameter('iduser',$this->getUser())
+
             ->getResult();
 
 
@@ -511,51 +518,6 @@ class OrdersController extends AbstractController
 
         return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
     }
-    /**
-     * @Route("/orders/statusStatsback", name="statusStatsback")
-     */
-    public function ArtworkStats()
-    {
-        $repositoryPending = $this->getDoctrine()->getRepository(PendingOrders::class);
-        $repositoryArtwork = $this->getDoctrine()->getRepository(Oeuvre::class);
-        $ListPending = $repositoryPending->findAll();
-        $ListArtwork = $repositoryArtwork->findAll();
-        $em = $this->getDoctrine()->getManager();
 
-        $pending = 0;
-        $confirmed = 0;
-        $cancelled = 0;
-
-
-        foreach ($ListPending as $pending) {
-            foreach ($ListArtwork as $art) {
-
-                if ($pending->getOeuvreid()->getNomoeuvre()==$art->getNomoeuvre())
-                    $bar = new BarChart();
-                $bar->getData()->setArrayToDataTable([
-                    ['Artwork', 'Popularity']
-                    ['']
-                ]);
-
-            }
-        }
-        $bar = new BarChart();
-        $bar->getData()->setArrayToDataTable([
-            ['City', '2010 Population', '2000 Population'],
-            ['New York City, NY', 8175000, 8008000],
-            ['Los Angeles, CA', 3792000, 3694000],
-            ['Chicago, IL', 2695000, 2896000],
-            ['Houston, TX', 2099000, 1953000],
-            ['Philadelphia, PA', 1526000, 1517000]
-        ]);
-        $bar->getOptions()->setTitle('Population of Largest U.S. Cities');
-        $bar->getOptions()->getHAxis()->setTitle('Population of Largest U.S. Cities');
-        $bar->getOptions()->getHAxis()->setMinValue(0);
-        $bar->getOptions()->getVAxis()->setTitle('City');
-        $bar->getOptions()->setWidth(900);
-        $bar->getOptions()->setHeight(500);
-
-        return $this->render('orders/statsback.html.twig', array('piechart' => $pieChart));
-    }
 
 }

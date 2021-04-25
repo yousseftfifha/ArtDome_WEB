@@ -103,12 +103,14 @@
 					    </span>
 
                         <div>
-
+                            {% if event.date >date() and app.user%}
                             <a href="{{ path('reservationevent_new' , {'codeEvent': event.codeEvent})}}">Make a reservation  </a>
-
+                            {% endif %}
                         </div>
+                            {% if event.codeArtiste == app.user%}
                             <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">  Edit</a>
                             {{ include('event/_delete_form.html.twig') }}
+                            {% endif %}
                         </div>
                     </div>
 
@@ -122,7 +124,16 @@
 
         </div>
         </div>
-        <a href="{{ path('event_new') }}">Create new</a>
+        <div>
+
+             {% if is_granted('ROLE_ARTISTE')%}
+
+        <a class="btn btn-dark" href="{{ path('event_new') }}">Create new</a>
+             {% endif %}
+        {% if app.user%}
+        <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">View Reservations</a>
+        {% endif %}
+        </div>
         <div class="pagination">
              {{ knp_pagination_render(events) }}
         </div>
@@ -152,7 +163,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeEvent+'  </td><td>    '+obj.nomEvent+'  </td><td>'+obj.date+' </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.etat+' </td><td><a href="event_show/'+obj.id+'">More Details</a> </br><a href="reservationevent_new/'+obj.id+'">Make a reservation</a></br><a href="event_edit/'+obj.id+'">Edit</a></td></tr>');
+                                $('#t tbody#search').append('<tr><h3>    '+obj.nomEvent+'  </h3><p>'+obj.date+' </p><h1>'+obj.date+' </h1><span>'+obj.etat+' </span><td><a href="event_show/'+obj.id+'">More Details</a> </br><a href="reservationevent_new/'+obj.id+'">Make a reservation</a></br><a href="event_edit/'+obj.id+'">Edit</a></td></tr>');
                             });
                         }
                         else

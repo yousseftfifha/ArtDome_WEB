@@ -10,6 +10,7 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta name="generator" content="">
+            <link rel="icon" href="{{ asset('Front/GFX/logo.png') }}"  type="image/png">
             <link href="{{ asset('Front/css/bootstrap.min.css') }}" rel="stylesheet">
             <link href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
             <link href="{{ asset('Front/css/style.css') }}" rel="stylesheet">
@@ -37,8 +38,8 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="propClone"><a href="{{ path('home') }}">Home</a></li>
                             <li class="propClone"><a href="{{ path('oeuvre_index') }}">Product</a></li>
+				<li class="propClone"><a href="{{ path('event_index') }}">Events</a></li>
                             <li class="propClone"><a href="{{ path('orders_index') }}">Orders</a></li>
-                            <li class="propClone"><a href="{{ path('event_index') }}">Events</a></li>
                             <li class="propClone"><a href="{{ path('cart_index') }}"> <i class="fa fa-shopping-cart"></i> </a> </li>
                               <li class="propClone"><a href="{{ path('profile_index') }}"> <i class="fa fa-user"></i>  </a> </li>
                             <li class="propClone"><a href="{{ path('app_login') }}"> <i class="fa fa-connectdevelop"></i>  </a> </li>

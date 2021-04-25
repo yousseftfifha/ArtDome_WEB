@@ -18,5 +18,5 @@ return [
     CMEN\GoogleChartsBundle\CMENGoogleChartsBundle::class => ['all' => true],
     Yamilovs\Bundle\SmsBundle\SmsBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
-
+    Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
 ];

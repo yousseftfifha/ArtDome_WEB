@@ -4,7 +4,25 @@
 
 {% block body %}
 <div class="container">
-    <h1>Reservations</h1>
+    <h1 align="center">Reservation</h1>
+    <table class="table" >
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+
+            <td> <img height="300" width="300"  src="{{app.request.basepath}}/pi/{{reservationevent.codeEvent.image}}" alt="" ></td>
+            <td> <img height="300" width="300"  src="{{app.request.basepath}}/qr-code/{{reservationevent.codeReservation}}.png" alt="" ></td>
+        </tr>
+    </table>
+    </span>
+
+    <br>
 
     <table class="table">
         <tbody>
@@ -39,7 +57,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('reservationevent_indexBack') }}">Back to list</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_indexBack') }}">Back to list</a>
 
    {#  <a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>#}
 

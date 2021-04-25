@@ -4,10 +4,10 @@
 
 {% block body %}
 <div class="container">
-    <h1>Create new Event</h1>
+    <h1 align="center">Create new Event</h1>
 
     {{ include('event/_form.html.twig') }}
 
-    <a href="{{ path('event_indexBack') }}">Back to list</a>
+    <a class="btn btn-dark" href="{{ path('event_indexBack') }}">Back to list</a>
     </div>
 {% endblock %}

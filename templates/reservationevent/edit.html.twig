@@ -3,11 +3,16 @@
 {% block title %}Edit Reservationevent{% endblock %}
 
 {% block body %}
-    <h1>Edit Reservationevent</h1>
+    <h1 align="center">Edit Reservation</h1>
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endfor %}
 
     {{ include('reservationevent/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('reservationevent_index') }}">Back to list</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">Back to list</a>
 
     {{ include('reservationevent/_delete_form.html.twig') }}
 {% endblock %}

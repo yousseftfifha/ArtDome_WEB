@@ -1,9 +1,18 @@
 {
+    "bacon/bacon-qr-code": {
+        "version": "2.0.3"
+    },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "cmen/google-charts-bundle": {
         "version": "4.0.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
+    },
+    "dasprid/enum": {
+        "version": "1.0.3"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -91,8 +100,20 @@
     "egulias/email-validator": {
         "version": "2.1.25"
     },
+    "endroid/installer": {
+        "version": "1.3.3"
+    },
+    "endroid/qr-code": {
+        "version": "4.1.2"
+    },
+    "endroid/qr-code-bundle": {
+        "version": "4.0.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.0.5"
     },
     "guzzlehttp/guzzle": {
         "version": "6.5.5"

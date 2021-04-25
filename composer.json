@@ -13,6 +13,8 @@
         "doctrine/doctrine-migrations-bundle": "^2.2",
         "doctrine/orm": "^2.7",
         "dompdf/dompdf": "^1.0",
+        "endroid/qr-code-bundle": "^4.0",
+        "gedmo/doctrine-extensions": "^3.0",
         "knplabs/knp-paginator-bundle": "^5.4",
         "knplabs/knp-snappy-bundle": "^1.8",
         "mercuryseries/flashy": "^1.0",
