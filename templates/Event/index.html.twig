@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+
+{#
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event code</th>
+                <th>Event name</th>
+                <th>Event theme</th>
+                <th>Event state</th>
+                <th>Artiste</th>
+                <th>Event date</th>
+                <th>Contributors</th>
+                <th>Show room</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.codeEvent }}</td>
+                <td>{{ event.nomEvent }}</td>
+                <td>{{ event.themeEvent }}</td>
+                <td>{{ event.etat }}</td>
+                <td>{{ event.codeArtiste.nom }}</td>
+                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                <td>{{ event.nbMaxPart }}</td>
+                <td>{{ event.codeEspace.idEndroit }}</td>
+
+                <td>
+                    <a href="{{ path('event_show', {'codeEvent': event.codeEvent}) }}">show</a>
+                    <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">edit</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('event_new') }}">Create new</a>
+<a href="{{ path('reservationevent_new' )}}">Make a reservation  </a>#}
+
+    <section class="item content" >
+        <div class="container toparea" >
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">OUR Events</h1>
+                </div>
+                <div class="wow-hr type_short">
+                <span class="wow-hr-h">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                </span>
+                </div>
+            </div>
+            <div>
+            <input type="text" id="search" class="form-control" placeholder="Search">
+            </div>
+            <br>
+            {% for event in events %}
+
+            <div class="row" >
+                <div class="col-md-4">
+                    <div class="productbox">
+                        <div class="fadeshop">
+                            <div class="captionshop text-center" style="display: none;">
+
+                                <h3>{{ event.nomEvent }}</h3>
+                                <p>
+                                    {{ event.date ? event.date|date('Y-m-d') : '' }}
+                                </p>
+                                <p>
+                                <form id="id" class="edd_form" action="<  {{ path('event_show', {'codeEvent': event.codeEvent}) }}" method="POST">
+
+                                    <input type="hidden" name="edd_action" value={{ event.codeEvent  }}>
+                                    <a href="{{ path('event_show', {'codeEvent': event.codeEvent}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More Details</a>
+                                </form>
+
+                                </p>
+                            </div>
+                            <span class="maxproduct"><img height="500" width="500"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></span>
+                        </div>
+                        <div class="product-details">
+                            <br>
+                            <a href="{{ path('event_show', {'codeEvent': event.codeEvent}) }}">{{ event.nomEvent }}
+
+                                <h1>{{ event.date ? event.date|date('Y-m-d') : '' }} <br> </h1>
+
+                            </a>
+                            <span class="price">
+					    <span class="edd_price">{{ event.etat }} </span>
+
+					    </span>
+
+                        <div>
+                            {% if event.date >date() and app.user%}
+                            <a href="{{ path('reservationevent_new' , {'codeEvent': event.codeEvent})}}">Make a reservation  </a>
+                            {% endif %}
+                        </div>
+                            {% if event.codeArtiste == app.user%}
+                            <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">  Edit</a>
+                            {{ include('event/_delete_form.html.twig') }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+                {% else %}
+                    <tr>
+                        <td colspan="8">no records found</td>
+                    </tr>
+                {% endfor %}
+            </div>
+
+        </div>
+        </div>
+        <div>
+
+             {% if is_granted('ROLE_ARTISTE')%}
+
+        <a class="btn btn-dark" href="{{ path('event_new') }}">Create new</a>
+             {% endif %}
+        {% if app.user%}
+        <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">View Reservations</a>
+        {% endif %}
+        </div>
+        <div class="pagination">
+             {{ knp_pagination_render(events) }}
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('event_searchEventx') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><h3>    '+obj.nomEvent+'  </h3><p>'+obj.date+' </p><h1>'+obj.date+' </h1><span>'+obj.etat+' </span><td><a href="event_show/'+obj.id+'">More Details</a> </br><a href="reservationevent_new/'+obj.id+'">Make a reservation</a></br><a href="event_edit/'+obj.id+'">Edit</a></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,45 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}ReservationExpo index{% endblock %}
+
+{% block body %}
+    <h1>ReservationExpo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Code Reservation</th>
+                <th>Nom Client</th>
+                <th>Prenom Client</th>
+                <th>email Client</th>
+                <th>Numero Client</th>
+                <th>Nom Exposition</th>
+                <th>Nombre de Place</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation_expo in reservation_expos %}
+            <tr>
+                <td>{{ reservation_expo.codeReservatione }}</td>
+                <td>{{ reservation_expo.codeClient.nom}}</td>
+                <td>{{ reservation_expo.codeClient.prenom}}</td>
+                <td>{{ reservation_expo.codeClient.email}}</td>
+                <td>{{ reservation_expo.codeClient.numero}}</td>
+                <td>{{ reservation_expo.codeExpo.nomExpo}}</td>
+                <td>{{ reservation_expo.nbPlace }}</td>
+                <th>
+                    <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">show</a>
+                    <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">edit</a>
+                </th>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('reservation_expo_new') }}">Create new</a>
+{% endblock %}

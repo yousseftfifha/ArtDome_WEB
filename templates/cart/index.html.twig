@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart index{% endblock %}
+
+{% block body %}
+
+    {% set tot = 0 %}
+
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">MAKE PAYMENT</h1>
+                </div>
+                <div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+                </div>
+            </div>
+            <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+                <form id="edd_checkout_cart_form" method="post">
+                    <div id="edd_checkout_cart_wrap">
+                        <table id="edd_checkout_cart" class="ajaxed">
+                            <thead>
+                            <tr class="edd_cart_header_row">
+                                <th class="edd_cart_item_img">
+                                    Item Image
+                                </th>
+                                <th class="edd_cart_item_name">
+                                    Item Name
+                                </th>
+                                <th class="edd_cart_item_price">
+                                    Item Price
+                                </th>
+                                <th class="edd_cart_actions">
+                                    Quantity
+                                </th>
+                                <th class="edd_cart_actions">
+                                    Actions
+                                </th>
+                                <th class="edd_cart_actions">
+                                    +
+                                </th>
+                                <th class="edd_cart_actions">
+                                    -
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for message in app.flashes('notice') %}
+                                <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check-circle-o mr-2" aria-hidden="true"></i>{{ message }}
+                                </div>
+                            {% endfor %}
+                            {% for cart in carts %}
+
+                            <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
+                                <td class="edd_cart_item_name">
+                                    <div class="edd_cart_item_image">
+                                        <img width="25" height="25" src="{{app.request.basepath}}/Front/GFX/{{cart.oeuvreid.imageoeuvre}}" alt="">
+                                    </div>
+                                </td>
+                                <td class="edd_cart_item_name">
+                                    <span class="edd_checkout_cart_item_title">{{ cart.oeuvreid.nomoeuvre }}</span>
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    {{ cart.oeuvreid.prixoeuvre }}
+                                    {% set tot = tot+cart.oeuvreid.prixoeuvre*cart.quantity %}
+
+                                </td>
+                                <td class="edd_cart_item_price">
+
+                                   {{ cart.quantity }}
+                                </td>
+
+                                <td class="edd_cart_actions">
+                                    <a class="edd_cart_remove_item_btn" href="#">
+                                        <a href="{{ path('cart_delete', {'idcart': cart.idcart}) }}">Delete</a>
+
+                                    </a>
+                                </td>
+                                <td class="edd_cart_actions">
+                                    <a class="edd_cart_remove_item_btn" href="#">
+                                        <a  id="subtract" href="{{ path('cart_plus', {'idcart': cart.idcart}) }}">+</a>
+
+                                    </a>
+                                </td>
+                                <td class="edd_cart_actions">
+                                    <a class="edd_cart_remove_item_btn" href="#">
+                                        <a id="add" href="{{ path('cart_moins', {'idcart': cart.idcart}) }}">-</a>
+
+                                    </a>
+                                </td>
+                            </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">no records found</td>
+                                </tr>
+
+
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+
+                            <tr class="edd_cart_footer_row edd_cart_discount_row" style="display:none;">
+                                <th colspan="5" class="edd_cart_discount">
+                                </th>
+                            </tr>
+                            <tr class="edd_cart_footer_row">
+                                <th colspan="5" class="edd_cart_total">
+                                    Total: <span class="edd_cart_amount" data-subtotal="11.99" data-total="11.99"> {{ tot }} TND
+</span>
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+                <div id="edd_checkout_form_wrap" class="edd_clearfix">
+                    <form id="edd_purchase_form" class="edd_form" >
+                        <fieldset id="edd_purchase_submit">
+                            <p id="edd_final_total_wrap">
+                                <strong>Purchase Total:</strong>
+                                <span class="edd_cart_amount" data-subtotal="11.99" data-total="11.99">{{ tot }} TND</span>
+                            </p>
+                            <input type="hidden" name="edd_action" value="purchase">
+                            <input type="hidden" name="edd-gateway" value="manual">
+                            <script src="https://js.stripe.com/v3/"></script>
+
+                            <input type="submit" class="edd-submit button" id="checkout-button" name="edd-purchase"   value="Purchase">
+
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+ 
+
+<script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe("pk_test_51ISlU2GPzOJm2oIXp1HhwZVX3JbrtmySn5IfxtWI0qTHHLOOWE9rzcRD54L4VybkWuBlZ8fu3blzMUYn7Du085QH00jUeiMU9U");
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function() {
+        // Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        fetch('create-checkout-session', {
+            method: 'POST',
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function(result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using `error.message`.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    });
+
+</script>
+
+{% endblock %}

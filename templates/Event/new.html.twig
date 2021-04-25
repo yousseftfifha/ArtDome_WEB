@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 align="center">Create new Event</h1>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {{ include('event/_form.html.twig') }}
+
+    <a class="btn btn-dark" href="{{ path('event_index') }}">Back to list</a>
+    </div>
+{% endblock %}

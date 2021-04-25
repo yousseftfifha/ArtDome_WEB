@@ -1,0 +1,96 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Reservationevent index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 align="center">RESERVATIONS</h1>
+    <br>
+    <div>
+        <input type="text" id="search" class="form-control" placeholder="Search">
+    </div>
+    <br>
+    <table class="table" id="t">
+        <thead>
+            <tr>
+                <th>Reservation code</th>
+                <th>Event picture</th>
+                <th>Event name</th>
+                <th>Client last name</th>
+                <th>Client name</th>
+                <th>Booked places</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="all">
+        {% for reservationevent in reservationevents %}
+            <tr>
+                <td>{{ reservationevent.codeReservation }}</td>
+                <td><img height="100" width="100"  src="{{app.request.basepath}}/pi/{{reservationevent.codeEvent.image}}" alt=""></td>
+                <td>{{ reservationevent.codeEvent.nomEvent }}</td>
+                <td>{{ reservationevent.codeClient.nom }}</td>
+                <td>{{ reservationevent.codeClient.prenom }}</td>
+                <td>{{ reservationevent.nbPlace }}</td>
+                <td>
+                    <div>
+                    <a class="btn btn-dark" href="{{ path('reservationevent_showBack', {'codeReservation': reservationevent.codeReservation}) }}">Show</a>
+                    {{ include('reservationevent/_delete_formBack.html.twig') }}
+                    </div>
+                        {#  <a href="{{ path('reservationevent_editBack', {'codeReservation': reservationevent.codeReservation}) }}">edit</a>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        <tbody id="search">
+        </tbody>
+        </tbody>
+    </table>
+
+
+     <a class="btn btn-dark" href="{{ path('event_pdfRB') }}">PDF</a>
+</div>
+
+{%endblock %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('reservationevent_searchReservationxB') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservation+'  </td><td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/'+obj.codeEvent.image+'" alt=""> </td><td>    '+obj.codeEvent.nomEvent+'  </td><td>'+obj.codeClient.nom+' </td><td>'+obj.codeClient.prenom+' </td><td>'+obj.nbPlace+' </td><td><a class="btn btn-dark" href="reservationevent_showBack/'+obj.icodeReservation+'">Show</a></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

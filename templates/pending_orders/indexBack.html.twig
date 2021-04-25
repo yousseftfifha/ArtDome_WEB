@@ -1,0 +1,69 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}PendingOrders  back index{% endblock %}
+
+{% block body %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+            For more information about DataTables, please visit the <a target="_blank"
+                                                                       href="https://datatables.net">official DataTables documentation</a>.</p>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Innonumber</th>
+                            <th>User</th>
+                            <th>User Email</th>
+                            <th>User Number</th>
+                            <th>artwork</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Innonumber</th>
+                            <th>User</th>
+                            <th>User Email</th>
+                            <th>User Number</th>
+                            <th>artwork</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for pending_order in pending_orders %}
+                            <tr>
+                                <td> {{ pending_order.innonumber }}</td>
+                                <td>{{ pending_order.iduser.nom }} {{ pending_order.iduser.prenom }}</td>
+                                <td>{{ pending_order.iduser.email }}</td>
+                                <td>{{ pending_order.iduser.numero }}</td>
+                                <td> {{ pending_order.oeuvreid.nomoeuvre}}</td>
+                                <td> {{ pending_order.oeuvreid.prixoeuvre }}</td>
+                                <td>{{ pending_order.quantity }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

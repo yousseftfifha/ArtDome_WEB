@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PendingOrders{% endblock %}
+
+{% block body %}
+    <h1>Create new PendingOrders</h1>
+
+    {{ include('pending_orders/_form.html.twig') }}
+
+    <a href="{{ path('pending_orders_index') }}">back to list</a>
+{% endblock %}

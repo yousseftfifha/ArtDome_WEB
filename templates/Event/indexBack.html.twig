@@ -1,0 +1,101 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 align="center">EVENTS</h1>
+    <div>
+    <input type="text" id="search" class="form-control" placeholder="Search">
+    </div>
+    <br>
+    <table class="table" id="t">
+        <thead>
+            <tr>
+                <th>Event code</th>
+                <th>Event picture</th>
+                <th>Event name</th>
+                <th>Event theme</th>
+
+                <th>Artiste</th>
+                <th>Event date</th>
+
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody id="all">
+        {% for event in events %}
+            <tr>
+                <td>{{ event.codeEvent }}</td>
+                <td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></td>
+                <td>{{ event.nomEvent }}</td>
+                <td>{{ event.themeEvent }}</td>
+
+                <td>{{ event.codeArtiste.nom }}</td>
+                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+
+
+                <td>
+                    <a class="btn btn-dark" href="{{ path('event_showBack', {'codeEvent': event.codeEvent}) }}">Show</a>
+                    <a class="btn btn-dark" href="{{ path('event_editBack', {'codeEvent': event.codeEvent}) }}">Edit</a>
+                    {{ include('event/_delete_formBack.html.twig') }}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+
+        <tbody id="search">
+        </tbody>
+        </tbody>
+    </table>
+
+    <a class="btn btn-dark" href="{{ path('event_newBack') }}">Create new</a>
+    <a class="btn btn-dark" href="{{ path('reservationevent_indexBack') }}">View reservations</a>
+    <a class="btn btn-dark" href="{{ path('event_stats') }}">View Charts</a>
+</div>
+{% endblock %}
+{% block javascripts %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+        </script>
+        <script>
+            $( document ).ready(function() {
+                $("#search").keyup(function(e){
+                    /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                    var value = $(this).val();
+                    /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                    $.ajax({
+                        /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                        url : "{{ path('event_searchEventxB') }}",
+                        /* La méthode utilisée pour transférer les données est GET */
+                        type : 'GET',
+                        /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                        data: {
+                            'searchValue' : value
+                        },
+                        /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                        success : function(retour){
+                            if(retour){
+                                $('#t tbody#search').empty();
+                                $.each(JSON.parse(retour), function(i, obj) {
+                                    $('#t tbody#all').hide();
+                                    $('#t tbody#search').append(' <tr><td> '+obj.codeEvent+'  </td><td> <img height="100" width="100"  src="{{app.request.basepath}}/pi/'+obj.image+'" alt=""> </td><td>    '+obj.nomEvent+'  </td><td>    '+obj.themeEvent+'  </td><td>'+obj.codeArtiste.nom+' </td><td>'+obj.date+' </td><td><a class="btn btn-dark" class="btn btn-dark" href="showBack/'+obj.codeEvent+'">show</a></td><td><a class="btn btn-dark" class="btn btn-dark" href="editBack/'+obj.codeEvent+'">edit</a></td> ');
+                                });
+                            }
+                            else
+                            {
+                                $('#t tbody#all').show();
+                                $('#t tbody#search').empty();
+                                $('#t tbody#search').fadeIn('fast');
+                            }
+                        },
+                    });
+                    return false;
+                });
+            });
+        </script>
+{% endblock %}

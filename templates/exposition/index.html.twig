@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exposition index{% endblock %}
+
+{% block body %}
+    <h1>Exposition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Code Exposition</th>
+                <th>Nom Exposition</th>
+                <th>Thème de l'exposition</th>
+                <th>Date Exposition</th>
+                <th>Nombre max de participants</th>
+                <th>Nom de l'artiste</th>
+                <th>l'identifiant de l'espace</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exposition in expositions %}
+            <tr>
+                <td>{{ exposition.codeExpo }}</td>
+                <td>{{ exposition.nomExpo }}</td>
+                <td>{{ exposition.themeExpo }}</td>
+                <td>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }}</td>
+                <td>{{ exposition.nbMaxParticipant }}</td>
+                <td>{{ exposition.codeArtiste.nom }}</td>
+                <td>{{ exposition.codeEspace.idEndroit }}</td>
+
+                    <th>
+                  <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}">show</a>
+                  <a href="{{ path('exposition_edit', {'codeExpo': exposition.codeExpo}) }}">edit</a>
+                   </th>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a  href="{{ path('exposition_new') }}">Create new</a>
+{% endblock %}

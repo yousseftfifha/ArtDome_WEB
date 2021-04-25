@@ -1,0 +1,70 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 align="center">{{ event.nomEvent }}</h1>
+        <div>
+        <span class="maxproduct">
+        <table class="table">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+       <td> <img height="400" width="400"  src="{{app.request.basepath}}/pi/{{event.image}}" alt=""></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+       <td><video width="400" height="320" controls><source src="{{app.request.basepath}}/pi/{{event.video}}" type="video/mp4"></video></td>
+           </tr>
+        </table>
+        </span>
+        </div>
+        <br>
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Event theme</th>
+            <td>{{ event.themeEvent }}</td>
+        </tr>
+        <tr>
+            <th>Event state</th>
+            <td>{{ event.etat }}</td>
+        </tr>
+        <tr>
+            <th>Artiste</th>
+            <td>{{ event.codeArtiste.nom }}</td>
+        </tr>
+        <tr>
+            <th>Event date</th>
+            <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Contributors</th>
+            <td>{{ event.nbMaxPart }}</td>
+        </tr>
+        <tr>
+            <th>Show room</th>
+            <td>{{ event.codeEspace.idEndroit }}</td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <a class="btn btn-dark" href="{{ path('event_indexBack') }}">Back to list</a>
+
+    <a class="btn btn-dark" href="{{ path('event_editBack', {'codeEvent': event.codeEvent}) }}">Edit</a>
+
+    {#  <a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>#}
+
+    {{ include('event/_delete_formBack.html.twig') }}
+    </div>
+{% endblock %}
