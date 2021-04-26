@@ -78,22 +78,28 @@
 
                                 <td class="edd_cart_actions">
                                     <a class="edd_cart_remove_item_btn" href="#">
-                                        <a href="{{ path('cart_delete', {'idcart': cart.idcart}) }}">Delete</a>
+                                        <a href="{{ path('cart_delete', {'idcart': cart.idcart}) }}"><i class="fa fa-trash"></i></a>
 
                                     </a>
                                 </td>
                                 <td class="edd_cart_actions">
                                     <a class="edd_cart_remove_item_btn" href="#">
-                                        <a  id="subtract" href="{{ path('cart_plus', {'idcart': cart.idcart}) }}">+</a>
+                                        <a  id="subtract" href="{{ path('cart_plus', {'idcart': cart.idcart}) }}"><i class="fa fa-plus"></i></a>
 
                                     </a>
                                 </td>
+                                {% if cart.quantity!=1 %}
                                 <td class="edd_cart_actions">
                                     <a class="edd_cart_remove_item_btn" href="#">
-                                        <a id="add" href="{{ path('cart_moins', {'idcart': cart.idcart}) }}">-</a>
 
+                                        <a id="add" href="{{ path('cart_moins', {'idcart': cart.idcart}) }}"><i class="fa fa-minus"></i></a>
                                     </a>
                                 </td>
+                            {% else %}
+                                <td class="edd_cart_actions">
+                                    <i class="fa fa-minus"></i>
+                                </td>
+                                {% endif %}
                             </tr>
 
                             {% else %}
