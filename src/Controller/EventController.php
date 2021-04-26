@@ -135,6 +135,7 @@ class EventController extends AbstractController
                         ->setBody($m);
                     $mailer->send($message);
                 }
+
                 return $this->redirectToRoute('event_index');
             }
         else
