@@ -103,7 +103,7 @@
 					    </span>
 
                         <div>
-                            {% if event.date >date() and app.user%}
+                            {% if event.date >date() and app.user and event.nbMaxPart>0 %}
                             <a href="{{ path('reservationevent_new' , {'codeEvent': event.codeEvent})}}">Make a reservation  </a>
                             {% endif %}
                         </div>

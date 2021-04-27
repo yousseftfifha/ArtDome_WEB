@@ -87,18 +87,13 @@ class ReservationeventController extends AbstractController
         $reservationevent->setCodeEvent($Event);
         $form->handleRequest($request);
 
-        $code=$Event->getCodeEvent();
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
-        $sum = $query->execute();
-        $s=json_encode($sum[0]);
-        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
-        $count1=$count-intval($s[0]);//
-
-        $this->addFlash('success', 'Only '.$s.' place(s) left !!');
+        $this->addFlash('success', 'Only '.$Event->getNbMaxPart().' place(s) left !!');
 
         if ($form->isSubmitted() && $form->isValid() ) {
-             if ($reservationevent->getNbPlace() < $count1) {
+            if ($Event->getNbMaxPart() >= $reservationevent->getNbPlace()) {
+                $Event->setNbMaxPart($Event->getNbMaxPart()-$reservationevent->getNbPlace());
+                $this->getDoctrine()->getManager()->flush();
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($reservationevent);
                 $entityManager->flush();
@@ -179,21 +174,24 @@ class ReservationeventController extends AbstractController
         $form = $this->createForm(ReservationeventType::class, $reservationevent);
         $form->handleRequest($request);
 
-       // $reservationevent->setNbPlace(0);
-        //$this->getDoctrine()->getManager()->flush();
+        $count1=$reservationevent->getNbPlace();
 
-        $code=$reservationevent->getCodeEvent()->getCodeEvent();
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
-        $sum = $query->execute();
-        $s=json_encode($sum);
-        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
-        $count1=$count-intval($s);
-
-        $this->addFlash('success', 'Only '.$count1.' place(s) left !!');
+        $this->addFlash('success', 'Only '.$reservationevent->getCodeEvent()->getNbMaxPart().' place(s) left !!');
 
         if ($form->isSubmitted() && $form->isValid()) {
-             if ($reservationevent->getNbPlace() < $count1) {
+            if($reservationevent->getNbPlace()>$count1)
+            {
+                $place=$reservationevent->getNbPlace()-$count1;
+            }
+            else{
+                $place=$count1-$reservationevent->getNbPlace();
+            }
+            if ($reservationevent->getCodeEvent()->getNbMaxPart() >= $place) {
+                $reservationevent->getCodeEvent()->setNbMaxPart(($reservationevent->getCodeEvent()->getNbMaxPart())-$place);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($reservationevent->getCodeEvent());
+                $entityManager->flush();
+
                 $this->getDoctrine()->getManager()->flush();
                  $m="Good Day Mr/Mrs ".$reservationevent->getCodeClient()->getNom().",
                  Your reservation of ".$reservationevent->getNbPlace()." place(s) for ".$reservationevent->getCodeEvent()->getNomEvent()." has been confirmed.
