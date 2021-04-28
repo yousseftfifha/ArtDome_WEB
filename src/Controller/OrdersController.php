@@ -541,9 +541,9 @@ class OrdersController extends AbstractController
         $adam_and_eve=0;
         $autre=0;
         foreach ($ListOrders as $Orders) {
-            if ($Orders->getOeuvreid()->getNomoeuvre() == "Statue of zelph")
+            if ($Orders->getOeuvreid()->getNomoeuvre() == "statue of zelph")
                 $Statue_of_zelph += 1;
-            else if ($Orders->getOeuvreid()->getNomoeuvre() == "excalibur of zelph")
+            else if ($Orders->getOeuvreid()->getNomoeuvre() == "excalibur")
                 $excalibur += 1;
             else if ($Orders->getOeuvreid()->getNomoeuvre() == "despare")
                 $despare += 1;

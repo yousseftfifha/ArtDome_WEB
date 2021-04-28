@@ -2,13 +2,19 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+//use Doctrine\ORM\Mapping as ORM;
+//use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Commentaire
  *
- * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="fk_idblog", columns={"id_blog"}), @ORM\Index(name="fk_iduser", columns={"Id_User"})})
- * @ORM\Entity
+ * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="fk_idblog", columns={"idBlog"}), @ORM\Index(name="fk_iduser", columns={"Id_User"})})
+ * @ORM\Entity(repositoryClass="App\Repository\CommentaireRepository")
  */
 class Commentaire
 {
@@ -18,6 +24,7 @@ class Commentaire
      * @ORM\Column(name="id_comment", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Assert\Length(min=2)
      */
     private $idComment;
 
@@ -25,35 +32,37 @@ class Commentaire
      * @var string
      *
      * @ORM\Column(name="text", type="text", length=65535, nullable=false)
+
+     * @Assert\Length(min=5)
      */
     private $text;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      *
-     * @ORM\Column(name="CreatedAt", type="date", nullable=false)
+     * @ORM\Column(name="CreatedAt", type="datetime_immutable", nullable=false)
      */
-    private $createdat;
+    private  $createdat;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      *
-     * @ORM\Column(name="UpdatedAt", type="date", nullable=false)
+     * @ORM\Column(name="UpdatedAt", type="datetime_immutable", nullable=false)
      */
     private $updatedat;
 
     /**
-     * @var \Blog
+     * @var Blog
      *
      * @ORM\ManyToOne(targetEntity="Blog")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_blog", referencedColumnName="idBlog")
+     *   @ORM\JoinColumn(name="idBlog", referencedColumnName="idBlog")
      * })
      */
     private $idBlog;
 
     /**
-     * @var \User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
@@ -62,70 +71,104 @@ class Commentaire
      */
     private $idUser;
 
-    public function getIdComment(): ?int
+    /**
+     * @return int
+     */
+    public function getIdComment():? int
     {
         return $this->idComment;
     }
 
+    /**
+     * @param int $idComment
+     */
+    public function setIdComment(int $idComment): void
+    {
+        $this->idComment = $idComment;
+    }
+
+    /**
+     * @return string
+     */
     public function getText(): ?string
     {
         return $this->text;
     }
 
-    public function setText(string $text): self
+    /**
+     * @param string $text
+     */
+    public function setText(string $text): void
     {
         $this->text = $text;
-
-        return $this;
     }
 
-    public function getCreatedat(): ?\DateTimeInterface
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getCreatedat():? \DateTimeImmutable
     {
         return $this->createdat;
     }
 
-    public function setCreatedat(\DateTimeInterface $createdat): self
+    /**
+     * @param \DateTimeImmutable $createdat
+     */
+    public function setCreatedat(\DateTimeImmutable $createdat): void
     {
         $this->createdat = $createdat;
-
-        return $this;
     }
 
-    public function getUpdatedat(): ?\DateTimeInterface
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getUpdatedat(): ?\DateTimeImmutable
     {
         return $this->updatedat;
     }
 
-    public function setUpdatedat(\DateTimeInterface $updatedat): self
+    /**
+     * @param \DateTimeImmutable $updatedat
+     */
+    public function setUpdatedat(\DateTimeImmutable $updatedat): void
     {
         $this->updatedat = $updatedat;
-
-        return $this;
     }
 
+    /**
+     * @return Blog
+     */
     public function getIdBlog(): ?Blog
     {
         return $this->idBlog;
     }
 
-    public function setIdBlog(?Blog $idBlog): self
+    /**
+     * @param Blog $idBlog
+     */
+    public function setIdBlog(Blog $idBlog): void
     {
         $this->idBlog = $idBlog;
-
-        return $this;
     }
 
+    /**
+     * @return User
+     */
     public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?User $idUser): self
+    /**
+     * @param User $idUser
+     */
+    public function setIdUser(User $idUser): void
     {
         $this->idUser = $idUser;
-
-        return $this;
     }
+
+
+
 
 
 }

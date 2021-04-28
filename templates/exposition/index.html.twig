@@ -136,6 +136,9 @@
     </div>
     </div>
     <a href="{{ path('exposition_new') }}">Create new</a>
+    {% if app.user%}
+        <a class="btn btn-dark" href="{{ path('reservation_expo_index') }}">View Reservations</a>
+    {% endif %}
     <div class="pagination">
         {{ knp_pagination_render(expositions) }}
     </div>

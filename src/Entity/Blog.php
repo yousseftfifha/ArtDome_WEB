@@ -2,63 +2,101 @@
 
 namespace App\Entity;
 
+//use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Categorie;
+use Symfony\Component\Validator\Constraints as Assert;
+
+//use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Blog
  *
- * @ORM\Table(name="blog", uniqueConstraints={@ORM\UniqueConstraint(name="blog_titres_uindex", columns={"Title"})}, indexes={@ORM\Index(name="fk_categorie", columns={"Categorie"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
+ * @ORM\Table(name="blog", uniqueConstraints={@ORM\UniqueConstraint(name="blog_titres_uindex", columns={"Title"})}, indexes={@ORM\Index(name="fk_categorie", columns={"Categorie"}),@ORM\Index(name="fk_xxx", columns={"User"})})
+ *
+ *
  */
 class Blog
 {
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Title", type="string", length=100, nullable=false, options={"default"=","})
+     * @var string|null
+     * @Assert\NotBlank
+     * @ORM\Column(name="Title", type="string", length=100, nullable=false, options={"default"="','"})
      */
-    private $title = ',';
+    private  $title = null;
+    //   private $title = '\',\'';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="DateOfPub", type="date", nullable=false)
+     * @var DateTimeImmutable
+     * @ORM\Column(name="DateOfPub", type="datetime_immutable", nullable=false)
      */
-    private $dateofpub;
+    private  $dateofpub;
+
+    /**
+     * @var string|null
+     * @ORM\Column(name="Image", type="text", length=0, nullable=true)
+     */
+    private $image = null;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Image", type="text", length=0, nullable=false)
-     */
-    private $image;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Description", type="text", length=0, nullable=false)
+     * @ORM\Column(name="Description", type="text", length=0, nullable=true)
      */
     private $description;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="Publisher", type="string", length=40, nullable=true)
+     * @ORM\Column(type="text")
+     * @ORM\Column(name="Publisher", type="string", length=40, nullable=true, options={"default"="NULL"})
      */
-    private $publisher;
+    private $publisher = 'NULL';
 
     /**
-     * @var int
-     *
+     * @var int/null
      * @ORM\Column(name="idBlog", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue()
      */
     private $idblog;
 
     /**
-     * @var \Categorie
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="idblog")
+     */
+    private $commentaires;
+
+    /**
+     * @var User
      *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user", referencedColumnName="ID")
+     * })
+     */
+    private  $user;
+
+    /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @var categorie
      * @ORM\ManyToOne(targetEntity="Categorie")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Categorie", referencedColumnName="ID_Cat")
@@ -66,28 +104,38 @@ class Blog
      */
     private $categorie;
 
+    /**
+     * Post constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->dateofpub = new DateTimeImmutable();
+        $this->commentaires = new ArrayCollection();
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
 
-        return $this;
+
     }
 
-    public function getDateofpub(): ?\DateTimeInterface
+    public function getDateofpub(): DateTimeImmutable
     {
         return $this->dateofpub;
     }
 
-    public function setDateofpub(\DateTimeInterface $dateofpub): self
+    public function setDateofpub(DateTimeImmutable $dateofpub): void
     {
         $this->dateofpub = $dateofpub;
 
-        return $this;
+
     }
 
     public function getImage(): ?string
@@ -95,11 +143,11 @@ class Blog
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(string $image): void
     {
         $this->image = $image;
 
-        return $this;
+
     }
 
     public function getDescription(): ?string
@@ -107,11 +155,10 @@ class Blog
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): void
     {
         $this->description = $description;
 
-        return $this;
     }
 
     public function getPublisher(): ?string
@@ -119,11 +166,10 @@ class Blog
         return $this->publisher;
     }
 
-    public function setPublisher(?string $publisher): self
+    public function setPublisher(?string $publisher): void
     {
         $this->publisher = $publisher;
 
-        return $this;
     }
 
     public function getIdblog(): ?int
@@ -136,11 +182,18 @@ class Blog
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(Categorie $categorie): void
     {
         $this->categorie = $categorie;
 
-        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
     }
 
 

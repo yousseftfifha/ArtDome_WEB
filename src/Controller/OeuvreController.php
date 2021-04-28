@@ -152,7 +152,7 @@ class OeuvreController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/pdf",name="pdf", methods={"GET"})
+     * @Route("/pdf",name="pdfOEUVRE", methods={"GET"})
      */
 
     public function pdf(oeuvreRepository $repform ):Response

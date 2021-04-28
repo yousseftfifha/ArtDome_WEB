@@ -42,11 +42,16 @@
                             <li class="propClone"><a href="{{ path('orders_index') }}">Orders</a></li>
                             <li class="propClone"><a href="{{ path('endroit_index') }}">Espace</a></li>
                             <li class="propClone"><a href="{{ path('exposition_index') }}">Expositions</a></li>
+                            <li class="propClone"><a href="{{ path('blog_index') }}">blog</a></li>
+
                             <li class="propClone"><a href="{{ path('cart_index') }}"> <i class="fa fa-shopping-cart"></i> </a> </li>
                             <li class="propClone"><a href="{{ path('profile_index') }}"> <i class="fa fa-user"></i>  </a> </li>
-                            <li class="propClone"><a href="{{ path('app_login') }}"> <i class="fa fa-connectdevelop"></i>  </a> </li>
+                            {% if app.user %}
+                                <li class="propClone"><a href="{{ path('app_logout') }}"> <i class="fa fa-connectdevelop"></i>  </a> </li>
+                            {% else %}
+                                <li class="propClone"><a href="{{ path('app_login') }}"> <i class="fa fa-connectdevelop"></i>  </a> </li>
 
-
+                            {% endif %}
                         </ul>
 
                     </div>
