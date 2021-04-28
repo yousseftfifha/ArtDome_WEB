@@ -1,38 +1,42 @@
 {% extends 'baseBack.html.twig' %}
 
+
+
 {% block title %}Exposition{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Exposition</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>CodeExpo</th>
+                <th>Code de l'exposition</th>
                 <td>{{ exposition.codeExpo }}</td>
             </tr>
             <tr>
-                <th>NomExpo</th>
+                <th>Nom de l'exposition</th>
                 <td>{{ exposition.nomExpo }}</td>
             </tr>
             <tr>
-                <th>ThemeExpo</th>
+                <th>Thème de l'exposition</th>
                 <td>{{ exposition.themeExpo }}</td>
             </tr>
             <tr>
-                <th>DateExpo</th>
+                <th>Date de l'exposition</th>
                 <td>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>NbMaxParticipant</th>
+                <th>Nombre Max de participants</th>
                 <td>{{ exposition.nbMaxParticipant }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('exposition_index') }}">back to list</a>
+    <a href="{{ path('exposition_indexBack') }}">back to list</a>
 
-    <a href="{{ path('exposition_edit', {'codeExpo': exposition.codeExpo}) }}">edit</a>
+    <a href="{{ path('exposition_editBack', {'codeExpo': exposition.codeExpo}) }}">Modifier</a>
 
-    {{ include('exposition/_delete_form.html.twig') }}
+    {{ include('exposition/_delete_formBack.html.twig') }}
+</div>
 {% endblock %}

@@ -1,0 +1,41 @@
+{% block body %}
+<div class="container">
+    <h1>Réservations d'exposition</h1>
+    <table border="0.5">
+        <thead>
+        <tr >
+
+            <th>Code Réservation</th>
+            <th>Nom Client</th>
+            <th>Prenom Client</th>
+            <th>email Client</th>
+            <th>Numero Client</th>
+            <th>Nom Exposition</th>
+            <th>Nombre de Place</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for reservation_expo in reservation_expos %}
+            <tr>
+            <td>{{ reservation_expo.codeReservatione }}</td>
+            <td>{{ reservation_expo.codeClient.nom}}</td>
+            <td>{{ reservation_expo.codeClient.prenom}}</td>
+            <td>{{ reservation_expo.codeClient.email}}</td>
+            <td>{{ reservation_expo.codeClient.numero}}</td>
+            <td>{{ reservation_expo.codeExpo.nomExpo}}</td>
+            <td>{{ reservation_expo.nbPlace }}</td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+
+    </table>
+</div>
+{% endblock %}

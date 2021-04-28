@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Exposition{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Nouvelle exposition{% endblock %}
 
 {% block body %}
-    <h1>Create new Exposition</h1>
+<div class="container">
+    <h1>Créer une nouvelle exposition</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {{ include('exposition/_form.html.twig') }}
 
-    <a href="{{ path('exposition_index') }}">back to list</a>
+    <a href="{{ path('exposition_index') }}">retourner à la liste des expositions</a>
+</div>
 {% endblock %}

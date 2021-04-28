@@ -3,12 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
+
 
 /**
  * ReservationExpo
  *
  * @ORM\Table(name="reservation_expo", indexes={@ORM\Index(name="fk_clients", columns={"code_client"}), @ORM\Index(name="fk_expo", columns={"code_expo"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ReservationExpoRepository")
  */
 class ReservationExpo
 {
@@ -18,6 +25,7 @@ class ReservationExpo
      * @ORM\Column(name="code_reservationE", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("reservations:read")
      */
     private $codeReservatione;
 
@@ -25,68 +33,102 @@ class ReservationExpo
      * @var int|null
      *
      * @ORM\Column(name="nb_place", type="integer", nullable=true)
+     * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
+     * @Assert\Positive(message="cette valeur doit être positive")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ce champ doit contenir un nombre."
+     * )
+     * @Groups("reservations:read")
      */
     private $nbPlace;
 
     /**
-     * @var \User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="code_client", referencedColumnName="ID")
      * })
+     * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("reservations:read")
      */
     private $codeClient;
 
     /**
-     * @var \Exposition
+     * @var Exposition
      *
      * @ORM\ManyToOne(targetEntity="Exposition")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="code_expo", referencedColumnName="code_expo")
      * })
+     * @Assert\NotBlank (message="veuillez s'il vous-plais remplir ce champ")
+     * @Groups("reservations:read")
      */
     private $codeExpo;
 
+    /**
+     * @return int
+     */
     public function getCodeReservatione(): ?int
     {
         return $this->codeReservatione;
     }
 
+    /**
+     * @param int $codeReservatione
+     */
+    public function setCodeReservatione(int $codeReservatione): void
+    {
+        $this->codeReservatione = $codeReservatione;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getNbPlace(): ?int
     {
         return $this->nbPlace;
     }
 
-    public function setNbPlace(?int $nbPlace): self
+    /**
+     * @param int|null $nbPlace
+     */
+    public function setNbPlace(?int $nbPlace): void
     {
         $this->nbPlace = $nbPlace;
-
-        return $this;
     }
 
+    /**
+     * @return User
+     */
     public function getCodeClient(): ?User
     {
         return $this->codeClient;
     }
 
-    public function setCodeClient(?User $codeClient): self
+    /**
+     * @param User $codeClient
+     */
+    public function setCodeClient(User $codeClient): void
     {
         $this->codeClient = $codeClient;
-
-        return $this;
     }
 
+    /**
+     * @return Exposition
+     */
     public function getCodeExpo(): ?Exposition
     {
         return $this->codeExpo;
     }
 
-    public function setCodeExpo(?Exposition $codeExpo): self
+    /**
+     * @param Exposition $codeExpo
+     */
+    public function setCodeExpo(Exposition $codeExpo): void
     {
         $this->codeExpo = $codeExpo;
-
-        return $this;
     }
 
 

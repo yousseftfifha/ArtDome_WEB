@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('exposition_deleteBack', {'codeExpo': exposition.codeExpo}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer cette exposition ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ exposition.codeExpo) }}">
+    <button class="btn">Delete</button>
+</form>

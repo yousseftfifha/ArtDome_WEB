@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Edit ReservationExpo{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Modifier ReservationExpo{% endblock %}
 
 {% block body %}
-    <h1>Edit ReservationExpo</h1>
+<div class="container">
+    <h1>Modifier ReservationExpo</h1>
 
     {{ include('reservation_expo/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('reservation_expo_index') }}">back to list</a>
+    <a href="{{ path('reservation_expo_index') }}">Retourner à la liste des expositions</a>
 
     {{ include('reservation_expo/_delete_form.html.twig') }}
+</div>
 {% endblock %}

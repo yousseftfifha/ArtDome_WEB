@@ -1,14 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ReservationExpo index{% endblock %}
+{% block title %} Les réservations Exposition {% endblock %}
 
 {% block body %}
-    <h1>ReservationExpo index</h1>
+<div class="container">
 
-    <table class="table">
+
+    <section class="item content">
+        <div class="container toparea">
+            <div class="underlined-title">
+                <div class="editContent">
+                    <h1 class="text-center latestitems">Les réservations Exposition</h1>
+                </div>
+                <div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+                </div>
+            </div>
+    <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2">
+        <form id="edd_checkout_cart_form" method="post">
+            <div id="edd_checkout_cart_wrap">
+
+    <table class="table" id="t">
+
         <thead>
+        <input type="text" id="search" class="form-control" placeholder="Search">
             <tr>
-                <th>Code Reservation</th>
+                <th>Code Réservation</th>
                 <th>Nom Client</th>
                 <th>Prenom Client</th>
                 <th>email Client</th>
@@ -18,7 +39,8 @@
                 <th>actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="all">
+
         {% for reservation_expo in reservation_expos %}
             <tr>
                 <td>{{ reservation_expo.codeReservatione }}</td>
@@ -29,8 +51,9 @@
                 <td>{{ reservation_expo.codeExpo.nomExpo}}</td>
                 <td>{{ reservation_expo.nbPlace }}</td>
                 <th>
-                    <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">show</a>
-                    <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">edit</a>
+                    <a href="{{ path('reservation_expo_show', {'codeReservatione': reservation_expo.codeReservatione}) }}">Afficher</a>
+                    <a href="{{ path('reservation_expo_edit', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
+                    {{ include('reservation_expo/_delete_form.html.twig') }}
                 </th>
             </tr>
         {% else %}
@@ -38,8 +61,65 @@
                 <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
+        <tbody id="search">
+
+        </tbody>
         </tbody>
     </table>
 
-    <a href="{{ path('reservation_expo_new') }}">Create new</a>
+    <a class="btn btn-circle" href="{{ path('exposition_index') }}">Retour vers la liste des expositions</a>
+<a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
+
+
+            </div>
+        </form>
+
+    </div>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js') }}">
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('reservation_expo_searchReservation') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>   '+obj.codeClient.nom+'  </td><td>'+obj.codeClient.prenom+'  </td><td>'+obj.codeClient.email+'  </td><td>'+obj.codeClient.numero+'  </td><td>'+obj.codeExpo.nomExpo+'  </td><td>'+obj.nbPlace+'  </td><td><a href="reservation_expo_show/'+obj.codeReservatione+'">show</a></td><td><a href="reservation_expo_edit/'+obj.codeReservatione+'">edit</a></td></tr>');                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+
 {% endblock %}
