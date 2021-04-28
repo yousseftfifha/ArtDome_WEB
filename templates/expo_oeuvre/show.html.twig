@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ExpoOeuvre{% endblock %}
+
+{% block body %}
+    <h1>ExpoOeuvre</h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Nom de l'exposition</th>
+            <td>{{ ExpoOeuvre.codeExpo.nomExpo }}</td>
+        </tr>
+        <tr>
+            <th>Thème de l'exposition</th>
+            <td>{{ ExpoOeuvre.codeExpo.themeExpo }}</td>
+        </tr>
+        <tr>
+            <th>Date de l'exposition</th>
+            <td>{{ ExpoOeuvre.codeExpo.dateExpo ? ExpoOeuvre.codeExpo.dateExpo|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Nombre Max de participants</th>
+            <td>{{ ExpoOeuvre.codeExpo.nbMaxParticipant }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('expo_oeuvre_index') }}">back to list</a>
+
+    <a href="{{ path('expo_oeuvre_edit', {'id': expo_oeuvre.id}) }}">edit</a>
+
+    {{ include('expo_oeuvre/_delete_form.html.twig') }}
+{% endblock %}

@@ -2,20 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\ExpoOeuvre;
 use App\Entity\Exposition;
 use App\Entity\Oeuvre;
 use App\Entity\ReservationExpo;
 use App\Entity\User;
 use App\Entity\Endroit;
 use App\Form\ExpositionType;
+use App\Repository\ExpoOeuvreRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use App\Repository\UserRepository;
 /**
  * @Route("/exposition")
  */
@@ -65,9 +69,11 @@ class ExpositionController extends AbstractController
     /**
      * @Route("/new", name="exposition_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserRepository $userRepository, \Swift_Mailer $mailer): Response
     {
         $exposition = new Exposition();
+        $u=$this->getUser();
+        $exposition->setCodeArtiste($u);
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
@@ -76,6 +82,21 @@ class ExpositionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($exposition);
             $entityManager->flush();
+
+                $user=$userRepository->findAll();
+                for($i=0; $i<count($user); $i++)
+                {
+                    $m="Good Day Mr/Mrs ".$user[$i]->getNom().",
+                 A new exposition '".$exposition->getNomExpo()."' has been added, 
+                 Check our website for further details.
+                 Thank you for choosing ArtDome.
+                 ";
+                    $message = (new \Swift_Message('Upcoming exposition'))
+                        ->setFrom('artdomeproject@gmail.com')
+                        ->setTo($user[$i]->getEmail())
+                        ->setBody($m);
+                    $mailer->send($message);
+                }
 
             return $this->redirectToRoute('exposition_index');
         }
@@ -93,9 +114,11 @@ class ExpositionController extends AbstractController
     /**
      * @Route("/newBack", name="exposition_newBack", methods={"GET","POST"})
      */
-    public function newBack(Request $request): Response
+    public function newBack(Request $request, UserRepository $userRepository, \Swift_Mailer $mailer): Response
     {
         $exposition = new Exposition();
+        $u=$this->getUser();
+        $exposition->setCodeArtiste($u);
         $form = $this->createForm(ExpositionType::class, $exposition);
         $form->handleRequest($request);
 
@@ -104,6 +127,21 @@ class ExpositionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($exposition);
             $entityManager->flush();
+
+                $user=$userRepository->findAll();
+                for($i=0; $i<count($user); $i++)
+                {
+                    $m="Good Day Mr/Mrs ".$user[$i]->getNom().",
+                 A new exposition '".$exposition->getNomExpo()."' has been added, 
+                 Check our website for further details.
+                 Thank you for choosing ArtDome.
+                 ";
+                    $message = (new \Swift_Message('Upcoming exposition'))
+                        ->setFrom('artdomeproject@gmail.com')
+                        ->setTo($user[$i]->getEmail())
+                        ->setBody($m);
+                    $mailer->send($message);
+                }
 
             return $this->redirectToRoute('exposition_indexBack');
         }
@@ -119,17 +157,23 @@ class ExpositionController extends AbstractController
     }
 
     /**
-     * @Route("/Oeuvre/{codeExpo}", name="exposition_show", methods={"GET"})
+     * @Route("/Oeuvre/{codeExpo}", name="expo_oeuvre_show", methods={"GET"})
      */
-    public function show(Exposition $exposition): Response
+    public function show(Exposition $exposition, ExpoOeuvreRepository $expoOeuvreRepository): Response
     {
        /* $oeuvre = $this->getDoctrine()
             ->getManager()
             ->createQuery('SELECT * FROM App\Entity\Exposition e INNER JOIN App\Entity\Oeuvre o on e.codeExpo=o.codeExposition')
             ->getResult();*/
 
-        return $this->render('exposition/show.html.twig', [
-            'exposition' => $exposition
+
+        $expoOeuvreRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(ExpoOeuvre::class);
+        $expositions = $expoOeuvreRepository->getavecOeuvres($exposition->getCodeExpo());
+
+        return $this->render('expo_oeuvre/show.html.twig', [
+            'ExpoOeuvre' => $expositions
         ]);
     }
 

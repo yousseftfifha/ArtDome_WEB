@@ -6,6 +6,9 @@
     {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
     {% block stylesheets %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="generator" content="">
         <link href="{{ asset('Front/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('Front/https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ asset('Front/css/style.css') }}" rel="stylesheet">
@@ -25,7 +28,7 @@
                         <i class="fa fa-bars"></i>
                         <span class="sr-only">Toggle navigation</span>
                     </button>
-                    <a href="{{ asset('index.html') }}" class="navbar-brand brand">
+                    <a href="{{ path('home') }}" class="navbar-brand brand">
                         <img width="85" height="50" src="{{ asset('../Front/GFX/a.png') }}" alt="">
                     </a>
                 </div>
@@ -34,6 +37,8 @@
                         <li class="propClone"><a href="{{ asset('index.html') }}">Home</a></li>
                         <li class="propClone"><a href="{{ path('reservation_expo_index') }}">Exposition Reservations</a></li>
                         <li class="propClone"><a href="{{ path('exposition_index') }}">Expositions</a></li>
+                        <li class="propClone"><a href="{{ path('profile_index') }}"> <i class="fa fa-user"></i> profile </a> </li>
+                        <li class="propClone"><a href="{{ path('app_login') }}"> <i class="fa fa-connectdevelop"></i> login </a> </li>
 
                     </ul>
                 </div>

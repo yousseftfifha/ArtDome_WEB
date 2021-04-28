@@ -75,4 +75,15 @@ class ReservationExpoRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByClient($codeClient)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.codeClient = :codeClient')
+            ->setParameter('codeClient', $codeClient)
+            ->orderBy('e.codeReservatione', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

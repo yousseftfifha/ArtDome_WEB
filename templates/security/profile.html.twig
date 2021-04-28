@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile Information{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Nom</th>
+            <td>{{ app.user.nom }}</td>
+        </tr>
+        <tr>
+            <th>Prenom</th>
+            <td>{{ app.user.prenom }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ app.user.email }}</td>
+        </tr>
+        <tr>
+            <th>Date De Naissance</th>
+            <td>{{ app.user.datenaissance ? app.user.datenaissance|date('Y-m-d') : '' }}</td>
+        </tr>
+
+        <tr>
+            <th>Ville</th>
+            <td>{{ app.user.ville }}</td>
+        </tr>
+        <tr>
+            <th>Numero</th>
+            <td>{{ app.user.numero }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>{{app.user.image }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ app.user.password }}</td>
+        </tr>
+        </tbody>
+        <a href="{{ path('profile_edit', {'id': app.user.id}) }}">edit</a>
+        <a href="{{ path('notification_new') }}">    SendRequest</a>
+
+    </table>
+
+
+
+
+{% endblock %}

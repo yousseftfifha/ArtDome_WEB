@@ -14,10 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use mysql_xdevapi\RowResult;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use App\Services\QrcodeService;
+use function MongoDB\BSON\toJSON;
 
 
 
@@ -32,13 +35,20 @@ class ReservationExpoController extends AbstractController
      */
     public function index(): Response
     {
-        $reservationExpos = $this->getDoctrine()
+        /*$reservationExpos = $this->getDoctrine()
             ->getManager()
             ->createQuery('SELECT r FROM App\Entity\ReservationExpo r order by  r.nbPlace asc')
-            ->getResult();
+        ->getResult();
+        */
+
+        $u=$this->getUser();
+        $reservationexposRepository = $this->getDoctrine()
+            ->getRepository(ReservationExpo::class)
+            ->findByClient($u);
+
 
         return $this->render('reservation_expo/index.html.twig', [
-            'reservation_expos' => $reservationExpos,
+            'reservation_expos' => $reservationexposRepository,
         ]);
     }
     /**
@@ -64,51 +74,58 @@ class ReservationExpoController extends AbstractController
     /**
      * @Route("/new/{codeExpo}", name="reservation_expo_new", methods={"GET","POST"})
      */
-    public function new(Request $request, \Swift_Mailer $mailer, Exposition $exposition, FlashyNotifier $flashy): Response
+    public function new(Request $request, \Swift_Mailer $mailer, Exposition $exposition, QrcodeService $qrcodeService): Response
     {
+        $qrCode = null;
         $reservationExpo = new ReservationExpo();
+        $u=$this->getUser();
+        $reservationExpo->setCodeClient($u);
         $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
         $reservationExpo->setCodeExpo($exposition);
         $form->handleRequest($request);
 
-        $code=$exposition->getCodeExpo();
+        $this->addFlash('success', 'Only '.$exposition->getNbMaxParticipant().' place(s) left !!');
+
+        /*$code=$exposition->getCodeExpo();
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\ReservationExpo e WHERE e.codeExpo='.$code.' ');
         $sum = $query->execute();
         $s=json_encode($sum);
         $count =$reservationExpo->getCodeExpo()->getNbMaxParticipant();
-        $count1=$count-intval($s);//
+        $count1=$count-intval($s);//*/
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($reservationExpo->getNbPlace() < $count1) {
+            if ($exposition->getNbMaxParticipant() >= $reservationExpo->getNbPlace()) {
+                $exposition->getNbMaxParticipant($exposition->getNbMaxParticipant()-$reservationExpo->getNbPlace());
+                $this->getDoctrine()->getManager()->flush();
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($reservationExpo);
                 $entityManager->flush();
 
+                $m="Good Day Mr/Mrs ".$reservationExpo->getCodeClient()->getNom().",
+                 Your reservation of ".$reservationExpo->getNbPlace()." place(s) for ".$reservationExpo->getCodeExpo()->getNomExpo()." has been confirmed.
+                 Thank you for choosing ArtDome.
+                 ";
 
-                $message = (new \Swift_Message('You Got Mail!'))
-                    ->setFrom('artdomeproject@gmail.com')
-                    ->setTo($reservationExpo->getCodeClient()->getEmail())
-                    ->setBody("Good Day Mr/Mrs,
-                
-                                Your reservation has been confirmed.
-                                
-                                Thank you for choosing ArtDome."
+                    $message = (new \Swift_Message('Reservation confirmed'))
+                        ->setFrom('artdomeproject@gmail.com')
+                        ->setTo($reservationExpo->getCodeClient()->getEmail())
+                        ->setBody($m);
 
-                    );
-
-                $flashy->success('Reservation created!', 'http://your-awesome-link.com');
-                $mailer->send($message);
-
+                    /*$flashy->success('Reservation created!', 'http://your-awesome-link.com');*/
+                    $mailer->send($message);
+                $qrCode = $qrcodeService->qrcode($m,$reservationExpo->getCodeReservatione());
                 return $this->redirectToRoute('reservation_expo_index');
             } else
 
-                $this->addFlash('success', 'We are sorry this exposition is fully booked');
+                $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
         }
 
         return $this->render('reservation_expo/new.html.twig', [
             'reservation_expo' => $reservationExpo,
             'form' => $form->createView(),
+            'qrCode' => $qrCode
         ]);
     }
 
@@ -159,20 +176,50 @@ class ReservationExpoController extends AbstractController
     /**
      * @Route("/{codeReservatione}/edit", name="reservation_expo_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, ReservationExpo $reservationExpo): Response
+    public function edit(Request $request, ReservationExpo $reservationExpo, \Swift_Mailer $mailer ,QrcodeService $qrcodeService): Response
     {
+        $qrCode = null;
         $form = $this->createForm(ReservationExpoType::class, $reservationExpo);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $count1=$reservationExpo->getNbPlace();
 
-            return $this->redirectToRoute('reservation_expo_index');
+        $this->addFlash('success', 'Only '.$reservationExpo->getCodeExpo()->getNbMaxParticipant().' place(s) left !!');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($reservationExpo->getNbPlace() > $count1) {
+                $place = $reservationExpo->getNbPlace() - $count1;
+            } else {
+                $place = $count1 - $reservationExpo->getNbPlace();
+            }
+            if ($reservationExpo->getCodeExpo()->getNbMaxParticipant() >= $place) {
+                $reservationExpo->getCodeExpo()->getNbMaxParticipant(($reservationExpo->getCodeExpo()->getNbMaxParticipant()) - $place);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($reservationExpo->getCodeExpo());
+                $entityManager->flush();
+
+                $this->getDoctrine()->getManager()->flush();
+                $m = "Good Day Mr/Mrs " . $reservationExpo->getCodeClient()->getNom() . ",
+                 Your reservation of " . $reservationExpo->getNbPlace() . " place(s) for " . $reservationExpo->getCodeExpo()->getNomExpo() . " has been confirmed.
+                 Thank you for choosing ArtDome.
+                 ";
+
+                $message = (new \Swift_Message('Reservation confirmed'))
+                    ->setFrom('artdomeproject@gmail.com')
+                    ->setTo($reservationExpo->getCodeClient()->getEmail())
+                    ->setBody($m);
+                $mailer->send($message);
+                $qrCode = $qrcodeService->qrcode($m, $reservationExpo->getCodeReservatione());
+
+                return $this->redirectToRoute('reservation_expo_index');
+            } else
+                $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
         }
 
         return $this->render('reservation_expo/edit.html.twig', [
             'reservation_expo' => $reservationExpo,
             'form' => $form->createView(),
+            'qrCode' => $qrCode
         ]);
     }
 
@@ -200,12 +247,23 @@ class ReservationExpoController extends AbstractController
     /**
      * @Route("/{codeReservatione}", name="reservation_expo_delete", methods={"POST"})
      */
-    public function delete(Request $request, ReservationExpo $reservationExpo): Response
+    public function delete(Request $request, ReservationExpo $reservationExpo, \Swift_Mailer $mailer): Response
     {
         if ($this->isCsrfTokenValid('delete'.$reservationExpo->getCodeReservatione(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($reservationExpo);
             $entityManager->flush();
+
+            $m="Good Day Mr/Mrs ".$reservationExpo->getCodeClient()->getNom().",
+                 Your reservation of ".$reservationExpo->getNbPlace()." place(s) for ".$reservationExpo->getCodeExpo()->getNomExpo()." has been cancelled .
+                 We hope to see you in upcoming events.
+                 Thank you for choosing ArtDome.
+                 ";
+            $message = (new \Swift_Message('Reservation cancelled'))
+                ->setFrom('artdomeproject@gmail.com')
+                ->setTo($reservationExpo->getCodeClient()->getEmail())
+                ->setBody($m);
+            $mailer->send($message);
         }
 
         return $this->redirectToRoute('reservation_expo_index');

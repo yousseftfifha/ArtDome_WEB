@@ -36,13 +36,6 @@ class Orders
     private $innonumber;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="TotalQty", type="integer", nullable=false)
-     */
-    private $totalqty;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="OrderDate", type="string", length=70, nullable=false)
@@ -57,6 +50,13 @@ class Orders
     private $status;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="TotalQty", type="integer", nullable=false)
+     */
+    private $totalqty;
+
+    /**
      * @var \User
      *
      * @ORM\ManyToOne(targetEntity="User")
@@ -65,83 +65,6 @@ class Orders
      * })
      */
     private $iduser;
-
-    public function getOrderid(): ?int
-    {
-        return $this->orderid;
-    }
-
-    public function getDueamount(): ?float
-    {
-        return $this->dueamount;
-    }
-
-    public function setDueamount(float $dueamount): self
-    {
-        $this->dueamount = $dueamount;
-
-        return $this;
-    }
-
-    public function getInnonumber(): ?int
-    {
-        return $this->innonumber;
-    }
-
-    public function setInnonumber(int $innonumber): self
-    {
-        $this->innonumber = $innonumber;
-
-        return $this;
-    }
-
-    public function getTotalqty(): ?int
-    {
-        return $this->totalqty;
-    }
-
-    public function setTotalqty(int $totalqty): self
-    {
-        $this->totalqty = $totalqty;
-
-        return $this;
-    }
-
-    public function getOrderdate(): ?string
-    {
-        return $this->orderdate;
-    }
-
-    public function setOrderdate(string $orderdate): self
-    {
-        $this->orderdate = $orderdate;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getIduser(): ?User
-    {
-        return $this->iduser;
-    }
-
-    public function setIduser(?User $iduser): self
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
 
 
 }

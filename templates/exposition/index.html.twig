@@ -81,10 +81,10 @@
                                 {{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }}
                             </p>
                             <p>
-                            <form id="id" class="edd_form" action="<  {{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" method="POST">
+                            <form id="id" class="edd_form" action="<  {{ path('expo_oeuvre_show', {'codeExpo': exposition.codeExpo}) }}" method="POST">
 
                                 <input type="hidden" name="edd_action" value={{ exposition.codeExpo  }}>
-                                <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More Details</a>
+                                <a href="{{ path('expo_oeuvre_show', {'codeExpo': exposition.codeExpo}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More Details</a>
                             </form>
 
                             </p>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="product-details">
                         <br>
-                        <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}">{{ exposition.nomExpo }}
+                        <a href="{{ path('expo_oeuvre_show', {'codeExpo': exposition.codeExpo}) }}">{{ exposition.nomExpo }}
 
                             <h1>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }} <br> </h1>
 
