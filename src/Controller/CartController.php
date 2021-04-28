@@ -6,7 +6,6 @@ use App\Entity\Cart;
 use App\Entity\Exposition;
 use App\Entity\Oeuvre;
 use App\Entity\Orders;
-use App\Entity\PendingOrders;
 use App\Entity\User;
 use App\Form\CartType;
 use Stripe\Checkout\Session;
