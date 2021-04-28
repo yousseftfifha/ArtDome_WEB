@@ -310,7 +310,7 @@ class ReservationeventController extends AbstractController
         $dompdf->render();
 
         $dompdf->stream("Reservation.pdf", [
-            "Attachment" => false
+            "Attachment" => true
         ]);
         return new Response('What a bewitching controller we have conjured!');
     }
@@ -348,8 +348,9 @@ class ReservationeventController extends AbstractController
         $dompdf->render();
 
         $dompdf->stream("ReservationBack.pdf", [
-            "Attachment" => false
+            "Attachment" => true
         ]);
+        return new Response('What a bewitching controller we have conjured!');
 
     }
 

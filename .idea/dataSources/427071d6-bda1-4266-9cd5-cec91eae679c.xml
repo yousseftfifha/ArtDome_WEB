@@ -1268,25 +1268,23 @@ SELECT|mysql.user
       <DataType>float|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="346" parent="254" name="ID_Artiste">
+    <column id="346" parent="254" name="ImageOeuvre">
       <Position>4</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="347" parent="254" name="DateOeuvre">
-      <Position>5</Position>
-      <DataType>date|0s</DataType>
-    </column>
-    <column id="348" parent="254" name="ImageOeuvre">
-      <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="349" parent="254" name="NomCat">
-      <Position>7</Position>
+    <column id="347" parent="254" name="NomCat">
+      <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="350" parent="254" name="EmailArtiste">
+    <column id="348" parent="254" name="DateOeuvre">
+      <Position>6</Position>
+      <DataType>date|0s</DataType>
+    </column>
+    <column id="349" parent="254" name="EmailArtiste">
+      <Position>7</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="350" parent="254" name="color">
       <Position>8</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
@@ -1294,16 +1292,16 @@ SELECT|mysql.user
       <Position>9</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <column id="352" parent="254" name="color">
+    <column id="352" parent="254" name="ID_Artiste">
       <Position>10</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
     </column>
-    <index id="353" parent="254" name="fk_id">
-      <ColNames>ID_Artiste</ColNames>
+    <index id="353" parent="254" name="fk_exposition">
+      <ColNames>code_exposition</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="354" parent="254" name="fk_exposition">
-      <ColNames>code_exposition</ColNames>
+    <index id="354" parent="254" name="fk_id">
+      <ColNames>ID_Artiste</ColNames>
       <Type>btree</Type>
     </index>
     <key id="355" parent="254" name="PRIMARY">
@@ -1311,17 +1309,17 @@ SELECT|mysql.user
       <ColNames>ID_Oeuvre</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="356" parent="254" name="fk_id">
-      <ColNames>ID_Artiste</ColNames>
-      <RefTableName>user</RefTableName>
-      <RefColNames>ID</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="357" parent="254" name="fk_exposition">
+    <foreign-key id="356" parent="254" name="fk_exposition">
       <ColNames>code_exposition</ColNames>
       <RefTableName>exposition</RefTableName>
       <RefColNames>code_expo</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="357" parent="254" name="fk_id">
+      <ColNames>ID_Artiste</ColNames>
+      <RefTableName>user</RefTableName>
+      <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>

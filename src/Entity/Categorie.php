@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="categorie")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\categorieRepository")
  */
+
+
 class Categorie
 {
     /**
@@ -55,6 +58,10 @@ class Categorie
      * @ORM\Column(name="NbreOeuvre", type="integer", nullable=true)
      */
     private $nbreoeuvre = '0';
+
+    public function __toString() {
+        return $this->idCat.' ';
+    }
 
     public function getIdCat(): ?int
     {
@@ -120,6 +127,4 @@ class Categorie
 
         return $this;
     }
-
-
 }

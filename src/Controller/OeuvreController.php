@@ -79,7 +79,7 @@ class OeuvreController extends AbstractController
             $mailer->send($message);
 //mail sent
 
-            return $this->redirectToRoute('oeuvre_index');
+            return $this->redirectToRoute('oeuvre_indexBack');
         }
 
         return $this->render('oeuvre/new.html.twig', [
@@ -120,7 +120,7 @@ class OeuvreController extends AbstractController
             ;
             $mailer->send($message);
 
-            return $this->redirectToRoute('oeuvre_index');
+            return $this->redirectToRoute('oeuvre_indexBack');
 
         }
 
@@ -144,7 +144,7 @@ class OeuvreController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('oeuvre_index');
+        return $this->redirectToRoute('oeuvre_indexBack');
     }
 
 
