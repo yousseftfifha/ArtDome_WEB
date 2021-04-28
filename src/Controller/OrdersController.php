@@ -184,11 +184,10 @@ class OrdersController extends AbstractController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream("ASllOrders.pdf", [
-            "Attachment" => false
+        $dompdf->stream("AllOrders.pdf", [
+            "Attachment" => true
         ]);
-        return $this->redirectToRoute('orders_index');
-
+        return new Response('What a bewitching controller we have conjured!');
     }
     /**
      * @Route("/orders/generate_pdfUser", name="generate_pdfUser")
@@ -196,8 +195,7 @@ class OrdersController extends AbstractController
     public function generate_pdfUser(){
 
         $options = new Options();
-        $options->set('defaultFont', 'Roboto');
-        $options->setIsRemoteEnabled(true);
+        $options->set('defaultFont', 'Arial');
 
         $dompdf = new Dompdf($options);
         $orders = $this->getDoctrine()
@@ -217,7 +215,7 @@ class OrdersController extends AbstractController
         $dompdf->stream("orders.pdf", [
             "Attachment" => true
         ]);
-        return $this->redirectToRoute('orders_index');
+        return new Response('What a bewitching controller we have conjured!');
 
     }
 

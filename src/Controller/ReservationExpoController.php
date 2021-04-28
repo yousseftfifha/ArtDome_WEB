@@ -263,8 +263,7 @@ class ReservationExpoController extends AbstractController
         $dompdf->stream("pdfreservation.pdf", [
             "Attachment" => true
         ]);
-        return $this->redirectToRoute('reservation_expo_index');
-
+        return new Response('What a bewitching controller we have conjured!');
     }
 
     /**
@@ -295,8 +294,7 @@ class ReservationExpoController extends AbstractController
         $dompdf->stream("pdfreservationBack.pdf", [
             "Attachment" => true
         ]);
-        return $this->redirectToRoute('reservation_expo_indexBack');
-
+        return new Response('What a bewitching controller we have conjured!');
     }
     /**
      * @Route("/expo/search", name="reservation_expo_searchReservation")
