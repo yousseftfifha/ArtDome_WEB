@@ -3,9 +3,9 @@
 {% block title %}Event [{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 align="center">{{ event.nomEvent }}</h1>
-<div>
+    <div class="container">
+        <h1 align="center">{{ event.nomEvent }}</h1>
+        <div>
     <span class="maxproduct">
         <table class="table">
             <tr>
@@ -30,10 +30,10 @@
            </tr>
         </table>
         </span>
-</div>
-    <br>
-    <table class="table">
-        <tbody>
+        </div>
+        <br>
+        <table class="table">
+            <tbody>
 
             <tr>
                 <th>Event theme</th>
@@ -60,16 +60,17 @@
                 <td>{{ event.codeEspace.idEndroit }}</td>
             </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a class="btn btn-dark" href="{{ path('event_index') }}">Back to list</a>
+        <a class="btn btn-dark" href="{{ path('event_index') }}">Back to list</a>
+        {% if is_granted('ROLE_ARTISTE')%}
+            <a class="btn btn-dark" href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">Edit</a>
 
-    <a class="btn btn-dark" href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">Edit</a>
+            {#  <a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>#}
 
-  {#  <a href="{{ path('reservationevent_new', {'codeEvent': event.codeEvent}) }}">reservation</a>#}
+            {{ include('event/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
 
-    {{ include('event/_delete_form.html.twig') }}
-</div>
-    
 {% endblock %}

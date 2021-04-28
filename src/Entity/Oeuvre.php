@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Oeuvre
@@ -84,30 +86,6 @@ class Oeuvre
      */
     private $idArtiste;
 
-    /**
-     * Oeuvre constructor.
-     * @param int $idOeuvre
-     * @param string $nomoeuvre
-     * @param float $prixoeuvre
-     * @param \DateTime|null $dateoeuvre
-     * @param string $imageoeuvre
-     * @param string|null $nomcat
-     * @param string|null $emailartiste
-     * @param Exposition $codeExposition
-     * @param User $idArtiste
-     */
-    public function __construct(int $idOeuvre, string $nomoeuvre, float $prixoeuvre, ?\DateTime $dateoeuvre, string $imageoeuvre, ?string $nomcat, ?string $emailartiste, Exposition $codeExposition, User $idArtiste)
-    {
-        $this->idOeuvre = $idOeuvre;
-        $this->nomoeuvre = $nomoeuvre;
-        $this->prixoeuvre = $prixoeuvre;
-        $this->dateoeuvre = $dateoeuvre;
-        $this->imageoeuvre = $imageoeuvre;
-        $this->nomcat = $nomcat;
-        $this->emailartiste = $emailartiste;
-        $this->codeExposition = $codeExposition;
-        $this->idArtiste = $idArtiste;
-    }
 
     /**
      * @return int
@@ -128,7 +106,7 @@ class Oeuvre
     /**
      * @return string
      */
-    public function getNomoeuvre(): string
+    public function getNomoeuvre(): ?string
     {
         return $this->nomoeuvre;
     }
@@ -144,7 +122,7 @@ class Oeuvre
     /**
      * @return float
      */
-    public function getPrixoeuvre(): float
+    public function getPrixoeuvre(): ?float
     {
         return $this->prixoeuvre;
     }
@@ -176,7 +154,7 @@ class Oeuvre
     /**
      * @return string
      */
-    public function getImageoeuvre(): string
+    public function getImageoeuvre(): ?string
     {
         return $this->imageoeuvre;
     }
@@ -224,7 +202,7 @@ class Oeuvre
     /**
      * @return Exposition
      */
-    public function getCodeExposition(): Exposition
+    public function getCodeExposition(): ?Exposition
     {
         return $this->codeExposition;
     }
@@ -255,5 +233,41 @@ class Oeuvre
     public function __toString() {
         return $this->idOeuvre.' ';
     }
+    /**
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="ImageOeuvre")
+     */
+    private $imageFile;
 
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+    public function setImageFile(?File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+        return $this;
+
+        /*if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }*/
+    }
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $color;
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
 }

@@ -2,10 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Exposition;
 use App\Entity\Oeuvre;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Categorie;
 
 class OeuvreType extends AbstractType
 {
@@ -15,11 +20,13 @@ class OeuvreType extends AbstractType
             ->add('nomoeuvre')
             ->add('prixoeuvre')
             ->add('dateoeuvre')
-            ->add('imageoeuvre')
-            ->add('nomcat')
+            ->add('imageFile',FileType::class )
+            ->add('nomcat', EntityType::class,['class'=>Categorie::class,'choice_label'=>'nomcat'])
             ->add('emailartiste')
-            ->add('codeExposition')
-            ->add('idArtiste')
+            ->add('codeExposition', EntityType::class,['class'=>Exposition::class,'choice_label'=>'codeExpo'])
+            ->add('color',ColorType::class)
+
+
         ;
     }
 

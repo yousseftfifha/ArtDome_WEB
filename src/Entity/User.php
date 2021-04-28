@@ -27,6 +27,8 @@ class User implements UserInterface
     /**
      * @var string|null
      * @Groups("orders:read")
+     * @Groups("reservationevents:read")
+     * @Groups("events:read")
      * @ORM\Column(name="nom", type="string", length=255, nullable=true)
      */
     private $nom;
@@ -121,11 +123,14 @@ class User implements UserInterface
      *
      * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
      * @Groups("orders:read")
+     * @Groups("reservationevents:read")
+     * @Groups("events:read")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("reservationevents:read")
      */
     private $email;
 
@@ -161,7 +166,7 @@ class User implements UserInterface
      */
     /**
      * @var int
-     *
+     * @Groups("reservationevents:read")
      * @ORM\Column(name="numero", type="integer", nullable=false)
      */
     private $numero;

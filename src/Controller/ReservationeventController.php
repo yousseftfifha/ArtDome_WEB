@@ -31,11 +31,11 @@ class ReservationeventController extends AbstractController
     public function index(): Response
     {
         //$reservationevents = $this->getDoctrine()
-            /*->getRepository(Reservationevent::class)
-            ->findAll();//
-            ->getManager()
-            ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
-            ->getResult();*/
+        /*->getRepository(Reservationevent::class)
+        ->findAll();//
+        ->getManager()
+        ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
+        ->getResult();*/
         $u=$this->getUser();
         $reservationeventsRepository = $this->getDoctrine()
             ->getRepository(Reservationevent::class)
@@ -43,10 +43,10 @@ class ReservationeventController extends AbstractController
 
 
 
-       /* $reservationevents = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(Reservationevent::class)
-            ->SortReservation();*/
+        /* $reservationevents = $this->getDoctrine()
+             ->getManager()
+             ->getRepository(Reservationevent::class)
+             ->SortReservation();*/
 
         return $this->render('reservationevent/index.html.twig', [
             'reservationevents' => $reservationeventsRepository,
@@ -59,11 +59,11 @@ class ReservationeventController extends AbstractController
     public function indexBack(): Response
     {
         //$reservationevents = $this->getDoctrine()
-            /*->getRepository(Reservationevent::class)
-            ->findAll();//
-            ->getManager()
-            ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
-            ->getResult();*/
+        /*->getRepository(Reservationevent::class)
+        ->findAll();//
+        ->getManager()
+        ->createQuery('SELECT r FROM App\Entity\Reservationevent r order by  r.codeReservation desc')
+        ->getResult();*/
         $reservationeventsRepository = $this->getDoctrine()
             ->getManager()
             ->getRepository(Reservationevent::class);
@@ -87,18 +87,13 @@ class ReservationeventController extends AbstractController
         $reservationevent->setCodeEvent($Event);
         $form->handleRequest($request);
 
-        $code=$Event->getCodeEvent();
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
-        $sum = $query->execute();
-        $s=json_encode($sum[0]);
-        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
-        $count1=$count-intval($s[0]);//
-
-        $this->addFlash('success', 'Only '.$s.' place(s) left !!');
+        $this->addFlash('success', 'Only '.$Event->getNbMaxPart().' place(s) left !!');
 
         if ($form->isSubmitted() && $form->isValid() ) {
-             if ($reservationevent->getNbPlace() < $count1) {
+            if ($Event->getNbMaxPart() >= $reservationevent->getNbPlace()) {
+                $Event->setNbMaxPart($Event->getNbMaxPart()-$reservationevent->getNbPlace());
+                $this->getDoctrine()->getManager()->flush();
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($reservationevent);
                 $entityManager->flush();
@@ -115,9 +110,9 @@ class ReservationeventController extends AbstractController
                 //$this->sendSms($reservationevent->getCodeEvent()->getDate(),$reservationevent->getCodeClient()->getPrenom(),$reservationevent->getCodeEvent()->getNomEvent());
                 return $this->redirectToRoute('reservationevent_index');
             }
-        else
+            else
 
-            $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
+                $this->addFlash('success', 'It seems like you exceeded the maximum participation range, please try again with fewer places');
         }
 
         return $this->render('reservationevent/new.html.twig', [
@@ -179,27 +174,30 @@ class ReservationeventController extends AbstractController
         $form = $this->createForm(ReservationeventType::class, $reservationevent);
         $form->handleRequest($request);
 
-       // $reservationevent->setNbPlace(0);
-        //$this->getDoctrine()->getManager()->flush();
+        $count1=$reservationevent->getNbPlace();
 
-        $code=$reservationevent->getCodeEvent()->getCodeEvent();
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('SELECT sum(e.nbPlace) FROM App\Entity\Reservationevent e WHERE e.codeEvent='.$code.' ');
-        $sum = $query->execute();
-        $s=json_encode($sum);
-        $count =$reservationevent->getCodeEvent()->getNbMaxPart();
-        $count1=$count-intval($s);
-
-        $this->addFlash('success', 'Only '.$count1.' place(s) left !!');
+        $this->addFlash('success', 'Only '.$reservationevent->getCodeEvent()->getNbMaxPart().' place(s) left !!');
 
         if ($form->isSubmitted() && $form->isValid()) {
-             if ($reservationevent->getNbPlace() < $count1) {
+            if($reservationevent->getNbPlace()>$count1)
+            {
+                $place=$reservationevent->getNbPlace()-$count1;
+            }
+            else{
+                $place=$count1-$reservationevent->getNbPlace();
+            }
+            if ($reservationevent->getCodeEvent()->getNbMaxPart() >= $place) {
+                $reservationevent->getCodeEvent()->setNbMaxPart(($reservationevent->getCodeEvent()->getNbMaxPart())-$place);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($reservationevent->getCodeEvent());
+                $entityManager->flush();
+
                 $this->getDoctrine()->getManager()->flush();
-                 $m="Good Day Mr/Mrs ".$reservationevent->getCodeClient()->getNom().",
+                $m="Good Day Mr/Mrs ".$reservationevent->getCodeClient()->getNom().",
                  Your reservation of ".$reservationevent->getNbPlace()." place(s) for ".$reservationevent->getCodeEvent()->getNomEvent()." has been confirmed.
                  Thank you for choosing ArtDome.
                  ";
-                 $qrCode = $qrcodeService->qrcode($m,$reservationevent->getCodeReservation());
+                $qrCode = $qrcodeService->qrcode($m,$reservationevent->getCodeReservation());
                 return $this->redirectToRoute('reservationevent_index');
             }
             else
@@ -298,9 +296,8 @@ class ReservationeventController extends AbstractController
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('reservationevent/ReservationPdf.html.twig', [
-
-                'reservationevent' => $reservationevent, 'title' => "Event reservation"
-            ]);
+            'reservationevent' => $reservationevent, 'title' => "Event reservation"
+        ]);
 
 
         // Load HTML to Dompdf
@@ -315,6 +312,7 @@ class ReservationeventController extends AbstractController
         $dompdf->stream("Reservation.pdf", [
             "Attachment" => false
         ]);
+        return new Response('What a bewitching controller we have conjured!');
     }
 
     /**
@@ -322,7 +320,7 @@ class ReservationeventController extends AbstractController
      */
 
 
-    public function pdfBack(ReservationeventRepository $reservationevents)
+    public function pdfBack(ReservationeventRepository $reservationevents): Response
     {
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
@@ -352,19 +350,17 @@ class ReservationeventController extends AbstractController
         $dompdf->stream("ReservationBack.pdf", [
             "Attachment" => false
         ]);
+
     }
 
-  /*  public function sendSms($date,$client,$event) {
-
-        $twilio = $this->get("twilio.client");
-        $text = "Good day ".$client." your reservation for  ".$event." on  ".$date."has been confirmed, thank you for choosing ArtDome." ;
-
-        $twilio->messages->create("+21623850921", [
-                'from'=>'+15128655014', // From a Twilio number in your account
-                'body'=>$text]
-
-        );
-    }*/
+    /*  public function sendSms($date,$client,$event) {
+          $twilio = $this->get("twilio.client");
+          $text = "Good day ".$client." your reservation for  ".$event." on  ".$date."has been confirmed, thank you for choosing ArtDome." ;
+          $twilio->messages->create("+21623850921", [
+                  'from'=>'+15128655014', // From a Twilio number in your account
+                  'body'=>$text]
+          );
+      }*/
 
     /**
      * @Route("//searchReservation ", name="reservationevent_searchReservationx")

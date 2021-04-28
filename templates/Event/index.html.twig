@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{#
+    {#
     <table class="table">
         <thead>
             <tr>
@@ -16,7 +16,6 @@
                 <th>Event date</th>
                 <th>Contributors</th>
                 <th>Show room</th>
-
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,11 +30,9 @@
                 <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
                 <td>{{ event.nbMaxPart }}</td>
                 <td>{{ event.codeEspace.idEndroit }}</td>
-
                 <td>
                     <a href="{{ path('event_show', {'codeEvent': event.codeEvent}) }}">show</a>
                     <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">edit</a>
-
                 </td>
             </tr>
         {% else %}
@@ -45,7 +42,6 @@
         {% endfor %}
         </tbody>
     </table>
-
     <a href="{{ path('event_new') }}">Create new</a>
 <a href="{{ path('reservationevent_new' )}}">Make a reservation  </a>#}
 
@@ -64,7 +60,7 @@
                 </div>
             </div>
             <div>
-            <input type="text" id="search" class="form-control" placeholder="Search">
+                <input type="text" id="search" class="form-control" placeholder="Search">
             </div>
             <br>
             {% for event in events %}
@@ -102,14 +98,14 @@
 
 					    </span>
 
-                        <div>
-                            {% if event.date >date() and app.user%}
-                            <a href="{{ path('reservationevent_new' , {'codeEvent': event.codeEvent})}}">Make a reservation  </a>
-                            {% endif %}
-                        </div>
+                            <div>
+                                {% if event.date >date() and app.user and event.nbMaxPart>0 %}
+                                    <a href="{{ path('reservationevent_new' , {'codeEvent': event.codeEvent})}}">Make a reservation  </a>
+                                {% endif %}
+                            </div>
                             {% if event.codeArtiste == app.user%}
-                            <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">  Edit</a>
-                            {{ include('event/_delete_form.html.twig') }}
+                                <a href="{{ path('event_edit', {'codeEvent': event.codeEvent}) }}">  Edit</a>
+                                {{ include('event/_delete_form.html.twig') }}
                             {% endif %}
                         </div>
                     </div>
@@ -126,16 +122,16 @@
         </div>
         <div>
 
-             {% if is_granted('ROLE_ARTISTE')%}
+            {% if is_granted('ROLE_ARTISTE')%}
 
-        <a class="btn btn-dark" href="{{ path('event_new') }}">Create new</a>
-             {% endif %}
-        {% if app.user%}
-        <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">View Reservations</a>
-        {% endif %}
+                <a class="btn btn-dark" href="{{ path('event_new') }}">Create new</a>
+            {% endif %}
+            {% if app.user%}
+                <a class="btn btn-dark" href="{{ path('reservationevent_index') }}">View Reservations</a>
+            {% endif %}
         </div>
         <div class="pagination">
-             {{ knp_pagination_render(events) }}
+            {{ knp_pagination_render(events) }}
         </div>
     </section>
 {% endblock %}
@@ -179,5 +175,3 @@
         });
     </script>
 {% endblock %}
-
-

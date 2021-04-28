@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorie{% endblock %}
+
+{% block body %}
+    <h1>Categorie</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdCat</th>
+                <td>{{ categorie.idCat }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ categorie.type }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ categorie.description }}</td>
+            </tr>
+            <tr>
+                <th>Nomcat</th>
+                <td>{{ categorie.nomcat }}</td>
+            </tr>
+            <tr>
+                <th>Datecat</th>
+                <td>{{ categorie.datecat ? categorie.datecat|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Nbreoeuvre</th>
+                <td>{{ categorie.nbreoeuvre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('categorie_index') }}">back to list</a>
+
+    <a href="{{ path('categorie_edit', {'idCat': categorie.idCat}) }}">edit</a>
+
+    {{ include('categorie/_delete_form.html.twig') }}
+{% endblock %}

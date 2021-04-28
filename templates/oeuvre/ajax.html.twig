@@ -1,0 +1,20 @@
+{% for oeuvre in oeuvres %}
+    <tr>
+        <td>{{ oeuvre.idOeuvre }}</td>
+        <td>{{ oeuvre.nomoeuvre }}</td>
+        <td>{{ oeuvre.prixoeuvre }}</td>
+        <td>{{ oeuvre.dateoeuvre ? oeuvre.dateoeuvre|date('Y-m-d') : '' }}</td>
+        <td> <img height="100" width="100"  src="{{app.request.basepath}}/Front/GFX/{{oeuvre.imageoeuvre}}" alt=""/></td>
+        <td>{{ oeuvre.nomcat }}</td>
+        <td>{{ oeuvre.emailartiste }}</td>
+        <td>
+            <a href="{{ path('oeuvre_show', {'idOeuvre': oeuvre.idOeuvre}) }}">show</a>
+            <a href="{{ path('oeuvre_edit', {'idOeuvre': oeuvre.idOeuvre}) }}">edit</a>
+            {{ include('oeuvre/_delete_form.html.twig') }}
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="8">no records found</td>
+    </tr>
+{% endfor %}
