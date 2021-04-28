@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Endroit;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,9 +41,9 @@ class ReservationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="reservation_new", methods={"GET","POST"})
+     * @Route("/new/{idEndroit}", name="reservation_new", methods={"GET","POST"})
      */
-    public function new(Request $request, \Swift_Mailer $mailer): Response
+    public function new(Request $request, \Swift_Mailer $mailer,Endroit $endroit): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -51,6 +52,9 @@ class ReservationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reservation);
+            $u=$this->getUser();
+            $reservation->setIdclient($u);
+            $reservation->setMatricule($endroit);
             $entityManager->flush();
             $message = (new \Swift_Message('Reservation'))
                 ->setFrom('artdomeproject@gmail.com')

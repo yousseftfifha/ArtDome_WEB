@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Reservation
  *
- * @ORM\Table(name="reservation", indexes={@ORM\Index(name="_idx", columns={"idclient"})})
+ * @ORM\Table(name="reservation", indexes={@ORM\Index(name="fk_matricule", columns={"matricule"}) ,@ORM\Index(name="fk_xx", columns={"idclient"})})
  * @ORM\Entity
  */
 class Reservation
@@ -22,16 +22,22 @@ class Reservation
     private $idReservation;
 
     /**
-     * @var int
+     * @var User
      *
-     * @ORM\Column(name="idclient", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idclient", referencedColumnName="ID")
+     * })
      */
     private $idclient;
 
     /**
-     * @var int
+     * @var Endroit
      *
-     * @ORM\Column(name="matricule", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Endroit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="matricule", referencedColumnName="id_endroit")
+     * })
      */
     private $matricule;
 
@@ -75,28 +81,26 @@ class Reservation
         return $this->idReservation;
     }
 
-    public function getIdclient(): ?int
+    public function getIdclient(): ?User
     {
         return $this->idclient;
     }
 
-    public function setIdclient(int $idclient): self
+    public function setIdclient(User $idclient): void
     {
         $this->idclient = $idclient;
 
-        return $this;
     }
 
-    public function getMatricule(): ?int
+    public function getMatricule(): ?Endroit
     {
         return $this->matricule;
     }
 
-    public function setMatricule(int $matricule): self
+    public function setMatricule(Endroit $matricule): VOID
     {
         $this->matricule = $matricule;
 
-        return $this;
     }
 
     public function getDateDebut(): ?\DateTimeInterface

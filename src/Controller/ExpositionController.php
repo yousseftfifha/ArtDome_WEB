@@ -44,6 +44,7 @@ class ExpositionController extends AbstractController
 
         return $this->render('exposition/index.html.twig', [
             'expositions' => $expositions,
+
         ]);
     }
 
@@ -121,15 +122,23 @@ class ExpositionController extends AbstractController
     /**
      * @Route("/Oeuvre/{codeExpo}", name="exposition_show", methods={"GET"})
      */
-    public function show(Exposition $exposition): Response
+    public function show(Exposition $exposition,PaginatorInterface $paginator, Request $request): Response
     {
-       /* $oeuvre = $this->getDoctrine()
+        $oeuvre = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT * FROM App\Entity\Exposition e INNER JOIN App\Entity\Oeuvre o on e.codeExpo=o.codeExposition')
-            ->getResult();*/
+            ->createQuery('SELECT o.idOeuvre,o.nomoeuvre,o.prixoeuvre,o.nomcat,o.imageoeuvre FROM App\Entity\Oeuvre o where o.codeExposition=:codeExpo')
+            ->setParameter('codeExpo',$exposition->getCodeExpo())
 
+            ->getResult();
+        $artworks = $paginator->paginate(
+            $oeuvre,
+            $request->query->get('page', 1)/*le numéro de la page à afficher*/,
+            3/*nbre d'éléments par page*/
+
+        );
         return $this->render('exposition/show.html.twig', [
-            'exposition' => $exposition
+            'exposition' => $exposition,
+            'oeuvres'=>$artworks
         ]);
     }
 

@@ -63,81 +63,120 @@ class Endroit
      */
     private $disponibilite;
 
-    public function getIdEndroit(): ?int
+    public function __toString() {
+        return $this->idEndroit.' ';
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdEndroit(): int
     {
         return $this->idEndroit;
     }
 
+    /**
+     * @param int $idEndroit
+     */
+    public function setIdEndroit(int $idEndroit): void
+    {
+        $this->idEndroit = $idEndroit;
+    }
+
+    /**
+     * @return string
+     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
-    public function getTaille(): ?int
+    /**
+     * @return int
+     */
+    public function getTaille():? int
     {
         return $this->taille;
     }
 
-    public function setTaille(int $taille): self
+    /**
+     * @param int $taille
+     */
+    public function setTaille(int $taille): void
     {
         $this->taille = $taille;
-
-        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getPrixJour(): ?int
     {
         return $this->prixJour;
     }
 
-    public function setPrixJour(int $prixJour): self
+    /**
+     * @param int $prixJour
+     */
+    public function setPrixJour(int $prixJour): void
     {
         $this->prixJour = $prixJour;
-
-        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getNbrch(): ?int
     {
         return $this->nbrch;
     }
 
-    public function setNbrch(int $nbrch): self
+    /**
+     * @param int $nbrch
+     */
+    public function setNbrch(int $nbrch): void
     {
         $this->nbrch = $nbrch;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    public function setLocation(?string $location): self
+    /**
+     * @param string|null $location
+     */
+    public function setLocation(?string $location): void
     {
         $this->location = $location;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDisponibilite(): ?string
     {
         return $this->disponibilite;
     }
 
-    public function setDisponibilite(?string $disponibilite): self
+    /**
+     * @param string|null $disponibilite
+     */
+    public function setDisponibilite(?string $disponibilite): void
     {
         $this->disponibilite = $disponibilite;
-
-        return $this;
     }
 
 

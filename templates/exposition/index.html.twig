@@ -84,12 +84,22 @@
                             <form id="id" class="edd_form" action="<  {{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" method="POST">
 
                                 <input type="hidden" name="edd_action" value={{ exposition.codeExpo  }}>
-                                <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> More Details</a>
+                                <a href="{{ path('exposition_show', {'codeExpo': exposition.codeExpo}) }}" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> show</a>
+
+
+                                {%  if app.user %}
+                                    <div>
+
+                                        <a class="learn-more detailslearn" href="{{ path('reservation_expo_new' , {'codeExpo': exposition.codeExpo})}}">Make a reservation  </a>
+
+                                    </div>
+                                {% endif %}
+
                             </form>
 
                             </p>
                         </div>
-                        <span class="maxproduct"><img height="500" width="500"  src="{{ asset('Front/images/Art.jpg') }}" alt=""></span>
+                        <span class="maxproduct"><img height="500" width="500"  src="{{ asset('Front/GFX/a.png') }}" alt=""></span>
                     </div>
                     <div class="product-details">
                         <br>
@@ -98,6 +108,7 @@
                             <h1>{{ exposition.dateExpo ? exposition.dateExpo|date('Y-m-d') : '' }} <br> </h1>
 
                         </a>
+
                         <br>
                         <span class="price">
 					    <span class="edd_price">{{ exposition.themeExpo }} </span>
@@ -109,13 +120,7 @@
 
 					    </span>
 
-                        <div>
 
-                            <a href="{{ path('reservation_expo_new' , {'codeExpo': exposition.codeExpo})}}">Make a reservation  </a>
-
-                        </div>
-                        <a class="btn btn-default" href="{{ path('exposition_edit', {'codeExpo': exposition.codeExpo}) }}">  Edit</a>
-                        {{ include('exposition/_delete_form.html.twig') }}
 
                     </div>
                 </div>

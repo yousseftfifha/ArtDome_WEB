@@ -94,6 +94,8 @@ class ReservationeventController extends AbstractController
                 $Event->setNbMaxPart($Event->getNbMaxPart()-$reservationevent->getNbPlace());
                 $this->getDoctrine()->getManager()->flush();
 
+                $u=$this->getUser();
+                $reservationevent->setCodeClient($u);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($reservationevent);
                 $entityManager->flush();

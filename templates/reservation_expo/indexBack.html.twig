@@ -38,7 +38,6 @@
                 <td>{{ reservation_expo.nbPlace }}</td>
                 <th>
                     <a href="{{ path('reservation_expo_showBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Afficher</a>
-                    <a href="{{ path('reservation_expo_editBack', {'codeReservatione': reservation_expo.codeReservatione}) }}">Modifier</a>
                     {{ include('reservation_expo/_delete_formBack.html.twig') }}
                 </th>
             </tr>
@@ -54,7 +53,7 @@
     </table>
 
 
-    <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a>
+    <a class="btn btn-success" href="{{ path('pdf_aa') }}">Create pdf</a>
 </div>
             </div>
       </div>
@@ -86,7 +85,7 @@
                             $('#t tbody#search').empty();
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#t tbody#all').hide();
-                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>   '+obj.codeClient.nom+'  </td><td>'+obj.codeClient.prenom+'  </td><td>'+obj.codeClient.email+'  </td><td>'+obj.codeClient.numero+'  </td><td>'+obj.codeExpo.nomExpo+'  </td><td>'+obj.nbPlace+'  </td><td><a href="reservation_expo_showBack/'+obj.codeReservatione+'">show</a></td><td><a href="reservation_expo_editBack/'+obj.codeReservatione+'">edit</a></td></tr>');
+                                $('#t tbody#search').append('<tr><td> '+obj.codeReservatione+'  </td><td>   '+obj.codeClient.nom+'  </td><td>'+obj.codeClient.prenom+'  </td><td>'+obj.codeClient.email+'  </td><td>'+obj.codeClient.numero+'  </td><td>'+obj.codeExpo.nomExpo+'  </td><td>'+obj.nbPlace+'  </td><td><a href="reservation_expo_showBack/'+obj.codeReservatione+'">show</a></td></tr>');
                             });
                         }
                         else

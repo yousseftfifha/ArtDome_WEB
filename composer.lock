@@ -2400,7 +2400,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.39.0",
+            "version": "v8.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -2454,7 +2454,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.39.0",
+            "version": "v8.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -2502,7 +2502,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.38.0",
+            "version": "v8.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -2548,16 +2548,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.39.0",
+            "version": "v8.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "366454ee39a803f1bdeabc7c79fbb973c101c026"
+                "reference": "ce1682ef73ab28a61be01c24ec5b090bdf2c3256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/366454ee39a803f1bdeabc7c79fbb973c101c026",
-                "reference": "366454ee39a803f1bdeabc7c79fbb973c101c026",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/ce1682ef73ab28a61be01c24ec5b090bdf2c3256",
+                "reference": "ce1682ef73ab28a61be01c24ec5b090bdf2c3256",
                 "shasum": ""
             },
             "require": {
@@ -2612,7 +2612,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-04-27T12:57:43+00:00"
+            "time": "2021-04-28T12:56:25+00:00"
         },
         {
             "name": "jms/metadata",
