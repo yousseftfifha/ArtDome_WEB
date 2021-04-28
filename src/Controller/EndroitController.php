@@ -31,7 +31,19 @@ class EndroitController extends AbstractController
             'endroits' => $endroits,
         ]);
     }
+    /**
+     * @Route("/", name="endroit_indexBack", methods={"GET"})
+     */
+    public function indexBack(): Response
+    {
+        $endroits = $this->getDoctrine()
+            ->getRepository(Endroit::class)
+            ->findAll();
 
+        return $this->render('endroit/indexBack.html.twig', [
+            'endroits' => $endroits,
+        ]);
+    }
     /**
      * @Route("/new", name="endroit_new", methods={"GET","POST"})
      */

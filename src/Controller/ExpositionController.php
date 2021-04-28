@@ -126,7 +126,7 @@ class ExpositionController extends AbstractController
     {
         $oeuvre = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT o.idOeuvre,o.nomoeuvre,o.prixoeuvre,o.nomcat,o.imageoeuvre FROM App\Entity\Oeuvre o where o.codeExposition=:codeExpo')
+            ->createQuery('SELECT o.idOeuvre,o.nomoeuvre,o.prixoeuvre,o.imageoeuvre FROM App\Entity\Oeuvre o where o.codeExposition=:codeExpo')
             ->setParameter('codeExpo',$exposition->getCodeExpo())
 
             ->getResult();

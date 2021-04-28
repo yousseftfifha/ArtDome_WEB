@@ -10,13 +10,16 @@
     <h1>Register</h1>
 <div class="container-fluid">
     {{ form_start(registrationForm) }}
+    {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
         {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+    {{ form_row(registrationForm.plainPassword, {
+        label: 'Password'
+    }) }}
+    {{ form_row(registrationForm.agreeTerms) }}
+
+    <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+
 </div>
 {% endblock %}

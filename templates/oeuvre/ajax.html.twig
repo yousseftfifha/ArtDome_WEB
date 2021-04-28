@@ -5,7 +5,7 @@
         <td>{{ oeuvre.prixoeuvre }}</td>
         <td>{{ oeuvre.dateoeuvre ? oeuvre.dateoeuvre|date('Y-m-d') : '' }}</td>
         <td> <img height="100" width="100"  src="{{app.request.basepath}}/Front/GFX/{{oeuvre.imageoeuvre}}" alt=""/></td>
-        <td>{{ oeuvre.nomcat }}</td>
+        <td>{{ oeuvre.nomcat.nomcat }}</td>
         <td>{{ oeuvre.emailartiste }}</td>
         <td>
             <a href="{{ path('oeuvre_show', {'idOeuvre': oeuvre.idOeuvre}) }}">show</a>

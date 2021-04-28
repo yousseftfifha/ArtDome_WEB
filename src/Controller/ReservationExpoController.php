@@ -87,7 +87,8 @@ class ReservationExpoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($exposition->getNbMaxParticipant() >= $reservationExpo->getNbPlace()) {
-                $exposition->getNbMaxParticipant($exposition->getNbMaxParticipant()-$reservationExpo->getNbPlace());
+                $exposition->setNbMaxParticipant($exposition->getNbMaxParticipant()-$reservationExpo->getNbPlace());
+
                 $this->getDoctrine()->getManager()->flush();
 
                 $entityManager = $this->getDoctrine()->getManager();

@@ -17,6 +17,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Bridge\Google\Transport\GmailSmtpTransport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/oeuvre")
@@ -194,15 +195,14 @@ class OeuvreController extends AbstractController
     /**
      * @Route("/searchajax ", name="ajaxsearch")
      */
-    public function searchajax(Request $request)
+    public function searchajax(Request $request, NormalizerInterface $Normalizer)
     {
         $repository = $this->getDoctrine()->getRepository(Oeuvre::class);
         $requestString=$request->get('searchValue');
         $oeuvres = $repository->ajax($requestString);
-
-        return $this->render('oeuvre/ajax.html.twig', [
-            "oeuvres"=>$oeuvres
-        ]);
+        $jsonContent = $Normalizer->normalize($oeuvres, 'json', ['groups' => 'oeuvres:read']);
+        $retour = json_encode($jsonContent);
+        return new Response($retour);
     }
     /**
      * @Route("/stat", name="stat")

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -11,7 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * Oeuvre
  *
- * @ORM\Table(name="oeuvre", indexes={@ORM\Index(name="fk_exposition", columns={"code_exposition"}), @ORM\Index(name="fk_id", columns={"ID_Artiste"})})
+ * @ORM\Table(name="oeuvre", indexes={@ORM\Index(name="fk_exposition", columns={"code_exposition"}), @ORM\Index(name="fk_id", columns={"ID_Artiste"}), @ORM\Index(name="fk_xxxxx", columns={"NomCat"})})
  * @ORM\Entity
  * @Vich\Uploadable
  * @ORM\Entity(repositoryClass="App\Repository\oeuvreRepository")php bin/console make:entity --regenerate
@@ -24,6 +25,7 @@ class Oeuvre
      * @ORM\Column(name="ID_Oeuvre", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("oeuvres:read")
      */
     private $idOeuvre;
 
@@ -33,6 +35,7 @@ class Oeuvre
      * @ORM\Column(name="NomOeuvre", type="string", length=30, nullable=false)
      * @Assert\Length(min=4)
      * @Assert\NotBlank
+     * @Groups("oeuvres:read")
      */
     private $nomoeuvre;
 
@@ -40,6 +43,7 @@ class Oeuvre
      * @var float
      *
      * @ORM\Column(name="PrixOeuvre", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("oeuvres:read")
      */
     private $prixoeuvre;
 
@@ -47,6 +51,7 @@ class Oeuvre
      * @var \DateTime|null
      *
      * @ORM\Column(name="DateOeuvre", type="date", nullable=true)
+     * @Groups("oeuvres:read")
      */
     private $dateoeuvre;
 
@@ -54,12 +59,14 @@ class Oeuvre
      * @var string
      *
      * @ORM\Column(name="ImageOeuvre", type="string", length=255, nullable=true)
+     * @Groups("oeuvres:read")
      */
     private $imageoeuvre;
 
 
     /**
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="ImageOeuvre")
+     * @Groups("oeuvres:read")
      */
     private $imageFile;
 
@@ -81,9 +88,13 @@ class Oeuvre
 
 
     /**
-     * @var string
 
-     * @ORM\Column(name="NomCat", type="string", length=50)
+     * @var Categorie
+     * @ORM\ManyToOne(targetEntity="Categorie")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="NomCat", referencedColumnName="ID_Cat")
+     * })
+     * @Groups("oeuvres:read")
      */
     private $nomcat;
 
@@ -93,6 +104,7 @@ class Oeuvre
      * @ORM\Column(name="EmailArtiste", type="string", length=255, nullable=true)
      * @Assert\Email
      * @Assert\NotBlank
+     * @Groups("oeuvres:read")
      */
     private $emailartiste;
 
@@ -113,11 +125,13 @@ class Oeuvre
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="ID_Artiste", referencedColumnName="ID")
      * })
+     * @Groups("oeuvres:read")
      */
     private $idArtiste;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("oeuvres:read")
      */
     private $color;
 
@@ -174,16 +188,14 @@ class Oeuvre
         return $this;
     }
 
-    public function getNomcat(): ?string
+    public function getNomcat(): ?Categorie
     {
         return $this->nomcat;
     }
 
-    public function setNomcat(?string $nomcat): self
+    public function setNomcat(?Categorie $nomcat): void
     {
         $this->nomcat = $nomcat;
-
-        return $this;
     }
 
     public function getEmailartiste(): ?string

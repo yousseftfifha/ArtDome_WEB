@@ -27,7 +27,6 @@
                 <td>{{ categorie.datecat ? categorie.datecat|date('Y-m-d') : '' }}</td>
                 <td>{{ categorie.nbreoeuvre }}</td>
                 <td>
-                    <a href="{{ path('categorie_show', {'idCat': categorie.idCat}) }}">show</a>
                     <a href="{{ path('categorie_edit', {'idCat': categorie.idCat}) }}">edit</a>
                 </td>
             </tr>

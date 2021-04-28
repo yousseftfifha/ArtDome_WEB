@@ -17,7 +17,6 @@
                 <th>DateDebut</th>
                 <th>DateFin</th>
                 <th>Cautionnement</th>
-                <th>PrixTotal</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -32,7 +31,6 @@
                 <td>{{ reservation.dateDebut ? reservation.dateDebut|date('Y-m-d') : '' }}</td>
                 <td>{{ reservation.dateFin ? reservation.dateFin|date('Y-m-d') : '' }}</td>
                 <td>{{ reservation.cautionnement }}</td>
-                <td>{{ reservation.prixTotal }}</td>
 
                 <td>
                     <a href="{{ path('reservation_show', {'idReservation': reservation.idReservation}) }}">show</a>
@@ -44,6 +42,8 @@
                 <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
+        <tbody id="search">
+        </tbody>
         </tbody>
     </table>
 
@@ -76,7 +76,7 @@
                              $('#t tbody#search').empty();
                              $.each(JSON.parse(retour), function(i, obj) {
                                  $('#t tbody#all').hide();
-                                 $('#t tbody#search').append(' <tr><td> '+obj.idReservation+'  </td><td>    '+obj.matricule.idmatricule+'  </td><td>    '+obj.dateDebut+'  </td><td>'+obj.dateFin+' </td><td>'+obj.Cautionnement+' </td><td>'+obj.prix_total+' </td><a href="showBack/'+obj.idReservation+'">show</a></td><td><a href="editBack/'+obj.idReservation+'">edit</a></td> ');
+                                 $('#t tbody#search').append(' <tr><td> '+obj.idReservation+'  </td><td> '+obj.idclient.nom+'  </td><td> '+obj.idclient.prenom+'  </td><td>    '+obj.matricule.idEndroit+'  </td><td>    '+obj.dateDebut+'  </td><td>'+obj.dateFin+' </td><td>'+obj.cautionnement+' </td><a href="showBack/'+obj.idReservation+'">show</a></td><td><a href="editBack/'+obj.idReservation+'">edit</a></td> ');
                              });
                          }
                          else

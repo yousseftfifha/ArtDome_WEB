@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Endroit
@@ -18,6 +19,7 @@ class Endroit
      * @ORM\Column(name="id_endroit", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("reservations:read")
      */
     private $idEndroit;
 

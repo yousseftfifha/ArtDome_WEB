@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Ob\HighchartsBundle\Highcharts\Highchart;
+
 
 /**
  * @Route("/user")
@@ -106,5 +108,44 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
+    }
+    /**
+     * @Route("/user/statistique", name="user_stat")
+     */
+    public function statistique(){
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $ListUsers = $repository->findAll();
+        $doc = $this->getDoctrine()->getManager();
+        $homme = 0;
+        $femme = 0;
+        foreach ($ListUsers as $user) {
+            if ($user->getSexe() == "Homme")
+
+                $homme += 1;
+
+            else
+                $femme += 1;
+        }
+        $data = [
+            ['Homme', ($homme/($homme+$femme)*100)],
+            ['Femme', ($femme/($homme+$femme)*100)],
+        ];
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('container');
+        $ob->chart->type('pie');
+        $ob->title->text('statistique utilisteurs');
+        $ob->series(array(array("data"=>$data)));
+
+        return $this->render('statistique.html.twig', [
+            'mypiechart' => $ob
+        ]);
+    }
+    /**
+     * @Route("/user/calendar", name="calendar", methods={"GET"})
+     */
+    public function calendar(): Response
+    {
+        return $this->render('calendar.html.twig');
     }
 }

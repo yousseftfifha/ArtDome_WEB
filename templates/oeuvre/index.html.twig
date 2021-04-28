@@ -17,7 +17,7 @@
                 </for>
             </div>
         </div>
-    <table class="table">
+    <table class="table" id="t">
         <thead>
             <tr>
                 <th>Id Oeuvre</th>
@@ -32,14 +32,17 @@
         </thead>
         <tbody  id="all">
         {% include 'oeuvre/ajax.html.twig' %}
+        <tbody id="search">
         </tbody>
+        </tbody>
+
     </table>
 
     <a href="{{ path('oeuvre_new') }}">Create new</a>
     <a href="{{ path('pdfOEUVRE') }}">Create PDF</a>
     <a href="{{ path('stat') }}">Create Statistique</a>
 {% endblock %}
-{%  block javascript2 %}
+{%  block javascripts %}
 
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
@@ -64,10 +67,20 @@
                         'searchValue' : value
                     },
 
-                    success : function(retour)
-                    {
-                        $('#all').html(retour);
-
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><td> '+obj.idOeuvre+'  </td><td>   '+obj.nomoeuvre+'  </td><td>'+obj.prixoeuvre+'  </td><td>'+obj.dateoeuvre+'  </td><td> <img height="100" width="100"  src="{{app.request.basepath}}/Front/GFX/'+obj.imageoeuvre+'" alt=""/></td><td>'+obj.nomcat.nomcat+'  </td><td>'+obj.emailartiste+'  </td>aaa<td></td>bbb<td></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
                     },
                 });
                 return false;

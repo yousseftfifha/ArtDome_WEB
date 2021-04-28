@@ -30,6 +30,8 @@ class User implements UserInterface
      * @Groups("reservationevents:read")
      * @Groups("events:read")
      * @Groups("reservations:read")
+     * @Groups("oeuvres:read")
+     * @Groups("reservations:read")
      * @ORM\Column(name="nom", type="string", length=255, nullable=true)
      */
     private $nom;
@@ -126,6 +128,8 @@ class User implements UserInterface
      * @Groups("orders:read")
      * @Groups("reservationevents:read")
      * @Groups("events:read")
+     * @Groups("reservations:read")
+     * @Groups("oeuvres:read")
      * @Groups("reservations:read")
      */
     private $prenom;
