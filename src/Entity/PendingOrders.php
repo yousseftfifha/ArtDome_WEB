@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * PendingOrders
@@ -18,6 +19,7 @@ class PendingOrders
      * @ORM\Column(name="ID_PendingOrder", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("pendingorders:read")
      */
     private $idPendingorder;
 
@@ -27,6 +29,7 @@ class PendingOrders
      * @var int|null
      *
      * @ORM\Column(name="InnoNumber", type="integer", nullable=true)
+     * @Groups("pendingorders:read")
      */
     private $innonumber;
 
@@ -34,6 +37,7 @@ class PendingOrders
      * @var int|null
      *
      * @ORM\Column(name="Quantity", type="integer", nullable=true)
+     * @Groups("pendingorders:read")
      */
     private $quantity;
 
@@ -41,6 +45,7 @@ class PendingOrders
      * @var string|null
      *
      * @ORM\Column(name="Status", type="string", length=30, nullable=true, options={"default"="Pending"})
+     * @Groups("pendingorders:read")
      */
     private $status = 'Pending';
 
@@ -51,6 +56,7 @@ class PendingOrders
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="OeuvreID", referencedColumnName="ID_Oeuvre")
      * })
+     * @Groups("pendingorders:read")
      */
     private $oeuvreid;
 
@@ -61,6 +67,7 @@ class PendingOrders
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="IDUser", referencedColumnName="ID")
      * })
+     * @Groups("pendingorders:read")
      */
     private $iduser;
 

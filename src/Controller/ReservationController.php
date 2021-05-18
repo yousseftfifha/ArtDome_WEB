@@ -58,7 +58,7 @@ class ReservationController extends AbstractController
             $entityManager->flush();
             $message = (new \Swift_Message('Reservation'))
                 ->setFrom('artdomeproject@gmail.com')
-                ->setTo('habib.charfeddine@esprit.tn')
+                ->setTo('youssef.tfifha@esprit.tn')
                 ->setBody(
                     'Reservation établie'
                 )

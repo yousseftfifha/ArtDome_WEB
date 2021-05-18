@@ -36,6 +36,7 @@ class Oeuvre
      * @Assert\Length(min=4)
      * @Assert\NotBlank
      * @Groups("oeuvres:read")
+     * @Groups("pendingorders:read")
      */
     private $nomoeuvre;
 
@@ -44,6 +45,7 @@ class Oeuvre
      *
      * @ORM\Column(name="PrixOeuvre", type="float", precision=10, scale=0, nullable=false)
      * @Groups("oeuvres:read")
+     * @Groups("pendingorders:read")
      */
     private $prixoeuvre;
 
