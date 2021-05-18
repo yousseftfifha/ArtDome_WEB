@@ -38,6 +38,7 @@ use Knp\Snappy\Pdf as Snappy;
  */
 class OrdersController extends AbstractController
 {
+
     /**
      * @Route("/", name="orders_index", methods={"GET"})
      */
